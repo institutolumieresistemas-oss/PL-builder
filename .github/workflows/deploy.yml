@@ -29,9 +29,15 @@ jobs:
         run: npm run build:prod
 
       - name: 🔑 Configurar Llave SSH
+        env:
+          RAW_SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/deploy_key
+          if echo "$RAW_SSH_KEY" | grep -q "BEGIN"; then
+            printf '%s\n' "$RAW_SSH_KEY" | tr -d '\r' > ~/.ssh/deploy_key
+          else
+            echo "$RAW_SSH_KEY" | base64 -d > ~/.ssh/deploy_key
+          fi
           echo "" >> ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           cat << 'EOF' > ~/.ssh/config
