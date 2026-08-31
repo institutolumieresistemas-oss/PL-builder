@@ -34,8 +34,17 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/deploy_key
           echo "" >> ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -p ${{ secrets.SSH_PORT || '65002' }} -H ${{ secrets.SSH_HOST || '31.170.166.250' }} >> ~/.ssh/known_hosts 2>/dev/null || true
+          cat << 'EOF' > ~/.ssh/config
+          Host *
+            StrictHostKeyChecking no
+            UserKnownHostsFile /dev/null
+            PubkeyAcceptedKeyTypes +ssh-rsa
+            PubkeyAcceptedAlgorithms +ssh-rsa
+            HostKeyAlgorithms +ssh-rsa
+            IdentityFile ~/.ssh/deploy_key
+          EOF
+          chmod 600 ~/.ssh/config
 
       - name: 🚀 Sincronizar Archivos a Hostinger con Rsync
         run: |
-          rsync -avz --delete -e "ssh -p ${{ secrets.SSH_PORT || '65002' }} -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" dist/builder/browser/ ${{ secrets.SSH_USER || 'u740702945' }}@${{ secrets.SSH_HOST || '31.170.166.250' }}:${{ secrets.TARGET_DIR }}
+          rsync -avz --delete -e "ssh -p ${{ secrets.SSH_PORT || '65002' }} -o StrictHostKeyChecking=no -o PubkeyAcceptedKeyTypes=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa -i ~/.ssh/deploy_key" dist/builder/browser/ ${{ secrets.SSH_USER || 'u740702945' }}@${{ secrets.SSH_HOST || '31.170.166.250' }}:${{ secrets.TARGET_DIR }}
