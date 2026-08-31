@@ -1,53 +1,41 @@
-name: Deploy to Hostinger
+name: Deploy Plasmex Builder to Production
 
 on:
   push:
     branches:
       - main
+      - master
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
-    name: Build Angular & Deploy via SSH
+    name: Build & Deploy Angular Builder
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: 📥 Checkout Código
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: ⚙️ Configurar Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 20
           cache: 'npm'
 
-      - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+      - name: 📦 Instalar Dependencias
+        run: npm ci --legacy-peer-deps || npm install --legacy-peer-deps
 
-      - name: Build production
+      - name: 🏗️ Compilar para Producción
         run: npm run build:prod
 
-      - name: Package dist files
-        run: tar -czf dist.tar.gz -C dist/builder/browser .
-
-      - name: Upload archive to server
-        uses: appleboy/scp-action@v0.1.7
+      - name: 🚀 Desplegar por SSH a Hostinger
+        uses: easingthemes/ssh-deploy@v5.1.0
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 65002
-          source: "dist.tar.gz"
-          target: "~/"
-
-      - name: Extract and deploy on server
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 65002
-          script: |
-            rm -rf ${{ secrets.SSH_TARGET_DASHBOARD }}/*
-            tar -xzf ~/dist.tar.gz -C ${{ secrets.SSH_TARGET_DASHBOARD }}
-            rm ~/dist.tar.gz
-            echo "Deploy completado exitosamente en Dashboard"
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.SSH_HOST || '31.170.166.250' }}
+          REMOTE_USER: ${{ secrets.SSH_USER || 'u740702945' }}
+          REMOTE_PORT: ${{ secrets.SSH_PORT || '65002' }}
+          ARGS: "-rltgoDzvO --delete"
+          SOURCE: "dist/builder/browser/"
+          TARGET: ${{ secrets.BUILDER_TARGET_DIR || '/home/u740702945/domains/builder.plasmexsiga.com/public_html' }}
+          EXCLUDE: "/.git/, /node_modules/, /.github/"
