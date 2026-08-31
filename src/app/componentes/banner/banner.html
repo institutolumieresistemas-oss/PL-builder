@@ -1,0 +1,338 @@
+<div class="banner-master-container" [class.is-editor-mode]="isEditor">
+
+  <!-- ==========================================================================
+       BARRA DE HERRAMIENTAS INLINE (BUILDER)
+       ========================================================================== -->
+  <div *ngIf="isEditor" class="banner-editor-toolbar p-2 mb-3 rounded d-flex flex-wrap align-items-center justify-content-between gap-2">
+    <div class="d-flex align-items-center gap-2">
+      <div class="banner-toolbar-badge"><i class="fas fa-image text-danger"></i></div>
+      <div>
+        <span class="banner-toolbar-title">Banner Imagen & Texto</span>
+        <span class="badge bg-danger ms-2">{{ estilo | uppercase }}</span>
+      </div>
+    </div>
+
+    <!-- 3 ESTILOS DIRECTOS -->
+    <div class="d-flex flex-wrap align-items-center gap-1">
+      <button *ngFor="let s of bannerEstilosList"
+              type="button"
+              class="btn btn-sm btn-banner-pill"
+              [class.active]="estilo === s.id"
+              (click)="cambiarEstilo($any(s.id))"
+              [title]="s.desc">
+        <i [class]="s.icon + ' me-1'" [class.text-danger]="estilo !== s.id"></i>
+        <span>{{ s.name }}</span>
+      </button>
+    </div>
+
+    <!-- SELECTOR DE POSICION DE LA IMAGEN (IZQUIERDA / DERECHA) -->
+    <div class="btn-group btn-group-sm">
+      <button type="button" 
+              class="btn btn-outline-secondary btn-pos"
+              [class.active]="posicionImagen === 'izquierda'"
+              (click)="setPosicion('izquierda')"
+              title="Imagen a la Izquierda">
+        <i class="fas fa-align-left me-1"></i> Imagen Izq
+      </button>
+      <button type="button" 
+              class="btn btn-outline-secondary btn-pos"
+              [class.active]="posicionImagen === 'derecha'"
+              (click)="setPosicion('derecha')"
+              title="Imagen a la Derecha">
+        Imagen Der <i class="fas fa-align-right ms-1"></i>
+      </button>
+    </div>
+
+    <!-- ACCIONES -->
+    <div class="d-flex align-items-center gap-2">
+      <button class="btn btn-sm btn-outline-light" (click)="abrirConfig()">
+        <i class="fas fa-edit me-1 text-danger"></i> Editar Contenido
+      </button>
+      <button class="btn btn-sm btn-outline-danger" (click)="eliminar()" title="Eliminar componente">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       ESTILO 1: CYBER CNC LÁSER (ESQUINAS BISELADAS + TARJETA FLOTANTE + CHECKLIST)
+       ========================================================================== -->
+  <section *ngIf="estilo === 'cyber-laser-card'" class="banner-section banner-cyber-laser p-4 p-md-5 rounded position-relative overflow-hidden">
+    <div class="cyber-laser-bg"></div>
+    <div class="container-fluid position-relative z-1">
+      <div class="row align-items-center g-4 g-lg-5">
+        
+        <!-- COLUMNA IMAGEN -->
+        <div class="col-12 col-lg-6" [class.order-lg-1]="posicionImagen === 'izquierda'" [class.order-lg-2]="posicionImagen === 'derecha'">
+          <div class="banner-img-frame-cyber position-relative rounded overflow-hidden">
+            <div class="chamfer-tag top-left"></div>
+            <div class="chamfer-tag bottom-right"></div>
+            <img [src]="imagenUrl" [alt]="titulo" class="img-fluid banner-main-img" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=80'">
+            
+            <div class="floating-cyber-badge p-3 rounded d-flex align-items-center gap-3">
+              <div class="badge-icon-red"><i class="fas fa-check-double text-danger"></i></div>
+              <div>
+                <span class="d-block text-white fw-bold small">Corte Láser de Fibra Óptica</span>
+                <span class="text-secondary micro-text">Tolerancias de alta precisión</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COLUMNA TEXTO -->
+        <div class="col-12 col-lg-6 text-start" [class.order-lg-2]="posicionImagen === 'izquierda'" [class.order-lg-1]="posicionImagen === 'derecha'">
+          <div *ngIf="badge" class="banner-badge-red mb-3 d-inline-flex align-items-center gap-2">
+            <span class="pulsing-laser-dot"></span>
+            <span>{{ badge }}</span>
+          </div>
+
+          <h2 class="display-5 fw-black text-white mb-3">
+            {{ titulo }} <span class="text-gradient-red">{{ tituloResaltado }}</span>
+          </h2>
+
+          <p class="text-secondary fs-6 mb-4">
+            {{ descripcion }}
+          </p>
+
+          <!-- LISTA DE PUNTOS CLAVE -->
+          <div *ngIf="puntosClave && puntosClave.length > 0" class="d-flex flex-column gap-2 mb-4">
+            <div *ngFor="let punto of puntosClave" class="d-flex align-items-center gap-2 text-light small">
+              <i class="fas fa-check-circle text-danger fs-6"></i>
+              <span>{{ punto }}</span>
+            </div>
+          </div>
+
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            <a [routerLink]="isEditor ? null : botonLink" class="btn btn-plasmex-hero-primary">
+              <i class="fas fa-calculator me-2"></i> {{ botonTexto }}
+            </a>
+            <a *ngIf="botonSecundarioTexto" [routerLink]="isEditor ? null : botonSecundarioLink" class="btn btn-plasmex-hero-outline">
+              {{ botonSecundarioTexto }}
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       ESTILO 2: GLASSMORPHISM NEÓN (FONDO DE CRISTAL OSCURO + AURA ROJA)
+       ========================================================================== -->
+  <section *ngIf="estilo === 'glass-glow'" class="banner-section banner-glass-glow p-4 p-md-5 rounded position-relative overflow-hidden">
+    <div class="ambient-glow glow-corner"></div>
+    <div class="container-fluid position-relative z-1">
+      <div class="row align-items-center g-4 g-lg-5">
+        
+        <!-- COLUMNA IMAGEN -->
+        <div class="col-12 col-lg-6" [class.order-lg-1]="posicionImagen === 'izquierda'" [class.order-lg-2]="posicionImagen === 'derecha'">
+          <div class="banner-img-frame-glass rounded-4 overflow-hidden position-relative">
+            <img [src]="imagenUrl" [alt]="titulo" class="img-fluid banner-main-img" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=80'">
+          </div>
+        </div>
+
+        <!-- COLUMNA TEXTO -->
+        <div class="col-12 col-lg-6 text-start" [class.order-lg-2]="posicionImagen === 'izquierda'" [class.order-lg-1]="posicionImagen === 'derecha'">
+          <div *ngIf="badge" class="banner-badge-glass mb-3 d-inline-flex align-items-center gap-2">
+            <i class="fas fa-sparkles text-danger"></i>
+            <span>{{ badge }}</span>
+          </div>
+
+          <h2 class="display-5 fw-black text-white mb-3">
+            {{ titulo }} <span class="text-neon-red">{{ tituloResaltado }}</span>
+          </h2>
+
+          <p class="text-secondary fs-6 mb-4">
+            {{ descripcion }}
+          </p>
+
+          <!-- MINI CARDS DE CARACTERISTICAS -->
+          <div *ngIf="puntosClave && puntosClave.length > 0" class="row g-2 mb-4">
+            <div *ngFor="let punto of puntosClave" class="col-12 col-sm-6">
+              <div class="p-2 rounded bg-black bg-opacity-60 border border-secondary border-opacity-25 text-light small d-flex align-items-center gap-2">
+                <i class="fas fa-bolt text-danger"></i>
+                <span>{{ punto }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            <a [routerLink]="isEditor ? null : botonLink" class="btn btn-plasmex-hero-primary btn-lg">
+              <i class="fas fa-bolt me-2"></i> {{ botonTexto }}
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       ESTILO 3: EDITORIAL MINIMALISTA (NUMERO DE INDICE + TIPOGRAFIA LIMPIA)
+       ========================================================================== -->
+  <section *ngIf="estilo === 'minimal-editorial'" class="banner-section banner-minimal-editorial p-4 p-md-5 rounded position-relative overflow-hidden">
+    <div class="container-fluid position-relative z-1">
+      <div class="row align-items-center g-4 g-lg-5">
+        
+        <!-- COLUMNA IMAGEN -->
+        <div class="col-12 col-lg-6" [class.order-lg-1]="posicionImagen === 'izquierda'" [class.order-lg-2]="posicionImagen === 'derecha'">
+          <div class="banner-img-frame-editorial rounded overflow-hidden">
+            <img [src]="imagenUrl" [alt]="titulo" class="img-fluid banner-main-img" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=80'">
+          </div>
+        </div>
+
+        <!-- COLUMNA TEXTO -->
+        <div class="col-12 col-lg-6 text-start" [class.order-lg-2]="posicionImagen === 'izquierda'" [class.order-lg-1]="posicionImagen === 'derecha'">
+          
+          <div class="editorial-index-tag mb-2 d-flex align-items-center gap-2">
+            <span class="text-danger fw-black fs-4">01.</span>
+            <span class="text-secondary small fw-bold text-uppercase">{{ badge }}</span>
+          </div>
+
+          <h2 class="display-6 fw-black text-white mb-3">
+            {{ titulo }} <br><span class="text-gradient-red">{{ tituloResaltado }}</span>
+          </h2>
+
+          <p class="text-secondary small mb-4">
+            {{ descripcion }}
+          </p>
+
+          <!-- PUNTOS CON GUIONES ROJOS -->
+          <ul *ngIf="puntosClave && puntosClave.length > 0" class="list-unstyled d-flex flex-column gap-2 mb-4">
+            <li *ngFor="let punto of puntosClave" class="d-flex align-items-center gap-2 text-light small">
+              <span class="red-dash"></span>
+              <span>{{ punto }}</span>
+            </li>
+          </ul>
+
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            <a [routerLink]="isEditor ? null : botonLink" class="btn btn-plasmex-hero-primary">
+              {{ botonTexto }}
+            </a>
+            <a *ngIf="botonSecundarioTexto" [routerLink]="isEditor ? null : botonSecundarioLink" class="btn btn-plasmex-hero-outline">
+              {{ botonSecundarioTexto }}
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       MODAL DE CONFIGURACION DEL BANNER (BUILDER)
+       ========================================================================== -->
+  <div *ngIf="mostrarConfigModal" class="modal d-block modal-editor-backdrop" (click)="cerrarConfig()">
+    <div class="modal-dialog modal-dialog-centered modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-content bg-dark text-light border border-danger border-opacity-50 shadow-lg">
+        
+        <div class="modal-header border-bottom border-secondary border-opacity-25">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-image text-danger fs-5"></i>
+            <h5 class="modal-title m-0 fw-bold">Configurar Banner Imagen & Texto</h5>
+          </div>
+          <button type="button" class="btn-close btn-close-white" (click)="cerrarConfig()"></button>
+        </div>
+
+        <div class="modal-body p-4" style="max-height: 75vh; overflow-y: auto;">
+          <div class="row g-3">
+            
+            <!-- ESTILO DEL BANNER -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Estilo del Banner (3 Opciones)</label>
+              <select class="form-select bg-black text-light border-secondary" [(ngModel)]="estilo">
+                <option *ngFor="let s of bannerEstilosList" [value]="s.id">{{ s.name }}</option>
+              </select>
+            </div>
+
+            <!-- POSICION DE LA IMAGEN -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Posición de la Imagen</label>
+              <select class="form-select bg-black text-light border-secondary" [(ngModel)]="posicionImagen">
+                <option value="izquierda">◀ Imagen a la Izquierda / Texto a la Derecha</option>
+                <option value="derecha">Imagen a la Derecha / Texto a la Izquierda ▶</option>
+              </select>
+            </div>
+
+            <!-- URL DE LA IMAGEN -->
+            <div class="col-12">
+              <label class="form-label fw-bold small text-light">URL de la Imagen</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="imagenUrl">
+            </div>
+
+            <!-- BADGE SUPERIOR -->
+            <div class="col-12">
+              <label class="form-label fw-bold small text-light">Badge / Etiqueta Superior</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="badge">
+            </div>
+
+            <!-- TITULO PRINCIPAL -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Título (Parte 1)</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="titulo">
+            </div>
+
+            <!-- TITULO RESALTADO -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Título Resaltado (en Rojo)</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="tituloResaltado">
+            </div>
+
+            <!-- DESCRIPCION -->
+            <div class="col-12">
+              <label class="form-label fw-bold small text-light">Descripción</label>
+              <textarea rows="3" class="form-control bg-black text-light border-secondary" [(ngModel)]="descripcion"></textarea>
+            </div>
+
+            <!-- PUNTOS CLAVE / CARACTERISTICAS -->
+            <div class="col-12">
+              <label class="form-label fw-bold small text-light mb-1">Puntos Clave / Checklist</label>
+              <div class="input-group input-group-sm mb-2">
+                <input class="form-control bg-black text-light border-secondary" [(ngModel)]="puntoClaveTemp" placeholder="Agregar nueva característica..." (keyup.enter)="agregarPuntoClave()">
+                <button class="btn btn-outline-success" type="button" (click)="agregarPuntoClave()">
+                  <i class="fas fa-plus"></i> Agregar
+                </button>
+              </div>
+
+              <div class="d-flex flex-column gap-1">
+                <div *ngFor="let p of puntosClave; let idx = index" class="d-flex align-items-center justify-content-between p-2 rounded bg-black border border-secondary border-opacity-25">
+                  <span class="small text-light"><i class="fas fa-check text-danger me-2"></i>{{ p }}</span>
+                  <button class="btn btn-sm btn-outline-danger py-0 px-2" (click)="eliminarPuntoClave(idx)">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- BOTONES -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Texto Botón Primario</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="botonTexto">
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Enlace Botón Primario</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="botonLink">
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Texto Botón Secundario (Opcional)</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="botonSecundarioTexto">
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Enlace Botón Secundario</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="botonSecundarioLink">
+            </div>
+
+          </div>
+        </div>
+
+        <div class="modal-footer border-top border-secondary border-opacity-25">
+          <button type="button" class="btn btn-secondary" (click)="cerrarConfig()">Cancelar</button>
+          <button type="button" class="btn btn-danger px-4 fw-bold" (click)="guardarConfig()">Guardar Cambios</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

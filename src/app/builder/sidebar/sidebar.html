@@ -1,0 +1,135 @@
+<div class="sidebar p-3 border-end">
+
+  <!-- ==================== SELECCION DE PAGINA ==================== -->
+  <div class="sidebar-section mb-4">
+    <h6 class="section-title mb-2"><i class="fas fa-file-alt me-2 text-danger"></i>Página Activa</h6>
+    <select class="form-select page-selector mb-3" [(ngModel)]="selectedPageId" (change)="selectPage(selectedPageId)">
+      <option *ngFor="let page of pages" [value]="page.id">{{ page.name }}</option>
+    </select>
+  </div>
+
+  <hr class="my-3 border-secondary border-opacity-50">
+
+  <!-- ==================== AGREGAR COMPONENTES AL CANVAS ==================== -->
+  <div class="sidebar-section mb-4">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <h6 class="section-title mb-0"><i class="fas fa-cubes me-2 text-danger"></i>Componentes</h6>
+      <span class="badge bg-danger">Plasmex CNC</span>
+    </div>
+    
+    <div class="elements-grid">
+      <!-- Hero Section Card -->
+      <div class="element-banner banner-gradient-red" (click)="addElement('hero')">
+        <div class="element-icon"><i class="fas fa-layer-group text-danger"></i></div>
+        <div class="element-info">
+          <span class="element-name">Sección Hero</span>
+          <span class="element-desc">5 Estilos de portada con diseño Negro y Rojo</span>
+        </div>
+        <div class="element-action"><i class="fas fa-plus"></i></div>
+      </div>
+
+      <!-- Productos / Catalogo Card -->
+      <div class="element-banner banner-gradient-dark" (click)="addElement('productos')">
+        <div class="element-icon"><i class="fas fa-boxes text-danger"></i></div>
+        <div class="element-info">
+          <span class="element-name">Catálogo de Productos</span>
+          <span class="element-desc">6 Formatos de exhibición y cotización</span>
+        </div>
+        <div class="element-action"><i class="fas fa-plus"></i></div>
+      </div>
+
+      <!-- Cintillo Intermedio Card -->
+      <div class="element-banner banner-gradient-red" (click)="addElement('cintillo')">
+        <div class="element-icon"><i class="fas fa-stream text-danger"></i></div>
+        <div class="element-info">
+          <span class="element-name">Cintillo Intermedio</span>
+          <span class="element-desc">4 Opciones de banner CTA y WhatsApp</span>
+        </div>
+        <div class="element-action"><i class="fas fa-plus"></i></div>
+      </div>
+
+      <!-- Banner Imagen & Texto Card -->
+      <div class="element-banner banner-gradient-red" (click)="addElement('banner')">
+        <div class="element-icon"><i class="fas fa-image text-danger"></i></div>
+        <div class="element-info">
+          <span class="element-name">Banner Imagen & Texto</span>
+          <span class="element-desc">3 Estilos con posición Izquierda/Derecha</span>
+        </div>
+        <div class="element-action"><i class="fas fa-plus"></i></div>
+      </div>
+
+      <!-- Formulario / Cotizador Card -->
+      <div class="element-banner banner-gradient-red" (click)="addElement('formulario')">
+        <div class="element-icon"><i class="fas fa-file-invoice text-danger"></i></div>
+        <div class="element-info">
+          <span class="element-name">Formulario / Cotizador</span>
+          <span class="element-desc">5 Formatos: Express, Split, Cyber, Wizard y Strip</span>
+        </div>
+        <div class="element-action"><i class="fas fa-plus"></i></div>
+      </div>
+
+      <!-- Comentarios & Testimonios Card -->
+      <div class="element-banner banner-gradient-red" (click)="addElement('testimonios')">
+        <div class="element-icon"><i class="fas fa-comments text-danger"></i></div>
+        <div class="element-info">
+          <span class="element-name">Comentarios & Reseñas</span>
+          <span class="element-desc">5 Estilos: Grid, Slider, Google, Split y Cápsulas</span>
+        </div>
+        <div class="element-action"><i class="fas fa-plus"></i></div>
+      </div>
+
+      <!-- Tabla de Materiales CNC Card -->
+      <div class="element-banner banner-gradient-red" (click)="addElement('materiales')">
+        <div class="element-icon"><i class="fas fa-layer-group text-danger"></i></div>
+        <div class="element-info">
+          <span class="element-name">Tabla de Materiales CNC</span>
+          <span class="element-desc">4 Estilos (Cards en Móvil, Tabla, Pestañas, Matriz)</span>
+        </div>
+        <div class="element-action"><i class="fas fa-plus"></i></div>
+      </div>
+
+      <!-- Footer / Pie de Pagina Card -->
+      <div class="element-banner banner-gradient-dark" (click)="addElement('footer')">
+        <div class="element-icon"><i class="fas fa-shoe-prints text-danger"></i></div>
+        <div class="element-info">
+          <span class="element-name">Pie de Página (Footer)</span>
+          <span class="element-desc">3 Columnas: Dirección, Nosotros e Instagram</span>
+        </div>
+        <div class="element-action"><i class="fas fa-plus"></i></div>
+      </div>
+
+      <!-- Ejemplo Card -->
+      <div class="element-banner banner-gradient-dark" (click)="addElement('ejemplo')">
+        <div class="element-icon"><i class="fas fa-cube"></i></div>
+        <div class="element-info">
+          <span class="element-name">Componente Ejemplo</span>
+          <span class="element-desc">Un componente de prueba con Bootstrap</span>
+        </div>
+        <div class="element-action"><i class="fas fa-plus"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="my-3 border-secondary border-opacity-50">
+
+  <!-- ==================== ACCIONES DE GUARDADO ==================== -->
+  <div class="d-flex flex-column gap-2 mt-3">
+    <button class="btn btn-save w-100" (click)="guardarConfiguracion()">
+      <i class="fas fa-save me-2"></i>Guardar Configuración
+    </button>
+    <button class="btn btn-outline-primary w-100" (click)="descargarConfiguracion()">
+      <i class="fas fa-download me-2"></i>Descargar Configuración
+    </button>
+    <button class="btn btn-outline-warning w-100" (click)="fileInputConfig.click()">
+      <i class="fas fa-upload me-2"></i>Cargar Configuración
+    </button>
+    <input type="file" #fileInputConfig accept=".txt,.json" class="d-none" (change)="cargarConfiguracion($event)">
+    <button class="btn btn-reload w-100" (click)="recargarConfiguracion()">
+      <i class="fas fa-undo me-2"></i>Traer Configuración
+    </button>
+    <button class="btn btn-clear-page w-100" (click)="limpiarPagina()">
+      <i class="fas fa-trash-alt me-2"></i>Limpiar Página
+    </button>
+  </div>
+
+</div>

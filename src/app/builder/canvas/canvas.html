@@ -1,0 +1,158 @@
+<div class="canvas p-3" cdkDropList [cdkDropListData]="elements" (cdkDropListDropped)="drop($event)">
+  
+  <!-- ==================== MENU FIJO GLOBAL (CONTROL DIRECTO EN COMPONENTE) ==================== -->
+  <app-menu [styleType]="getGlobalMenuStyle()" 
+            [sinTransparencia]="getGlobalMenuSinTransparencia()" 
+            [isEditorPreview]="true">
+  </app-menu>
+
+  <div class="row g-2">
+    <div *ngFor="let el of elements; let i = index; trackBy: trackById"
+         [class]="'canvas-block col-12 col-md-' + (el.col || 12)"
+         cdkDrag>
+
+        <!-- HANDLE PARA ARRASTRAR + SELECTOR DE COLUMNAS -->
+        <div class="drag-handle d-flex align-items-center justify-content-between" cdkDragHandle>
+            <span>☰ Arrastrar sección</span>
+            <div class="col-selector d-flex align-items-center gap-1" (click)="$event.stopPropagation()">
+                <span class="col-label">Col:</span>
+                <div class="btn-group btn-group-sm">
+                    <button *ngFor="let c of colOptions"
+                            class="btn btn-col"
+                            [class.active]="(el.col || 12) === c"
+                            (click)="cambiarCol(i, c)">
+                        {{ c }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <app-ejemplo *ngIf="el.type === 'ejemplo'"
+                     [titulo]="el.props.titulo"
+                     [contenido]="el.props.contenido"
+                     (actualizarProps)="actualizarProps(i, $event)"
+                     (eliminarElemento)="eliminarElemento(i)">
+        </app-ejemplo>
+
+        <app-hero *ngIf="el.type === 'hero'"
+                  [tipo]="el.props.tipo || 'industrial-split'"
+                  [badge]="el.props.badge"
+                  [titulo]="el.props.titulo"
+                  [tituloResaltado]="el.props.tituloResaltado"
+                  [descripcion]="el.props.descripcion"
+                  [botonPrimarioTexto]="el.props.botonPrimarioTexto"
+                  [botonPrimarioLink]="el.props.botonPrimarioLink"
+                  [botonSecundarioTexto]="el.props.botonSecundarioTexto"
+                  [botonSecundarioLink]="el.props.botonSecundarioLink"
+                  [imagenUrl]="el.props.imagenUrl"
+                  [metricas]="el.props.metricas"
+                  [isEditor]="true"
+                  (actualizarProps)="actualizarProps(i, $event)"
+                  (eliminarElemento)="eliminarElemento(i)">
+        </app-hero>
+
+        <app-productos *ngIf="el.type === 'productos'"
+                       [tipo]="el.props.tipo || 'grid-cards'"
+                       [badge]="el.props.badge"
+                       [titulo]="el.props.titulo"
+                       [tituloResaltado]="el.props.tituloResaltado"
+                       [descripcion]="el.props.descripcion"
+                       [productos]="el.props.productos"
+                       [isEditor]="true"
+                       (actualizarProps)="actualizarProps(i, $event)"
+                       (eliminarElemento)="eliminarElemento(i)">
+        </app-productos>
+
+        <app-cintillo *ngIf="el.type === 'cintillo'"
+                      [tipo]="el.props.tipo || 'laser-gradient-red'"
+                      [badge]="el.props.badge"
+                      [titulo]="el.props.titulo"
+                      [tituloResaltado]="el.props.tituloResaltado"
+                      [subtitulo]="el.props.subtitulo"
+                      [botonTexto]="el.props.botonTexto"
+                      [botonLink]="el.props.botonLink"
+                      [botonIcono]="el.props.botonIcono"
+                      [isEditor]="true"
+                      (actualizarProps)="actualizarProps(i, $event)"
+                      (eliminarElemento)="eliminarElemento(i)">
+        </app-cintillo>
+
+        <app-banner *ngIf="el.type === 'banner'"
+                    [estilo]="el.props.estilo || 'cyber-laser-card'"
+                    [posicionImagen]="el.props.posicionImagen || 'izquierda'"
+                    [badge]="el.props.badge"
+                    [titulo]="el.props.titulo"
+                    [tituloResaltado]="el.props.tituloResaltado"
+                    [descripcion]="el.props.descripcion"
+                    [puntosClave]="el.props.puntosClave"
+                    [botonTexto]="el.props.botonTexto"
+                    [botonLink]="el.props.botonLink"
+                    [botonSecundarioTexto]="el.props.botonSecundarioTexto"
+                    [botonSecundarioLink]="el.props.botonSecundarioLink"
+                    [imagenUrl]="el.props.imagenUrl"
+                    [isEditor]="true"
+                    (actualizarProps)="actualizarProps(i, $event)"
+                    (eliminarElemento)="eliminarElemento(i)">
+        </app-banner>
+
+        <app-formulario *ngIf="el.type === 'formulario'"
+                        [tipo]="el.props.tipo || 'cotizador-express'"
+                        [badge]="el.props.badge"
+                        [titulo]="el.props.titulo"
+                        [tituloResaltado]="el.props.tituloResaltado"
+                        [descripcion]="el.props.descripcion"
+                        [telefono]="el.props.telefono"
+                        [whatsapp]="el.props.whatsapp"
+                        [email]="el.props.email"
+                        [direccion]="el.props.direccion"
+                        [horario]="el.props.horario"
+                        [botonTexto]="el.props.botonTexto"
+                        [isEditor]="true"
+                        (actualizarProps)="actualizarProps(i, $event)"
+                        (eliminarElemento)="eliminarElemento(i)">
+        </app-formulario>
+        <app-testimonios *ngIf="el.type === 'testimonios'"
+                         [tipo]="el.props.tipo || 'grid-cards'"
+                         [badge]="el.props.badge"
+                         [titulo]="el.props.titulo"
+                         [tituloResaltado]="el.props.tituloResaltado"
+                         [descripcion]="el.props.descripcion"
+                         [calificacionPromedio]="el.props.calificacionPromedio"
+                         [totalReviews]="el.props.totalReviews"
+                         [testimonios]="el.props.testimonios"
+                         [isEditor]="true"
+                         (actualizarProps)="actualizarProps(i, $event)"
+                         (eliminarElemento)="eliminarElemento(i)">
+        </app-testimonios>
+
+        <app-materiales *ngIf="el.type === 'materiales'"
+                        [tipo]="el.props.tipo || 'comparison-table-cards'"
+                        [badge]="el.props.badge"
+                        [titulo]="el.props.titulo"
+                        [tituloResaltado]="el.props.tituloResaltado"
+                        [descripcion]="el.props.descripcion"
+                        [materiales]="el.props.materiales"
+                        [isEditor]="true"
+                        (actualizarProps)="actualizarProps(i, $event)"
+                        (eliminarElemento)="eliminarElemento(i)">
+        </app-materiales>
+
+        <app-footer *ngIf="el.type === 'footer'"
+                    [tipo]="el.props.tipo || 'cyber-laser'"
+                    [direccion]="el.props.direccion"
+                    [telefono]="el.props.telefono"
+                    [whatsapp]="el.props.whatsapp"
+                    [email]="el.props.email"
+                    [horario]="el.props.horario"
+                    [nosotrosTexto]="el.props.nosotrosTexto"
+                    [instagramUsuario]="el.props.instagramUsuario"
+                    [instagramUrl]="el.props.instagramUrl"
+                    [instagramFotos]="el.props.instagramFotos"
+                    [copyright]="el.props.copyright"
+                    [isEditor]="true"
+                    (actualizarProps)="actualizarProps(i, $event)"
+                    (eliminarElemento)="eliminarElemento(i)">
+        </app-footer>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,317 @@
+<div class="productos-master-container" [class.is-editor-mode]="isEditor">
+
+  <!-- ==========================================================================
+       BARRA DE HERRAMIENTAS INLINE (SOLO BUILDER)
+       ========================================================================== -->
+  <div *ngIf="isEditor" class="productos-editor-toolbar p-2 mb-3 rounded d-flex flex-wrap align-items-center justify-content-between gap-2">
+    <div class="d-flex align-items-center gap-2">
+      <div class="productos-toolbar-badge"><i class="fas fa-camera text-danger"></i></div>
+      <div>
+        <span class="productos-toolbar-title">Muestrario Foto & Nombre</span>
+        <span class="badge bg-danger ms-2">{{ tipo | uppercase }}</span>
+      </div>
+    </div>
+
+    <!-- 6 BOTONES DE ESTILO DIRECTOS -->
+    <div class="d-flex flex-wrap align-items-center gap-1">
+      <button *ngFor="let opt of layoutOptions"
+              type="button"
+              class="btn btn-sm btn-layout-pill"
+              [class.active]="tipo === opt.id"
+              (click)="cambiarTipo($any(opt.id))"
+              [title]="opt.desc">
+        <i [class]="opt.icon + ' me-1'" [class.text-danger]="tipo !== opt.id"></i>
+        <span>{{ opt.name }}</span>
+      </button>
+    </div>
+
+    <!-- BOTONES DE ACCION -->
+    <div class="d-flex align-items-center gap-2">
+      <button class="btn btn-sm btn-outline-light" (click)="abrirConfig()">
+        <i class="fas fa-edit me-1 text-danger"></i> Editar Fotos & Nombres ({{ productos.length }})
+      </button>
+      <button class="btn btn-sm btn-outline-danger" (click)="eliminar()" title="Eliminar componente">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       ENCABEZADO DE LA SECCION
+       ========================================================================== -->
+  <div class="productos-header-block text-center max-w-850 mx-auto mb-4 px-3">
+    <div class="productos-badge mb-2 d-inline-flex align-items-center gap-2">
+      <i class="fas fa-fire-alt text-danger"></i>
+      <span>{{ badge }}</span>
+    </div>
+    <h2 class="display-5 fw-black text-white mb-2">
+      {{ titulo }} <span class="text-gradient-red">{{ tituloResaltado }}</span>
+    </h2>
+    <p *ngIf="descripcion" class="text-secondary small max-w-700 mx-auto mb-0">
+      {{ descripcion }}
+    </p>
+  </div>
+
+  <!-- ==========================================================================
+       ESTILO 1: GRID FOTO & NOMBRE (GRID CON FOTO Y PIE DE NOMBRE EN CAJA NEGRA)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'grid-cards'" class="layout-grid-cards px-2 px-md-3">
+    <div class="row g-3 g-lg-4">
+      <div *ngFor="let p of productos" class="col-12 col-sm-6 col-lg-4">
+        <div class="photo-name-card h-100 rounded overflow-hidden d-flex flex-column">
+          
+          <!-- FOTO DEL PRODUCTO -->
+          <div class="photo-container position-relative overflow-hidden">
+            <img [src]="p.imagenUrl" [alt]="p.nombre" class="photo-img" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80'">
+            <span *ngIf="p.categoria" class="photo-chip-badge">{{ p.categoria }}</span>
+          </div>
+
+          <!-- NOMBRE DEL PRODUCTO -->
+          <div class="photo-caption p-3 text-center bg-black d-flex align-items-center justify-content-between">
+            <span class="photo-name-text text-white fw-bold text-truncate">{{ p.nombre }}</span>
+            <a [routerLink]="isEditor ? null : (p.link || '/contacto')" class="btn btn-sm btn-icon-quote" title="Cotizar">
+              <i class="fas fa-calculator text-danger"></i>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       ESTILO 2: PHOTO OVERLAY (FOTO COMPLETA CON NOMBRE FLOTANTE EN GRADIENTE)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'photo-overlay'" class="layout-photo-overlay px-2 px-md-3">
+    <div class="row g-3 g-lg-4">
+      <div *ngFor="let p of productos" class="col-12 col-sm-6 col-lg-4">
+        <div class="photo-overlay-card position-relative rounded overflow-hidden">
+          
+          <img [src]="p.imagenUrl" [alt]="p.nombre" class="overlay-img" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80'">
+          
+          <!-- OVERLAY OSCURO CON NOMBRE -->
+          <div class="overlay-content p-3 d-flex flex-column justify-content-end">
+            <span *ngIf="p.categoria" class="overlay-category micro-text text-danger text-uppercase fw-bold">{{ p.categoria }}</span>
+            <h5 class="overlay-title text-white fw-bold m-0">{{ p.nombre }}</h5>
+            <div class="overlay-red-line mt-2"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       ESTILO 3: POLAROID INDUSTRIAL (MARCO BISELADO OSCURO CON NOMBRE CENTRADO)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'polaroid-industrial'" class="layout-polaroid-industrial px-2 px-md-3">
+    <div class="row g-3 g-lg-4">
+      <div *ngFor="let p of productos" class="col-12 col-sm-6 col-lg-4">
+        <div class="polaroid-card p-2 rounded bg-dark border border-secondary border-opacity-25 h-100 d-flex flex-column">
+          
+          <div class="polaroid-photo-box rounded overflow-hidden mb-2">
+            <img [src]="p.imagenUrl" [alt]="p.nombre" class="polaroid-img" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80'">
+          </div>
+
+          <!-- NOMBRE CENTRADO ESTILO INDUSTRIAL -->
+          <div class="polaroid-footer text-center py-2 px-1 mt-auto">
+            <span class="d-block polaroid-title text-white fw-black">{{ p.nombre }}</span>
+            <span *ngIf="p.categoria" class="d-block text-secondary micro-text text-uppercase">{{ p.categoria }}</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       ESTILO 4: MASONRY GALLERY (GALERIA VISUAL CON REVELADO DE NOMBRE)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'masonry-gallery'" class="layout-masonry-gallery px-2 px-md-3">
+    <div class="row g-3">
+      <div *ngFor="let p of productos; let i = index" [class]="(i % 4 === 0 || i % 4 === 3) ? 'col-12 col-md-7' : 'col-12 col-md-5'">
+        <div class="masonry-item position-relative rounded overflow-hidden">
+          <img [src]="p.imagenUrl" [alt]="p.nombre" class="masonry-img" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80'">
+          
+          <!-- NOMBRE Y CATEGORIA -->
+          <div class="masonry-tag-box p-3 d-flex align-items-center justify-content-between">
+            <div>
+              <span *ngIf="p.categoria" class="d-block text-danger micro-text fw-bold text-uppercase">{{ p.categoria }}</span>
+              <h5 class="text-white fw-bold m-0">{{ p.nombre }}</h5>
+            </div>
+            <a [routerLink]="isEditor ? null : (p.link || '/contacto')" class="btn btn-sm btn-danger px-3 py-1 fw-bold">
+              Cotizar
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       ESTILO 5: CYBER CAROUSEL (SLIDER DE FOTOS CON NOMBRE)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'cyber-carousel'" class="layout-cyber-carousel px-2 px-md-3">
+    <div *ngIf="productos.length > 0" class="carousel-box p-3 rounded bg-dark border border-danger border-opacity-30 position-relative">
+      
+      <!-- FOTO PRINCIPAL -->
+      <div class="carousel-photo-frame rounded overflow-hidden position-relative mb-3">
+        <img [src]="productos[carruselIndex].imagenUrl" [alt]="productos[carruselIndex].nombre" class="carousel-main-img" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80'">
+        
+        <!-- NOMBRE SUPERPUESTO EN EL SLIDER -->
+        <div class="carousel-caption-bar p-3 d-flex align-items-center justify-content-between">
+          <div>
+            <span *ngIf="productos[carruselIndex].categoria" class="badge bg-danger mb-1">{{ productos[carruselIndex].categoria }}</span>
+            <h3 class="text-white fw-black m-0 display-6">{{ productos[carruselIndex].nombre }}</h3>
+          </div>
+          <a [routerLink]="isEditor ? null : (productos[carruselIndex].link || '/contacto')" class="btn btn-plasmex-hero-primary d-none d-sm-inline-flex">
+            <i class="fas fa-calculator me-2"></i> Cotizar este Modelo
+          </a>
+        </div>
+      </div>
+
+      <!-- CONTROLES Y MINIATURAS -->
+      <div class="d-flex align-items-center justify-content-between">
+        <button class="btn btn-sm btn-outline-danger px-3" (click)="anteriorSlide()">
+          <i class="fas fa-chevron-left me-1"></i> Anterior
+        </button>
+
+        <!-- MINIATURAS FOTO + NOMBRE -->
+        <div class="d-none d-md-flex align-items-center gap-2 overflow-auto py-1">
+          <div *ngFor="let p of productos; let i = index" 
+               class="carousel-thumb-item rounded p-1"
+               [class.active]="i === carruselIndex"
+               (click)="irASlide(i)">
+            <img [src]="p.imagenUrl" [alt]="p.nombre" class="carousel-thumb-img rounded" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80'">
+          </div>
+        </div>
+
+        <button class="btn btn-sm btn-danger px-3" (click)="siguienteSlide()">
+          Siguiente <i class="fas fa-chevron-right ms-1"></i>
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       ESTILO 6: CATALOG FILTER (FILTROS DE CATEGORIA + FOTOS CON NOMBRE)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'catalog-filter'" class="layout-catalog-filter px-2 px-md-3">
+    
+    <!-- BARRA DE FILTROS SUPERIOR -->
+    <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
+      <button *ngFor="let cat of categorias"
+              type="button"
+              class="btn btn-sm btn-filter-pill"
+              [class.active]="categoriaSeleccionada === cat"
+              (click)="filtrarCategoria(cat)">
+        {{ cat }}
+      </button>
+    </div>
+
+    <!-- GRID DE FOTOS CON NOMBRE -->
+    <div class="row g-3 g-lg-4">
+      <div *ngFor="let p of productosFiltrados" class="col-12 col-sm-6 col-lg-4">
+        <div class="photo-name-card h-100 rounded overflow-hidden d-flex flex-column">
+          <div class="photo-container position-relative overflow-hidden">
+            <img [src]="p.imagenUrl" [alt]="p.nombre" class="photo-img" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80'">
+          </div>
+          <div class="photo-caption p-3 text-center bg-black">
+            <span class="photo-name-text text-white fw-bold d-block text-truncate">{{ p.nombre }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ==========================================================================
+       MODAL DE EDICION DE FOTOS Y NOMBRES (BUILDER)
+       ========================================================================== -->
+  <div *ngIf="mostrarConfigModal" class="modal d-block modal-editor-backdrop" (click)="cerrarConfig()">
+    <div class="modal-dialog modal-dialog-centered modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-content bg-dark text-light border border-danger border-opacity-50 shadow-lg">
+        
+        <div class="modal-header border-bottom border-secondary border-opacity-25">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-camera text-danger fs-5"></i>
+            <h5 class="modal-title m-0 fw-bold">Editar Fotos y Nombres</h5>
+          </div>
+          <button type="button" class="btn-close btn-close-white" (click)="cerrarConfig()"></button>
+        </div>
+
+        <div class="modal-body p-4" style="max-height: 75vh; overflow-y: auto;">
+          
+          <!-- TITULOS DE LA SECCION -->
+          <div class="row g-3 mb-4 pb-3 border-bottom border-secondary border-opacity-25">
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Estilo de Muestrario (6 Opciones)</label>
+              <select class="form-select bg-black text-light border-secondary" [(ngModel)]="tipo">
+                <option *ngFor="let opt of layoutOptions" [value]="opt.id">{{ opt.name }}</option>
+              </select>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Badge Superior</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="badge">
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Título (Parte 1)</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="titulo">
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Título Resaltado (en Rojo)</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="tituloResaltado">
+            </div>
+          </div>
+
+          <!-- LISTA DE FOTO + NOMBRE -->
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <h6 class="fw-bold text-white mb-0"><i class="fas fa-images me-2 text-danger"></i>Fotos y Nombres ({{ productos.length }})</h6>
+            <button class="btn btn-sm btn-outline-success" (click)="agregarProducto()">
+              <i class="fas fa-plus me-1"></i> Agregar Foto & Nombre
+            </button>
+          </div>
+
+          <div class="d-flex flex-column gap-3">
+            <div *ngFor="let prod of productos; let idx = index" class="p-3 rounded bg-black border border-secondary border-opacity-25 d-flex align-items-center gap-3">
+              
+              <!-- PREVIEW DE LA FOTO -->
+              <img [src]="prod.imagenUrl" [alt]="prod.nombre" class="editor-thumb-preview rounded" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80'">
+
+              <!-- CAMPOS: NOMBRE, CATEGORIA, URL IMAGEN -->
+              <div class="flex-grow-1 row g-2">
+                <div class="col-12 col-md-4">
+                  <label class="form-label micro-text text-secondary mb-1">Nombre del Producto</label>
+                  <input class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="prod.nombre" placeholder="Ej. Celosía Modelo Árabe">
+                </div>
+                <div class="col-12 col-md-3">
+                  <label class="form-label micro-text text-secondary mb-1">Categoría</label>
+                  <input class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="prod.categoria" placeholder="Ej. Celosías">
+                </div>
+                <div class="col-12 col-md-5">
+                  <label class="form-label micro-text text-secondary mb-1">URL de la Foto</label>
+                  <input class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="prod.imagenUrl" placeholder="https://...">
+                </div>
+              </div>
+
+              <!-- BOTON ELIMINAR -->
+              <button class="btn btn-sm btn-outline-danger flex-shrink-0" (click)="eliminarProducto(idx)">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer border-top border-secondary border-opacity-25">
+          <button type="button" class="btn btn-secondary" (click)="cerrarConfig()">Cancelar</button>
+          <button type="button" class="btn btn-danger px-4 fw-bold" (click)="guardarConfig()">Guardar Cambios</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

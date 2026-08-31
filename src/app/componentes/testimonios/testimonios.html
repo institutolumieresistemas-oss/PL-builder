@@ -1,0 +1,438 @@
+<div class="testimonios-master-container" [class.is-editor-mode]="isEditor">
+
+  <!-- ==========================================================================
+       BARRA DE HERRAMIENTAS INLINE (BUILDER)
+       ========================================================================== -->
+  <div *ngIf="isEditor" class="testimonios-editor-toolbar p-2 mb-3 rounded d-flex flex-wrap align-items-center justify-content-between gap-2">
+    <div class="d-flex align-items-center gap-2">
+      <div class="testimonios-toolbar-badge"><i class="fas fa-comments text-danger"></i></div>
+      <div>
+        <span class="testimonios-toolbar-title">Comentarios & Testimonios</span>
+        <span class="badge bg-danger ms-2">{{ tipo | uppercase }}</span>
+      </div>
+    </div>
+
+    <!-- 5 SELECTORES DE TIPO DIRECTOS -->
+    <div class="d-flex flex-wrap align-items-center gap-1">
+      <button *ngFor="let t of testimoniosLayoutList"
+              type="button"
+              class="btn btn-sm btn-testimonio-pill"
+              [class.active]="tipo === t.id"
+              (click)="cambiarTipo($any(t.id))"
+              [title]="t.desc">
+        <i [class]="t.icon + ' me-1'" [class.text-danger]="tipo !== t.id"></i>
+        <span>{{ t.name }}</span>
+      </button>
+    </div>
+
+    <!-- ACCIONES -->
+    <div class="d-flex align-items-center gap-2">
+      <button class="btn btn-sm btn-outline-light" (click)="abrirConfig()">
+        <i class="fas fa-edit me-1 text-danger"></i> Editar Reseñas
+      </button>
+      <button class="btn btn-sm btn-outline-danger" (click)="eliminar()" title="Eliminar componente">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       OPCION 1: GRID DE TARJETAS LÁSER CON ESTRELLAS
+       ========================================================================== -->
+  <section *ngIf="tipo === 'grid-cards'" class="testimonios-section p-4 p-md-5 rounded position-relative">
+    <div class="container-fluid">
+      
+      <!-- ENCABEZADO -->
+      <div class="text-center max-w-700 mx-auto mb-5">
+        <div *ngIf="badge" class="testimonio-badge-red mb-2 d-inline-flex align-items-center gap-2">
+          <i class="fas fa-star text-danger"></i>
+          <span>{{ badge }}</span>
+        </div>
+        <h2 class="display-6 fw-black text-white mb-2">
+          {{ titulo }} <span class="text-gradient-red">{{ tituloResaltado }}</span>
+        </h2>
+        <p class="text-secondary small mb-0">{{ descripcion }}</p>
+      </div>
+
+      <!-- GRID DE TARJETAS -->
+      <div class="row g-4 justify-content-center">
+        <div *ngFor="let t of testimonios" class="col-12 col-md-6 col-lg-4">
+          <div class="testimonio-card-grid p-4 rounded h-100 d-flex flex-column justify-content-between position-relative overflow-hidden">
+            <div class="card-laser-glow"></div>
+            
+            <div>
+              <!-- ESTRELLAS -->
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <div class="stars-rating d-flex gap-1">
+                  <i *ngFor="let s of [1,2,3,4,5]" class="fas fa-star text-danger fs-6"></i>
+                </div>
+                <span *ngIf="t.proyecto" class="badge bg-dark border border-secondary border-opacity-25 text-secondary micro-text">{{ t.proyecto }}</span>
+              </div>
+
+              <!-- COMENTARIO -->
+              <p class="text-light small mb-4 fst-italic line-height-relaxed">
+                &ldquo;{{ t.comentario }}&rdquo;
+              </p>
+            </div>
+
+            <!-- CLIENTE -->
+            <div class="d-flex align-items-center gap-3 pt-3 border-top border-secondary border-opacity-25">
+              <img [src]="t.avatarUrl" [alt]="t.nombre" class="rounded-circle client-avatar" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80'">
+              <div>
+                <span class="d-block text-white fw-bold small">{{ t.nombre }}</span>
+                <span class="d-block text-secondary micro-text">{{ t.cargo }}</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       OPCION 2: CAROUSEL SLIDER (TESTIMONIO DESTACADO INTERACTIVO)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'carousel-slider'" class="testimonios-section p-4 p-md-5 rounded position-relative">
+    <div class="container-fluid max-w-850 mx-auto">
+      
+      <div class="text-center mb-4">
+        <div *ngIf="badge" class="testimonio-badge-red mb-2 d-inline-flex align-items-center gap-2">
+          <span>{{ badge }}</span>
+        </div>
+        <h2 class="display-6 fw-black text-white mb-2">
+          {{ titulo }} <span class="text-gradient-red">{{ tituloResaltado }}</span>
+        </h2>
+      </div>
+
+      <!-- CAJA PRINCIPAL DEL SLIDER -->
+      <div *ngIf="testimonios && testimonios.length > 0" class="carousel-testimonio-card p-4 p-md-5 rounded position-relative text-center">
+        <div class="giant-quote-mark">&ldquo;</div>
+        
+        <!-- ESTRELLAS -->
+        <div class="d-flex justify-content-center gap-1 mb-3">
+          <i *ngFor="let s of [1,2,3,4,5]" class="fas fa-star text-danger fs-5"></i>
+        </div>
+
+        <!-- TEXTO -->
+        <p class="text-white fs-5 fw-medium mb-4 position-relative z-1 line-height-relaxed">
+          {{ testimonios[carruselIndex].comentario }}
+        </p>
+
+        <!-- CLIENTE INFO -->
+        <div class="d-flex flex-column align-items-center mb-4 position-relative z-1">
+          <img [src]="testimonios[carruselIndex].avatarUrl" [alt]="testimonios[carruselIndex].nombre" class="rounded-circle client-avatar-lg mb-2 shadow" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'">
+          <h5 class="text-white fw-bold m-0">{{ testimonios[carruselIndex].nombre }}</h5>
+          <span class="text-danger small">{{ testimonios[carruselIndex].cargo }}</span>
+          <span *ngIf="testimonios[carruselIndex].proyecto" class="badge bg-black border border-secondary border-opacity-50 text-secondary micro-text mt-1">
+            {{ testimonios[carruselIndex].proyecto }}
+          </span>
+        </div>
+
+        <!-- CONTROLES PREV / NEXT -->
+        <div class="d-flex align-items-center justify-content-center gap-3">
+          <button type="button" class="btn btn-slider-nav" (click)="prevCarrusel()" title="Anterior">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          
+          <div class="d-flex gap-2">
+            <span *ngFor="let t of testimonios; let idx = index"
+                  class="slider-dot"
+                  [class.active]="idx === carruselIndex"
+                  (click)="carruselIndex = idx"></span>
+          </div>
+
+          <button type="button" class="btn btn-slider-nav" (click)="nextCarrusel()" title="Siguiente">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       OPCION 3: GOOGLE REVIEWS WALL (MURO DE RESEÑAS CON INSIGNIA OFICIAL)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'google-reviews-wall'" class="testimonios-section p-4 p-md-5 rounded position-relative">
+    <div class="container-fluid">
+      
+      <!-- GOOGLE REVIEW HEADER BANNER -->
+      <div class="google-header-box p-3 p-md-4 rounded mb-5 max-w-800 mx-auto d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 text-center text-md-start">
+        <div class="d-flex align-items-center gap-3">
+          <div class="google-logo-bubble">
+            <i class="fab fa-google text-danger fs-3"></i>
+          </div>
+          <div>
+            <div class="d-flex align-items-center gap-2 justify-content-center justify-content-md-start">
+              <span class="text-white fw-black fs-4">{{ calificacionPromedio }}</span>
+              <div class="d-flex gap-1 text-danger">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+              </div>
+            </div>
+            <span class="text-secondary small">{{ totalReviews }} en Google Reviews</span>
+          </div>
+        </div>
+
+        <a href="https://maps.google.com" target="_blank" class="btn btn-sm btn-outline-light px-3">
+          <i class="fas fa-external-link-alt me-1 text-danger"></i> Ver en Google Maps
+        </a>
+      </div>
+
+      <!-- MURO DE RESEÑAS -->
+      <div class="row g-3">
+        <div *ngFor="let t of testimonios" class="col-12 col-md-6 col-lg-4">
+          <div class="google-review-card p-4 rounded bg-black bg-opacity-80 border border-secondary border-opacity-25 h-100 d-flex flex-column justify-content-between text-start">
+            <div>
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <div class="d-flex align-items-center gap-2">
+                  <img [src]="t.avatarUrl" [alt]="t.nombre" class="rounded-circle client-avatar-sm" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&q=80'">
+                  <div>
+                    <span class="d-block text-white fw-bold small">{{ t.nombre }}</span>
+                    <span class="d-block text-secondary micro-text">{{ t.fecha || 'Cliente Verificado' }}</span>
+                  </div>
+                </div>
+                <i class="fab fa-google text-danger micro-text"></i>
+              </div>
+
+              <div class="d-flex gap-1 mb-2">
+                <i *ngFor="let s of [1,2,3,4,5]" class="fas fa-star text-danger micro-text"></i>
+              </div>
+
+              <p class="text-light small mb-0">{{ t.comentario }}</p>
+            </div>
+
+            <div *ngIf="t.proyecto" class="pt-3 mt-3 border-top border-secondary border-opacity-25">
+              <span class="text-secondary micro-text"><i class="fas fa-check-circle text-danger me-1"></i>Proyecto: {{ t.proyecto }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       OPCION 4: SPLIT STATS QUOTE (DIVIDIDO CON MÉTRICAS DE CALIDAD)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'split-stats-quote'" class="testimonios-section p-4 p-md-5 rounded position-relative">
+    <div class="container-fluid">
+      <div class="row g-4 g-lg-5 align-items-center">
+        
+        <!-- COLUMNA IZQUIERDA: METRICAS -->
+        <div class="col-12 col-lg-5 text-start">
+          <div *ngIf="badge" class="testimonio-badge-red mb-3 d-inline-flex align-items-center gap-2">
+            <span>{{ badge }}</span>
+          </div>
+          <h2 class="display-6 fw-black text-white mb-3">
+            {{ titulo }} <span class="text-gradient-red">{{ tituloResaltado }}</span>
+          </h2>
+          <p class="text-secondary small mb-4">{{ descripcion }}</p>
+
+          <div class="row g-3">
+            <div class="col-6">
+              <div class="metric-box p-3 rounded text-center">
+                <span class="d-block text-white fw-black fs-2">99.4%</span>
+                <span class="text-secondary micro-text">Entregas a Tiempo</span>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="metric-box p-3 rounded text-center">
+                <span class="d-block text-danger fw-black fs-2">+350</span>
+                <span class="text-secondary micro-text">Proyectos Fabricados</span>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="metric-box p-3 rounded d-flex align-items-center justify-content-around">
+                <div>
+                  <span class="text-white fw-bold fs-5">4.9 / 5.0</span>
+                  <span class="d-block text-secondary micro-text">Satisfacción Global</span>
+                </div>
+                <div class="d-flex gap-1 text-danger fs-6">
+                  <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COLUMNA DERECHA: TESTIMONIO DESTACADO -->
+        <div class="col-12 col-lg-7 text-start">
+          <div *ngIf="testimonios && testimonios.length > 0" class="split-quote-card p-4 p-md-5 rounded position-relative">
+            <i class="fas fa-quote-right text-danger fs-1 opacity-25 position-absolute top-0 end-0 m-4"></i>
+            
+            <div class="d-flex gap-1 mb-3">
+              <i *ngFor="let s of [1,2,3,4,5]" class="fas fa-star text-danger fs-6"></i>
+            </div>
+
+            <h4 class="text-white fw-bold mb-3 fs-5 line-height-relaxed">
+              &ldquo;{{ testimonios[0].comentario }}&rdquo;
+            </h4>
+
+            <div class="d-flex align-items-center gap-3 pt-3 border-top border-secondary border-opacity-25 mt-4">
+              <img [src]="testimonios[0].avatarUrl" [alt]="testimonios[0].nombre" class="rounded-circle client-avatar" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80'">
+              <div>
+                <h6 class="text-white fw-bold m-0">{{ testimonios[0].nombre }}</h6>
+                <span class="text-secondary small">{{ testimonios[0].cargo }}</span>
+                <span *ngIf="testimonios[0].proyecto" class="d-block text-danger micro-text mt-1">{{ testimonios[0].proyecto }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       OPCION 5: MINIMAL QUOTES MARQUEE (CÁPSULAS HORIZONTALES)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'minimal-quotes-marquee'" class="testimonios-section p-4 p-md-5 rounded position-relative">
+    <div class="container-fluid">
+      
+      <div class="text-center max-w-700 mx-auto mb-4">
+        <h3 class="text-white fw-bold m-0 fs-4">
+          {{ titulo }} <span class="text-gradient-red">{{ tituloResaltado }}</span>
+        </h3>
+        <p class="text-secondary micro-text mt-1">{{ descripcion }}</p>
+      </div>
+
+      <div class="d-flex flex-column gap-3 max-w-850 mx-auto text-start">
+        <div *ngFor="let t of testimonios" class="minimal-capsule-pill p-3 rounded-pill d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+          
+          <div class="d-flex align-items-center gap-3 ps-md-2">
+            <img [src]="t.avatarUrl" [alt]="t.nombre" class="rounded-circle client-avatar-sm" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&q=80'">
+            <div>
+              <span class="text-white fw-bold small d-block">{{ t.nombre }} <span class="text-secondary micro-text fw-normal">&bull; {{ t.cargo }}</span></span>
+              <span class="text-light small text-opacity-90 fst-italic">&ldquo;{{ t.comentario }}&rdquo;</span>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center gap-2 pe-md-3 flex-shrink-0">
+            <div class="d-flex gap-1 text-danger micro-text">
+              <i *ngFor="let s of [1,2,3,4,5]" class="fas fa-star"></i>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       MODAL DE EDICIÓN DE TESTIMONIOS (BUILDER)
+       ========================================================================== -->
+  <div *ngIf="mostrarConfigModal" class="modal d-block modal-editor-backdrop" (click)="cerrarConfig()">
+    <div class="modal-dialog modal-dialog-centered modal-xl" (click)="$event.stopPropagation()">
+      <div class="modal-content bg-dark text-light border border-danger border-opacity-50 shadow-lg">
+        
+        <div class="modal-header border-bottom border-secondary border-opacity-25">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-comments text-danger fs-5"></i>
+            <h5 class="modal-title m-0 fw-bold">Configurar Testimonios & Comentarios</h5>
+          </div>
+          <button type="button" class="btn-close btn-close-white" (click)="cerrarConfig()"></button>
+        </div>
+
+        <div class="modal-body p-4" style="max-height: 75vh; overflow-y: auto;">
+          <div class="row g-3">
+            
+            <!-- TIPO DE LAYOUT -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Diseño de Testimonios (5 Opciones)</label>
+              <select class="form-select bg-black text-light border-secondary" [(ngModel)]="tipo">
+                <option *ngFor="let t of testimoniosLayoutList" [value]="t.id">{{ t.name }}</option>
+              </select>
+            </div>
+
+            <!-- BADGE -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Badge / Etiqueta</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="badge">
+            </div>
+
+            <!-- TITULO PRINCIPAL -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Título (Parte 1)</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="titulo">
+            </div>
+
+            <!-- TITULO RESALTADO -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Título Resaltado (en Rojo)</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="tituloResaltado">
+            </div>
+
+            <!-- DESCRIPCION -->
+            <div class="col-12">
+              <label class="form-label fw-bold small text-light">Descripción</label>
+              <textarea rows="2" class="form-control bg-black text-light border-secondary" [(ngModel)]="descripcion"></textarea>
+            </div>
+
+            <!-- LISTA DE TESTIMONIOS (CRUD) -->
+            <div class="col-12 pt-3">
+              <div class="d-flex align-items-center justify-content-between border-bottom border-dark pb-2 mb-3">
+                <h6 class="fw-bold text-danger m-0">Lista de Reseñas de Clientes ({{ testimonios.length }})</h6>
+                <button type="button" class="btn btn-sm btn-outline-success" (click)="agregarTestimonio()">
+                  <i class="fas fa-plus me-1"></i> Agregar Reseña
+                </button>
+              </div>
+
+              <div class="d-flex flex-column gap-3">
+                <div *ngFor="let item of testimonios; let i = index" class="p-3 rounded bg-black bg-opacity-70 border border-secondary border-opacity-25">
+                  <div class="row g-2 align-items-center">
+                    
+                    <div class="col-12 col-md-3">
+                      <label class="micro-text text-secondary mb-1">Nombre del Cliente</label>
+                      <input class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="item.nombre">
+                    </div>
+
+                    <div class="col-12 col-md-3">
+                      <label class="micro-text text-secondary mb-1">Empresa / Cargo / Ciudad</label>
+                      <input class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="item.cargo">
+                    </div>
+
+                    <div class="col-12 col-md-3">
+                      <label class="micro-text text-secondary mb-1">Proyecto Realizado</label>
+                      <input class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="item.proyecto">
+                    </div>
+
+                    <div class="col-12 col-md-2">
+                      <label class="micro-text text-secondary mb-1">Avatar / Foto URL</label>
+                      <input class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="item.avatarUrl">
+                    </div>
+
+                    <div class="col-12 col-md-1 text-end">
+                      <label class="micro-text text-secondary mb-1 d-block">&nbsp;</label>
+                      <button class="btn btn-sm btn-outline-danger" (click)="eliminarTestimonio(i)" title="Eliminar">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </div>
+
+                    <div class="col-12">
+                      <label class="micro-text text-secondary mb-1">Opinión / Comentario</label>
+                      <textarea rows="2" class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="item.comentario"></textarea>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+        <div class="modal-footer border-top border-secondary border-opacity-25">
+          <button type="button" class="btn btn-secondary" (click)="cerrarConfig()">Cancelar</button>
+          <button type="button" class="btn btn-danger px-4 fw-bold" (click)="guardarConfig()">Guardar Cambios</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

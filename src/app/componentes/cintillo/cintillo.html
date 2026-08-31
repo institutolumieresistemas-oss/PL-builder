@@ -1,0 +1,248 @@
+<div class="cintillo-master-container" [class.is-editor-mode]="isEditor">
+
+  <!-- ==========================================================================
+       BARRA DE HERRAMIENTAS INLINE (BUILDER)
+       ========================================================================== -->
+  <div *ngIf="isEditor" class="cintillo-editor-toolbar p-2 mb-3 rounded d-flex flex-wrap align-items-center justify-content-between gap-2">
+    <div class="d-flex align-items-center gap-2">
+      <div class="cintillo-toolbar-badge"><i class="fas fa-stream text-danger"></i></div>
+      <div>
+        <span class="cintillo-toolbar-title">Cintillo Intermedio</span>
+        <span class="badge bg-danger ms-2">{{ tipo | uppercase }}</span>
+      </div>
+    </div>
+
+    <!-- 4 SELECTORES DE TIPO DIRECTOS -->
+    <div class="d-flex flex-wrap align-items-center gap-1">
+      <button *ngFor="let c of cintilloTypesList"
+              type="button"
+              class="btn btn-sm btn-cintillo-pill"
+              [class.active]="tipo === c.id"
+              (click)="cambiarTipo($any(c.id))"
+              [title]="c.desc">
+        <i [class]="c.icon + ' me-1'" [class.text-danger]="tipo !== c.id"></i>
+        <span>{{ c.name }}</span>
+      </button>
+    </div>
+
+    <!-- BOTONES DE ACCION -->
+    <div class="d-flex align-items-center gap-2">
+      <button class="btn btn-sm btn-outline-light" (click)="abrirConfig()">
+        <i class="fas fa-edit me-1 text-danger"></i> Editar Texto & Botón
+      </button>
+      <button class="btn btn-sm btn-outline-danger" (click)="eliminar()" title="Eliminar componente">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       OPCION 1: ROJO LASER NEON (GRADIENTE ROJO POTENTE CON BOTON OSCURO GLOSS)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'laser-gradient-red'" class="cintillo-strip cintillo-laser-red p-4 p-md-5 rounded position-relative overflow-hidden">
+    <div class="laser-backdrop-pattern"></div>
+    <div class="container-fluid position-relative z-1">
+      <div class="row align-items-center justify-content-between g-4">
+        
+        <div class="col-12 col-lg-8 text-start">
+          <div *ngIf="badge" class="cintillo-badge-light mb-2 d-inline-flex align-items-center gap-2">
+            <i class="fas fa-bolt"></i>
+            <span>{{ badge }}</span>
+          </div>
+          <h3 class="cintillo-title text-white fw-black m-0 display-6">
+            {{ titulo }} <span class="text-white-glow">{{ tituloResaltado }}</span>
+          </h3>
+          <p *ngIf="subtitulo" class="text-light text-opacity-90 small mb-0 mt-2">
+            {{ subtitulo }}
+          </p>
+        </div>
+
+        <div class="col-12 col-lg-4 text-lg-end">
+          <a [href]="botonLink" target="_blank" class="btn btn-cintillo-dark-gloss btn-lg shadow-lg">
+            <i *ngIf="botonIcono" [class]="botonIcono + ' me-2'"></i>
+            <span>{{ botonTexto }}</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       OPCION 2: DARK CYBER STRIP (FONDO CARBON CON LINEAS LASER ROJAS)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'dark-cyber-strip'" class="cintillo-strip cintillo-dark-cyber p-4 p-md-5 rounded position-relative overflow-hidden">
+    <div class="top-laser-beam"></div>
+    <div class="bottom-laser-beam"></div>
+    
+    <div class="container-fluid position-relative z-1">
+      <div class="row align-items-center justify-content-between g-4">
+        
+        <div class="col-12 col-lg-8 text-start">
+          <div *ngIf="badge" class="cintillo-badge-red mb-2 d-inline-flex align-items-center gap-2">
+            <span class="pulsing-red-dot"></span>
+            <span>{{ badge }}</span>
+          </div>
+          <h3 class="cintillo-title text-white fw-black m-0 display-6">
+            {{ titulo }} <span class="text-gradient-red">{{ tituloResaltado }}</span>
+          </h3>
+          <p *ngIf="subtitulo" class="text-secondary small mb-0 mt-2">
+            {{ subtitulo }}
+          </p>
+        </div>
+
+        <div class="col-12 col-lg-4 text-lg-end">
+          <a [href]="botonLink" target="_blank" class="btn btn-plasmex-hero-primary btn-lg shadow-lg">
+            <i *ngIf="botonIcono" [class]="botonIcono + ' me-2'"></i>
+            <span>{{ botonTexto }}</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       OPCION 3: MINIMAL CAPSULE (CAPSULA FLOTANTE / GLASSMORPHISM PILL)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'minimal-capsule'" class="cintillo-strip cintillo-capsule-wrapper py-3 px-2">
+    <div class="cintillo-capsule-box p-3 p-md-4 rounded-pill d-flex flex-column flex-lg-row align-items-center justify-content-between gap-3 text-center text-lg-start">
+      
+      <div class="d-flex align-items-center gap-3 ps-lg-3">
+        <div class="capsule-icon-circle d-none d-sm-flex">
+          <i class="fas fa-fire-alt text-danger"></i>
+        </div>
+        <div>
+          <h4 class="text-white fw-bold m-0 fs-5">
+            {{ titulo }} <span class="text-danger">{{ tituloResaltado }}</span>
+          </h4>
+          <span *ngIf="subtitulo" class="text-secondary micro-text d-block">{{ subtitulo }}</span>
+        </div>
+      </div>
+
+      <div class="pe-lg-3 flex-shrink-0">
+        <a [href]="botonLink" target="_blank" class="btn btn-plasmex-hero-primary rounded-pill px-4">
+          <i *ngIf="botonIcono" [class]="botonIcono + ' me-2'"></i>
+          <span>{{ botonTexto }}</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       OPCION 4: SPLIT ACCENT BOX (INSIGNIA LATERAL EXPRESS + BOTON DESTACADO)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'split-accent-box'" class="cintillo-strip cintillo-split-box rounded overflow-hidden">
+    <div class="row g-0 align-items-stretch">
+      
+      <!-- INSIGNIA LATERAL DE CALIDAD -->
+      <div class="col-12 col-md-3 col-lg-2 split-accent-badge p-4 d-flex flex-column align-items-center justify-content-center text-center">
+        <i class="fas fa-shipping-fast text-white fs-1 mb-2"></i>
+        <span class="text-white fw-black small text-uppercase">Entrega Rápida</span>
+        <span class="text-white text-opacity-75 micro-text">Garantizada</span>
+      </div>
+
+      <!-- TEXTO CENTRAL -->
+      <div class="col-12 col-md-6 col-lg-7 p-4 bg-dark d-flex flex-column justify-content-center text-start">
+        <div *ngIf="badge" class="cintillo-badge-red mb-1 d-inline-flex align-items-center gap-1">
+          <span>{{ badge }}</span>
+        </div>
+        <h4 class="text-white fw-bold m-0 mb-1">
+          {{ titulo }} <span class="text-gradient-red">{{ tituloResaltado }}</span>
+        </h4>
+        <p *ngIf="subtitulo" class="text-secondary small mb-0">{{ subtitulo }}</p>
+      </div>
+
+      <!-- BOTON DERECHO -->
+      <div class="col-12 col-md-3 col-lg-3 p-4 bg-black border-start border-secondary border-opacity-25 d-flex align-items-center justify-content-center">
+        <a [href]="botonLink" target="_blank" class="btn btn-plasmex-hero-primary w-100 py-3 text-center">
+          <i *ngIf="botonIcono" [class]="botonIcono + ' me-2'"></i>
+          <span>{{ botonTexto }}</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       MODAL DE EDICION DE CINTILLO (BUILDER)
+       ========================================================================== -->
+  <div *ngIf="mostrarConfigModal" class="modal d-block modal-editor-backdrop" (click)="cerrarConfig()">
+    <div class="modal-dialog modal-dialog-centered modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-content bg-dark text-light border border-danger border-opacity-50 shadow-lg">
+        
+        <div class="modal-header border-bottom border-secondary border-opacity-25">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-stream text-danger fs-5"></i>
+            <h5 class="modal-title m-0 fw-bold">Configurar Cintillo Intermedio</h5>
+          </div>
+          <button type="button" class="btn-close btn-close-white" (click)="cerrarConfig()"></button>
+        </div>
+
+        <div class="modal-body p-4">
+          <div class="row g-3">
+            
+            <!-- TIPO DE CINTILLO -->
+            <div class="col-12">
+              <label class="form-label fw-bold small text-light">Estilo del Cintillo (4 Opciones)</label>
+              <select class="form-select bg-black text-light border-secondary" [(ngModel)]="tipo">
+                <option *ngFor="let c of cintilloTypesList" [value]="c.id">{{ c.name }} - {{ c.desc }}</option>
+              </select>
+            </div>
+
+            <!-- BADGE SUPERIOR -->
+            <div class="col-12">
+              <label class="form-label fw-bold small text-light">Badge / Etiqueta Superior</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="badge">
+            </div>
+
+            <!-- TITULO PRINCIPAL -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Título (Parte 1)</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="titulo">
+            </div>
+
+            <!-- TITULO RESALTADO -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Título Resaltado</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="tituloResaltado">
+            </div>
+
+            <!-- SUBTITULO -->
+            <div class="col-12">
+              <label class="form-label fw-bold small text-light">Subtítulo / Mensaje descriptivo</label>
+              <textarea rows="2" class="form-control bg-black text-light border-secondary" [(ngModel)]="subtitulo"></textarea>
+            </div>
+
+            <!-- TEXTO BOTON -->
+            <div class="col-12 col-md-4">
+              <label class="form-label fw-bold small text-light">Texto del Botón</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="botonTexto">
+            </div>
+
+            <!-- ICONO BOTON -->
+            <div class="col-12 col-md-4">
+              <label class="form-label fw-bold small text-light">Icono FontAwesome</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="botonIcono" placeholder="fab fa-whatsapp, fas fa-bolt...">
+            </div>
+
+            <!-- ENLACE BOTON -->
+            <div class="col-12 col-md-4">
+              <label class="form-label fw-bold small text-light">Enlace / URL</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="botonLink" placeholder="https://wa.me/... o /contacto">
+            </div>
+
+          </div>
+        </div>
+
+        <div class="modal-footer border-top border-secondary border-opacity-25">
+          <button type="button" class="btn btn-secondary" (click)="cerrarConfig()">Cancelar</button>
+          <button type="button" class="btn btn-danger px-4 fw-bold" (click)="guardarConfig()">Guardar Cambios</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

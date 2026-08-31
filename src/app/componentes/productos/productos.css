@@ -1,0 +1,348 @@
+/* ==========================================================================
+   PLASMEX CNC - PRODUCT SHOWCASE (FOTO & NOMBRE DESIGN SYSTEM)
+   ========================================================================== */
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.productos-master-container {
+  width: 100%;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: #f4f4f5;
+  background-color: #09090b;
+  border-radius: 12px;
+  padding: 1.5rem 0.5rem;
+}
+
+.productos-master-container.is-editor-mode {
+  border: 1px dashed rgba(220, 38, 38, 0.35);
+  background: rgba(15, 23, 42, 0.4);
+}
+
+.fw-black { font-weight: 900; }
+.max-w-850 { max-width: 850px; }
+.max-w-700 { max-width: 700px; }
+.micro-text { font-size: 0.72rem; }
+
+/* ==================== EDITOR TOOLBAR ==================== */
+.productos-editor-toolbar {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.productos-toolbar-badge {
+  width: 26px;
+  height: 26px;
+  background: rgba(220, 38, 38, 0.15);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+}
+
+.productos-toolbar-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.btn-layout-pill {
+  background-color: #1e293b;
+  color: #cbd5e1;
+  border: 1px solid #334155;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  transition: all 0.2s ease;
+}
+
+.btn-layout-pill:hover {
+  background-color: #334155;
+  color: #ffffff;
+  border-color: rgba(220, 38, 38, 0.4);
+}
+
+.btn-layout-pill.active {
+  background: #dc2626;
+  color: #ffffff;
+  border-color: #ef4444;
+  box-shadow: 0 2px 10px rgba(220, 38, 38, 0.5);
+}
+
+/* ==================== HEADER ==================== */
+.productos-badge {
+  background: rgba(220, 38, 38, 0.12);
+  border: 1px solid rgba(220, 38, 38, 0.4);
+  color: #fca5a5;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 0.35rem 0.85rem;
+  border-radius: 50rem;
+  text-transform: uppercase;
+}
+
+.text-gradient-red {
+  background: linear-gradient(135deg, #ff3333 0%, #dc2626 50%, #991b1b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+/* ==================== 1. GRID FOTO & NOMBRE ==================== */
+.photo-name-card {
+  background: #111114;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 2px solid #dc2626;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.photo-name-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(220, 38, 38, 0.6);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(220, 38, 38, 0.2);
+}
+
+.photo-container {
+  height: 240px;
+  background: #09090b;
+}
+
+.photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.photo-name-card:hover .photo-img {
+  transform: scale(1.08);
+}
+
+.photo-chip-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(220, 38, 38, 0.4);
+  color: #ff6666;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.photo-caption {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.photo-name-text {
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
+}
+
+.btn-icon-quote {
+  width: 32px;
+  height: 32px;
+  background: rgba(220, 38, 38, 0.15);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-icon-quote:hover {
+  background: #dc2626;
+}
+
+.btn-icon-quote:hover i {
+  color: #ffffff !important;
+}
+
+/* ==================== 2. PHOTO OVERLAY ==================== */
+.photo-overlay-card {
+  height: 280px;
+  background: #111114;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.overlay-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.photo-overlay-card:hover .overlay-img {
+  transform: scale(1.08);
+}
+
+.overlay-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(180deg, transparent 0%, rgba(9, 9, 11, 0.95) 100%);
+}
+
+.overlay-red-line {
+  width: 40px;
+  height: 2px;
+  background: #dc2626;
+  transition: width 0.3s ease;
+}
+
+.photo-overlay-card:hover .overlay-red-line {
+  width: 100%;
+}
+
+/* ==================== 3. POLAROID INDUSTRIAL ==================== */
+.polaroid-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.polaroid-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+  border-color: rgba(220, 38, 38, 0.5) !important;
+}
+
+.polaroid-photo-box {
+  height: 230px;
+}
+
+.polaroid-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.polaroid-title {
+  font-size: 0.95rem;
+}
+
+/* ==================== 4. MASONRY GALLERY ==================== */
+.masonry-item {
+  height: 280px;
+  background: #111114;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.masonry-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.masonry-item:hover .masonry-img {
+  transform: scale(1.08);
+}
+
+.masonry-tag-box {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(10, 10, 12, 0.92);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(220, 38, 38, 0.3);
+}
+
+/* ==================== 5. CYBER CAROUSEL ==================== */
+.carousel-photo-frame {
+  height: 380px;
+}
+
+.carousel-main-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.carousel-caption-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(180deg, transparent 0%, rgba(9, 9, 11, 0.96) 100%);
+}
+
+.btn-plasmex-hero-primary {
+  background: linear-gradient(135deg, #e50914 0%, #b91c1c 100%);
+  color: #ffffff !important;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  text-decoration: none;
+  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+}
+
+.carousel-thumb-item {
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.carousel-thumb-item.active {
+  border-color: #dc2626;
+}
+
+.carousel-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ==================== 6. CATALOG FILTER ==================== */
+.btn-filter-pill {
+  background-color: #18181b;
+  color: #a1a1aa;
+  border: 1px solid #27272a;
+  border-radius: 50rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.35rem 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.btn-filter-pill:hover {
+  color: #ffffff;
+  background-color: #27272a;
+  border-color: rgba(220, 38, 38, 0.4);
+}
+
+.btn-filter-pill.active {
+  background-color: #dc2626;
+  border-color: #ef4444;
+  color: #ffffff;
+  box-shadow: 0 2px 10px rgba(220, 38, 38, 0.4);
+}
+
+/* ==================== EDITOR MODAL & THUMB ==================== */
+.editor-thumb-preview {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border: 1px solid rgba(220, 38, 38, 0.4);
+  flex-shrink: 0;
+}
+
+.modal-editor-backdrop {
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(6px);
+  z-index: 3000;
+}

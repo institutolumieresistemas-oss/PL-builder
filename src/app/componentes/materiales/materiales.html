@@ -1,0 +1,461 @@
+<div class="materiales-master-container" [class.is-editor-mode]="isEditor">
+
+  <!-- ==========================================================================
+       BARRA DE HERRAMIENTAS INLINE (BUILDER)
+       ========================================================================== -->
+  <div *ngIf="isEditor" class="materiales-editor-toolbar p-2 mb-3 rounded d-flex flex-wrap align-items-center justify-content-between gap-2">
+    <div class="d-flex align-items-center gap-2">
+      <div class="materiales-toolbar-badge"><i class="fas fa-layer-group text-danger"></i></div>
+      <div>
+        <span class="materiales-toolbar-title">Tabla de Materiales CNC</span>
+        <span class="badge bg-danger ms-2">{{ tipo | uppercase }}</span>
+      </div>
+    </div>
+
+    <!-- 4 SELECTORES DE TIPO DIRECTOS -->
+    <div class="d-flex flex-wrap align-items-center gap-1">
+      <button *ngFor="let t of materialesLayoutList"
+              type="button"
+              class="btn btn-sm btn-mat-pill"
+              [class.active]="tipo === t.id"
+              (click)="cambiarTipo($any(t.id))"
+              [title]="t.desc">
+        <i [class]="t.icon + ' me-1'" [class.text-danger]="tipo !== t.id"></i>
+        <span>{{ t.name }}</span>
+      </button>
+    </div>
+
+    <!-- ACCIONES -->
+    <div class="d-flex align-items-center gap-2">
+      <button class="btn btn-sm btn-outline-light" (click)="abrirConfig()">
+        <i class="fas fa-edit me-1 text-danger"></i> Editar Materiales
+      </button>
+      <button class="btn btn-sm btn-outline-danger" (click)="eliminar()" title="Eliminar componente">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       ENCABEZADO GENERAL DE LA SECCIÓN
+       ========================================================================== -->
+  <div class="text-center max-w-800 mx-auto mb-4 mb-md-5">
+    <div *ngIf="badge" class="mat-badge-red mb-2 d-inline-flex align-items-center gap-2">
+      <i class="fas fa-microchip text-danger"></i>
+      <span>{{ badge }}</span>
+    </div>
+    <h2 class="display-6 fw-black text-white mb-2">
+      {{ titulo }} <span class="text-gradient-red">{{ tituloResaltado }}</span>
+    </h2>
+    <p class="text-secondary small mb-0">{{ descripcion }}</p>
+  </div>
+
+  <!-- ==========================================================================
+       OPCION 1: CYBER TECH CARDS (TARJETAS INDUSTRIALES CON BISEL)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'cyber-tech-cards'" class="materiales-section p-2 p-md-3">
+    <div class="row g-4 justify-content-center">
+      <div *ngFor="let m of materiales" class="col-12 col-md-6 col-lg-4">
+        <div class="mat-card-cyber p-4 rounded h-100 d-flex flex-column justify-content-between position-relative overflow-hidden">
+          <div class="mat-card-laser-glow"></div>
+          
+          <div>
+            <!-- HEADER DE TARJETA -->
+            <div class="d-flex align-items-start justify-content-between mb-3">
+              <div class="d-flex align-items-center gap-2">
+                <div class="mat-icon-bubble">
+                  <i [class]="m.icono || 'fas fa-cube'"></i>
+                </div>
+                <div>
+                  <h5 class="text-white fw-bold m-0 fs-6">{{ m.nombre }}</h5>
+                  <span class="text-danger micro-text fw-bold text-uppercase">{{ m.tipoCorte }}</span>
+                </div>
+              </div>
+              <span *ngIf="m.badgeStock" class="badge bg-black border border-danger border-opacity-50 text-danger micro-text">
+                {{ m.badgeStock }}
+              </span>
+            </div>
+
+            <!-- FOTO / TEXTURA (OPCIONAL) -->
+            <div *ngIf="m.imagenUrl" class="mat-thumb-wrapper rounded mb-3 overflow-hidden">
+              <img [src]="m.imagenUrl" [alt]="m.nombre" class="img-fluid mat-thumb-img" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=500&q=80'">
+            </div>
+
+            <!-- ESPECIFICACIONES EN CHIPS -->
+            <div class="d-flex flex-column gap-2 mb-3">
+              <div class="spec-row d-flex justify-content-between p-2 rounded bg-black bg-opacity-60 border border-secondary border-opacity-25">
+                <span class="text-secondary micro-text"><i class="fas fa-ruler-vertical text-danger me-1"></i>Espesores:</span>
+                <span class="text-white fw-bold micro-text">{{ m.espesorMinMax }}</span>
+              </div>
+              <div class="spec-row d-flex justify-content-between p-2 rounded bg-black bg-opacity-60 border border-secondary border-opacity-25">
+                <span class="text-secondary micro-text"><i class="fas fa-expand text-danger me-1"></i>Mesa Máx:</span>
+                <span class="text-white fw-bold micro-text">{{ m.dimensionesMax }}</span>
+              </div>
+              <div class="spec-row d-flex justify-content-between p-2 rounded bg-black bg-opacity-60 border border-secondary border-opacity-25">
+                <span class="text-secondary micro-text"><i class="fas fa-bullseye text-danger me-1"></i>Tolerancia:</span>
+                <span class="text-danger fw-bold micro-text">{{ m.tolerancia }}</span>
+              </div>
+            </div>
+
+            <!-- USOS RECOMENDADOS -->
+            <p class="text-secondary micro-text mb-3">
+              <strong class="text-light">Usos:</strong> {{ m.usosRecomendados }}
+            </p>
+          </div>
+
+          <!-- BOTON COTIZAR -->
+          <div class="pt-3 border-top border-secondary border-opacity-25 text-center">
+            <a [routerLink]="isEditor ? null : '/contacto'" class="btn btn-sm btn-outline-danger w-100 fw-bold">
+              <i class="fas fa-calculator me-1"></i> Cotizar este Material
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       OPCION 2: COMPARISON TABLE (TABLA EN DESKTOP / CARDS EN MÓVIL)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'comparison-table-cards'" class="materiales-section p-2 p-md-3">
+    
+    <!-- 1. VISTA TABLA PARA ESCRITORIO (d-none d-lg-block) -->
+    <div class="d-none d-lg-block table-responsive rounded border border-secondary border-opacity-25 shadow-lg">
+      <table class="table table-dark table-hover m-0 align-middle mat-table-custom">
+        <thead>
+          <tr class="table-header-laser">
+            <th class="py-3 px-4 text-white fw-bold">Material & Aleación</th>
+            <th class="py-3 px-3 text-white fw-bold">Tipo de Corte</th>
+            <th class="py-3 px-3 text-white fw-bold">Espesor / Calibre</th>
+            <th class="py-3 px-3 text-white fw-bold">Medida de Placa</th>
+            <th class="py-3 px-3 text-white fw-bold">Tolerancia</th>
+            <th class="py-3 px-3 text-white fw-bold">Acabados</th>
+            <th class="py-3 px-4 text-center text-white fw-bold">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let m of materiales" class="mat-table-row">
+            <td class="py-3 px-4">
+              <div class="d-flex align-items-center gap-2">
+                <div class="mat-icon-bubble-sm">
+                  <i [class]="m.icono || 'fas fa-cube'"></i>
+                </div>
+                <div>
+                  <span class="text-white fw-bold d-block">{{ m.nombre }}</span>
+                  <span *ngIf="m.badgeStock" class="badge bg-black border border-danger border-opacity-40 text-danger micro-text">{{ m.badgeStock }}</span>
+                </div>
+              </div>
+            </td>
+            <td class="py-3 px-3 text-light small fw-bold text-danger">{{ m.tipoCorte }}</td>
+            <td class="py-3 px-3 text-white fw-bold small">{{ m.espesorMinMax }}</td>
+            <td class="py-3 px-3 text-secondary small">{{ m.dimensionesMax }}</td>
+            <td class="py-3 px-3"><span class="badge bg-danger bg-opacity-25 text-danger border border-danger border-opacity-50">{{ m.tolerancia }}</span></td>
+            <td class="py-3 px-3 text-secondary micro-text">{{ m.acabados }}</td>
+            <td class="py-3 px-4 text-center">
+              <a [routerLink]="isEditor ? null : '/contacto'" class="btn btn-sm btn-plasmex-hero-primary px-3">
+                Cotizar
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2. VISTA CARDS RESPONSIVA PARA MÓVIL Y TABLET (d-lg-none) -->
+    <div class="d-lg-none">
+      <div class="row g-3">
+        <div *ngFor="let m of materiales" class="col-12 col-md-6">
+          <div class="mat-card-responsive-mobile p-3 rounded bg-black border border-danger border-opacity-40 shadow-sm text-start">
+            
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <div class="d-flex align-items-center gap-2">
+                <div class="mat-icon-bubble-sm">
+                  <i [class]="m.icono || 'fas fa-cube'"></i>
+                </div>
+                <h6 class="text-white fw-bold m-0 fs-6">{{ m.nombre }}</h6>
+              </div>
+              <span class="badge bg-danger text-white micro-text">{{ m.tolerancia }}</span>
+            </div>
+
+            <div class="d-flex flex-wrap gap-1 mb-2">
+              <span class="badge bg-dark border border-secondary border-opacity-50 text-danger micro-text">
+                <i class="fas fa-bolt me-1"></i>{{ m.tipoCorte }}
+              </span>
+              <span *ngIf="m.badgeStock" class="badge bg-dark border border-secondary border-opacity-50 text-light micro-text">
+                {{ m.badgeStock }}
+              </span>
+            </div>
+
+            <div class="d-flex flex-column gap-1 bg-dark bg-opacity-50 p-2 rounded mb-2 micro-text">
+              <div class="d-flex justify-content-between">
+                <span class="text-secondary">Espesores:</span>
+                <span class="text-white fw-bold">{{ m.espesorMinMax }}</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <span class="text-secondary">Medida Placa:</span>
+                <span class="text-white fw-bold">{{ m.dimensionesMax }}</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <span class="text-secondary">Acabados:</span>
+                <span class="text-secondary">{{ m.acabados }}</span>
+              </div>
+            </div>
+
+            <a [routerLink]="isEditor ? null : '/contacto'" class="btn btn-sm btn-plasmex-hero-primary w-100 py-2">
+              <i class="fas fa-calculator me-1"></i> Cotizar {{ m.nombre }}
+            </a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ==========================================================================
+       OPCION 3: INTERACTIVE TABS (PESTAÑAS POR METAL)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'interactive-tabs'" class="materiales-section p-2 p-md-3">
+    
+    <!-- TABS SELECTORAS -->
+    <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
+      <button *ngFor="let m of materiales; let i = index"
+              type="button"
+              class="btn btn-mat-tab px-3 py-2"
+              [class.active]="tabActivaIndex === i"
+              (click)="seleccionarTab(i)">
+        <i [class]="m.icono + ' me-2'" [class.text-danger]="tabActivaIndex !== i"></i>
+        <span>{{ m.nombre }}</span>
+      </button>
+    </div>
+
+    <!-- CONTENIDO DEL MATERIAL ACTIVO -->
+    <div *ngIf="materiales && materiales.length > 0" class="mat-tab-content p-4 p-md-5 rounded border border-danger border-opacity-40 position-relative text-start">
+      <div class="row align-items-center g-4 g-lg-5">
+        
+        <!-- FOTO -->
+        <div class="col-12 col-lg-5">
+          <div class="mat-tab-img-frame rounded overflow-hidden shadow-lg position-relative">
+            <img [src]="materiales[tabActivaIndex].imagenUrl" [alt]="materiales[tabActivaIndex].nombre" class="img-fluid mat-tab-img" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80'">
+            <div class="mat-tab-overlay-badge p-2">
+              <span class="badge bg-danger">{{ materiales[tabActivaIndex].badgeStock }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ESPECIFICACIONES -->
+        <div class="col-12 col-lg-7">
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <div class="mat-icon-bubble"><i [class]="materiales[tabActivaIndex].icono"></i></div>
+            <h3 class="text-white fw-bold m-0 display-6">{{ materiales[tabActivaIndex].nombre }}</h3>
+          </div>
+
+          <p class="text-danger fw-bold small mb-3 text-uppercase">
+            <i class="fas fa-check-circle me-1"></i> {{ materiales[tabActivaIndex].tipoCorte }} (Tolerancia {{ materiales[tabActivaIndex].tolerancia }})
+          </p>
+
+          <div class="row g-3 mb-4">
+            <div class="col-12 col-sm-6">
+              <div class="p-3 rounded bg-black border border-secondary border-opacity-25">
+                <span class="text-secondary micro-text d-block">Rango de Calibres & Espesor</span>
+                <span class="text-white fw-bold fs-6">{{ materiales[tabActivaIndex].espesorMinMax }}</span>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <div class="p-3 rounded bg-black border border-secondary border-opacity-25">
+                <span class="text-secondary micro-text d-block">Dimensiones de Mesa CNC</span>
+                <span class="text-white fw-bold fs-6">{{ materiales[tabActivaIndex].dimensionesMax }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <span class="text-light fw-bold small d-block mb-1">Usos Recomendados:</span>
+            <p class="text-secondary small mb-2">{{ materiales[tabActivaIndex].usosRecomendados }}</p>
+            <span class="text-light fw-bold small d-block mb-1">Acabados Posibles:</span>
+            <p class="text-secondary small mb-0">{{ materiales[tabActivaIndex].acabados }}</p>
+          </div>
+
+          <a [routerLink]="isEditor ? null : '/contacto'" class="btn btn-plasmex-hero-primary btn-lg">
+            <i class="fas fa-calculator me-2"></i> Cotizar Maquila de {{ materiales[tabActivaIndex].nombre }}
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ==========================================================================
+       OPCION 4: GAUGE MATRIX GRID (MATRIZ DE CALIBRES Y ESPESORES)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'gauge-matrix-grid'" class="materiales-section p-2 p-md-3">
+    <div class="row g-3">
+      <div *ngFor="let m of materiales" class="col-12 col-md-6 col-lg-4">
+        <div class="matrix-card p-4 rounded bg-black border border-secondary border-opacity-25 h-100 d-flex flex-column justify-content-between text-start">
+          
+          <div>
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <h5 class="text-white fw-bold m-0 fs-6">{{ m.nombre }}</h5>
+              <i class="fas fa-layer-group text-danger"></i>
+            </div>
+
+            <!-- HIGHLIGHT DE CALIBRE -->
+            <div class="matrix-gauge-box p-3 rounded mb-3 text-center">
+              <span class="text-secondary micro-text text-uppercase d-block mb-1">Capacidad Máxima</span>
+              <span class="text-danger fw-black fs-4">{{ m.espesorMinMax }}</span>
+            </div>
+
+            <ul class="list-unstyled micro-text d-flex flex-column gap-2 text-secondary mb-0">
+              <li class="d-flex justify-content-between"><span>Corte:</span> <strong class="text-light">{{ m.tipoCorte }}</strong></li>
+              <li class="d-flex justify-content-between"><span>Placa:</span> <strong class="text-light">{{ m.dimensionesMax }}</strong></li>
+              <li class="d-flex justify-content-between"><span>Tolerancia:</span> <strong class="text-danger">{{ m.tolerancia }}</strong></li>
+            </ul>
+          </div>
+
+          <div class="pt-3 mt-3 border-top border-secondary border-opacity-25">
+            <a [routerLink]="isEditor ? null : '/contacto'" class="btn btn-sm btn-outline-light w-100">
+              Solicitar Cotización
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       MODAL DE EDICIÓN DE MATERIALES (BUILDER)
+       ========================================================================== -->
+  <div *ngIf="mostrarConfigModal" class="modal d-block modal-editor-backdrop" (click)="cerrarConfig()">
+    <div class="modal-dialog modal-dialog-centered modal-xl" (click)="$event.stopPropagation()">
+      <div class="modal-content bg-dark text-light border border-danger border-opacity-50 shadow-lg">
+        
+        <div class="modal-header border-bottom border-secondary border-opacity-25">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-layer-group text-danger fs-5"></i>
+            <h5 class="modal-title m-0 fw-bold">Configurar Tabla de Materiales & Calibres</h5>
+          </div>
+          <button type="button" class="btn-close btn-close-white" (click)="cerrarConfig()"></button>
+        </div>
+
+        <div class="modal-body p-4" style="max-height: 75vh; overflow-y: auto;">
+          <div class="row g-3">
+            
+            <!-- TIPO DE FORMATO -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Diseño de Visualización (4 Opciones)</label>
+              <select class="form-select bg-black text-light border-secondary" [(ngModel)]="tipo">
+                <option *ngFor="let t of materialesLayoutList" [value]="t.id">{{ t.name }} - {{ t.desc }}</option>
+              </select>
+            </div>
+
+            <!-- BADGE -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Badge / Etiqueta Superior</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="badge">
+            </div>
+
+            <!-- TITULO PRINCIPAL -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Título (Parte 1)</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="titulo">
+            </div>
+
+            <!-- TITULO RESALTADO -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Título Resaltado (en Rojo)</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="tituloResaltado">
+            </div>
+
+            <!-- DESCRIPCION -->
+            <div class="col-12">
+              <label class="form-label fw-bold small text-light">Descripción</label>
+              <textarea rows="2" class="form-control bg-black text-light border-secondary" [(ngModel)]="descripcion"></textarea>
+            </div>
+
+            <!-- CRUD DE MATERIALES -->
+            <div class="col-12 pt-3">
+              <div class="d-flex align-items-center justify-content-between border-bottom border-dark pb-2 mb-3">
+                <h6 class="fw-bold text-danger m-0">Lista de Materiales y Metales ({{ materiales.length }})</h6>
+                <button type="button" class="btn btn-sm btn-outline-success" (click)="agregarMaterial()">
+                  <i class="fas fa-plus me-1"></i> Agregar Material
+                </button>
+              </div>
+
+              <div class="d-flex flex-column gap-3">
+                <div *ngFor="let m of materiales; let idx = index" class="p-3 rounded bg-black bg-opacity-70 border border-secondary border-opacity-25">
+                  <div class="row g-2 align-items-center">
+                    
+                    <div class="col-12 col-md-4">
+                      <label class="micro-text text-secondary mb-1">Nombre del Metal / Aleación</label>
+                      <input class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="m.nombre">
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                      <label class="micro-text text-secondary mb-1">Tipo de Corte CNC</label>
+                      <input class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="m.tipoCorte">
+                    </div>
+
+                    <div class="col-12 col-md-3">
+                      <label class="micro-text text-secondary mb-1">Rango Espesor / Calibre</label>
+                      <input class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="m.espesorMinMax">
+                    </div>
+
+                    <div class="col-12 col-md-1 text-end">
+                      <label class="micro-text text-secondary mb-1 d-block">&nbsp;</label>
+                      <button class="btn btn-sm btn-outline-danger" (click)="eliminarMaterial(idx)" title="Eliminar">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                      <label class="micro-text text-secondary mb-1">Dimensiones Máx. Placa</label>
+                      <input class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="m.dimensionesMax">
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                      <label class="micro-text text-secondary mb-1">Tolerancia de Precisión</label>
+                      <input class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="m.tolerancia">
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                      <label class="micro-text text-secondary mb-1">Badge de Stock / Estado</label>
+                      <input class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="m.badgeStock">
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                      <label class="micro-text text-secondary mb-1">Acabados Disponibles</label>
+                      <input class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="m.acabados">
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                      <label class="micro-text text-secondary mb-1">Usos Recomendados / Aplicaciones</label>
+                      <input class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="m.usosRecomendados">
+                    </div>
+
+                    <div class="col-12">
+                      <label class="micro-text text-secondary mb-1">URL Foto / Textura</label>
+                      <input class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="m.imagenUrl">
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+        <div class="modal-footer border-top border-secondary border-opacity-25">
+          <button type="button" class="btn btn-secondary" (click)="cerrarConfig()">Cancelar</button>
+          <button type="button" class="btn btn-danger px-4 fw-bold" (click)="guardarConfig()">Guardar Cambios</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

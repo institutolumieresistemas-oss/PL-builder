@@ -1,0 +1,6 @@
+<ng-container [ngSwitch]="element.type">
+    <app-ejemplo *ngSwitchCase="'ejemplo'" 
+                 [titulo]="element.props?.titulo"
+                 [contenido]="element.props?.contenido">
+    </app-ejemplo>
+</ng-container>

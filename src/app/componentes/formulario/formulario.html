@@ -1,0 +1,531 @@
+<div class="form-master-container" [class.is-editor-mode]="isEditor">
+
+  <!-- ==========================================================================
+       BARRA DE HERRAMIENTAS INLINE (BUILDER)
+       ========================================================================== -->
+  <div *ngIf="isEditor" class="form-editor-toolbar p-2 mb-3 rounded d-flex flex-wrap align-items-center justify-content-between gap-2">
+    <div class="d-flex align-items-center gap-2">
+      <div class="form-toolbar-badge"><i class="fas fa-file-invoice text-danger"></i></div>
+      <div>
+        <span class="form-toolbar-title">Formulario / Cotizador</span>
+        <span class="badge bg-danger ms-2">{{ tipo | uppercase }}</span>
+      </div>
+    </div>
+
+    <!-- 5 BOTONES DIRECTOS DE SELECCIÓN -->
+    <div class="d-flex flex-wrap align-items-center gap-1">
+      <button *ngFor="let t of formTypesList"
+              type="button"
+              class="btn btn-sm btn-form-pill"
+              [class.active]="tipo === t.id"
+              (click)="cambiarTipo($any(t.id))"
+              [title]="t.desc">
+        <i [class]="t.icon + ' me-1'" [class.text-danger]="tipo !== t.id"></i>
+        <span>{{ t.name }}</span>
+      </button>
+    </div>
+
+    <!-- ACCIONES -->
+    <div class="d-flex align-items-center gap-2">
+      <button class="btn btn-sm btn-outline-light" (click)="abrirConfig()">
+        <i class="fas fa-edit me-1 text-danger"></i> Editar Textos & Contacto
+      </button>
+      <button class="btn btn-sm btn-outline-danger" (click)="eliminar()" title="Eliminar componente">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- CONFIRMACION DE MENSAJE ENVIADO -->
+  <div *ngIf="mensajeEnviado" class="alert alert-plasmex-success p-4 rounded-3 text-center my-4 shadow-lg">
+    <i class="fas fa-check-circle text-danger fs-1 mb-2 d-block"></i>
+    <h4 class="text-white fw-bold mb-1">¡Solicitud Procesada con Éxito!</h4>
+    <p class="text-secondary small mb-3">Abriendo canal de WhatsApp oficial de Plasmex CNC para confirmar los detalles de tu cotización.</p>
+    <button class="btn btn-sm btn-outline-light" (click)="resetForm()">Enviar otra solicitud</button>
+  </div>
+
+  <!-- ==========================================================================
+       TIPO 1: COTIZADOR EXPRESS (SELECTOR DE SERVICIO + MATERIAL + MEDIDAS)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'cotizador-express' && !mensajeEnviado" class="form-box-wrapper form-express-box p-4 p-md-5 rounded position-relative overflow-hidden">
+    <div class="container-fluid position-relative z-1">
+      
+      <div class="text-center max-w-700 mx-auto mb-4">
+        <div *ngIf="badge" class="form-badge-red mb-2 d-inline-flex align-items-center gap-2">
+          <i class="fas fa-bolt text-danger"></i>
+          <span>{{ badge }}</span>
+        </div>
+        <h2 class="display-6 fw-black text-white mb-2">
+          {{ titulo }} <span class="text-gradient-red">{{ tituloResaltado }}</span>
+        </h2>
+        <p class="text-secondary small mb-0">{{ descripcion }}</p>
+      </div>
+
+      <form (ngSubmit)="enviarFormulario()" class="form-plasmex-inner max-w-850 mx-auto">
+        <div class="row g-3">
+          
+          <!-- 1. SERVICIO -->
+          <div class="col-12">
+            <label class="form-label text-light fw-bold small mb-2">1. Selecciona el Tipo de Trabajo</label>
+            <div class="d-flex flex-wrap gap-2">
+              <button *ngFor="let s of serviciosList"
+                      type="button"
+                      class="btn btn-service-chip"
+                      [class.active]="formData.servicio === s"
+                      (click)="formData.servicio = s">
+                <i class="fas fa-cube text-danger me-1"></i> {{ s }}
+              </button>
+            </div>
+          </div>
+
+          <!-- 2. MATERIAL Y ESPESOR -->
+          <div class="col-12 col-md-6">
+            <label class="form-label text-light fw-bold small">2. Material</label>
+            <select class="form-select plasmex-input" [(ngModel)]="formData.material" name="material">
+              <option *ngFor="let m of materialesList" [value]="m">{{ m }}</option>
+            </select>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label class="form-label text-light fw-bold small">3. Espesor Estimado</label>
+            <select class="form-select plasmex-input" [(ngModel)]="formData.espesor" name="espesor">
+              <option *ngFor="let e of espesoresList" [value]="e">{{ e }}</option>
+            </select>
+          </div>
+
+          <!-- 3. CONTACTO Y MEDIDAS -->
+          <div class="col-12 col-md-6">
+            <label class="form-label text-light fw-bold small">Tu Nombre o Empresa *</label>
+            <input type="text" class="form-control plasmex-input" [(ngModel)]="formData.nombre" name="nombre" placeholder="Ej. Ing. Carlos Mendoza" required>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label class="form-label text-light fw-bold small">Teléfono / WhatsApp *</label>
+            <input type="tel" class="form-control plasmex-input" [(ngModel)]="formData.telefono" name="telefono" placeholder="Ej. 33 3589 3912" required>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label text-light fw-bold small">Medidas aproximadas y detalles del corte</label>
+            <textarea class="form-control plasmex-input" rows="2" [(ngModel)]="formData.detalles" name="detalles" placeholder="Ej. 2 piezas de 1.20m x 2.40m con diseño geométrico..."></textarea>
+          </div>
+
+          <div class="col-12 text-center mt-3">
+            <button type="submit" class="btn btn-plasmex-hero-primary btn-lg w-100 py-3 fw-bold">
+              <i class="fab fa-whatsapp me-2 fs-5"></i> {{ botonTexto }}
+            </button>
+            <span class="d-block text-secondary micro-text mt-2"><i class="fas fa-lock text-danger me-1"></i> Respuesta directa sin compromisos</span>
+          </div>
+
+        </div>
+      </form>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       TIPO 2: CONTACTO SPLIT INFO (TARJETA DE DATOS + FORMULARIO COMPLETO)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'contacto-split-info' && !mensajeEnviado" class="form-box-wrapper form-split-box p-4 p-md-5 rounded position-relative">
+    <div class="container-fluid">
+      <div class="row g-4 g-lg-5 align-items-stretch">
+        
+        <!-- COLUMNA IZQUIERDA: INFORMACION DE TALLER -->
+        <div class="col-12 col-lg-5 text-start">
+          <div class="split-info-card p-4 p-md-5 rounded h-100 d-flex flex-column justify-content-between">
+            <div>
+              <div *ngIf="badge" class="form-badge-red mb-3 d-inline-flex align-items-center gap-2">
+                <span>{{ badge }}</span>
+              </div>
+              <h3 class="text-white fw-black display-6 mb-3">
+                {{ titulo }} <span class="text-gradient-red">{{ tituloResaltado }}</span>
+              </h3>
+              <p class="text-secondary small mb-4">{{ descripcion }}</p>
+
+              <div class="d-flex flex-column gap-3 contact-info-items">
+                <div class="d-flex align-items-start gap-3">
+                  <div class="icon-bubble-red"><i class="fas fa-map-marker-alt"></i></div>
+                  <div>
+                    <span class="d-block text-white fw-bold small">Ubicación de Taller</span>
+                    <span class="text-secondary micro-text">{{ direccion }}</span>
+                  </div>
+                </div>
+
+                <div class="d-flex align-items-start gap-3">
+                  <div class="icon-bubble-red"><i class="fab fa-whatsapp"></i></div>
+                  <div>
+                    <span class="d-block text-white fw-bold small">WhatsApp Directo</span>
+                    <span class="text-success small fw-bold">{{ whatsapp }}</span>
+                  </div>
+                </div>
+
+                <div class="d-flex align-items-start gap-3">
+                  <div class="icon-bubble-red"><i class="fas fa-envelope"></i></div>
+                  <div>
+                    <span class="d-block text-white fw-bold small">Correo para Planos</span>
+                    <span class="text-secondary micro-text">{{ email }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="fast-reply-banner p-3 rounded mt-4 border border-danger border-opacity-25 bg-black bg-opacity-50">
+              <span class="text-white small fw-bold d-block"><i class="fas fa-stopwatch text-danger me-2"></i>Atención Rápida</span>
+              <span class="text-secondary micro-text">{{ horario }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- COLUMNA DERECHA: FORMULARIO -->
+        <div class="col-12 col-lg-7 text-start">
+          <div class="split-form-card p-4 p-md-5 rounded h-100 bg-black bg-opacity-70 border border-secondary border-opacity-25">
+            <h4 class="text-white fw-bold mb-4">Envíanos un mensaje</h4>
+            
+            <form (ngSubmit)="enviarFormulario()">
+              <div class="row g-3">
+                <div class="col-12 col-md-6">
+                  <label class="form-label text-light small fw-bold">Nombre Completo *</label>
+                  <input type="text" class="form-control plasmex-input" [(ngModel)]="formData.nombre" name="nombre" required placeholder="Carlos Mendoza">
+                </div>
+
+                <div class="col-12 col-md-6">
+                  <label class="form-label text-light small fw-bold">Teléfono de Contacto *</label>
+                  <input type="tel" class="form-control plasmex-input" [(ngModel)]="formData.telefono" name="telefono" required placeholder="33 1234 5678">
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label text-light small fw-bold">Correo Electrónico</label>
+                  <input type="email" class="form-control plasmex-input" [(ngModel)]="formData.email" name="email" placeholder="carlos@empresa.com">
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label text-light small fw-bold">Servicio Requerido</label>
+                  <select class="form-select plasmex-input" [(ngModel)]="formData.servicio" name="servicio">
+                    <option *ngFor="let s of serviciosList" [value]="s">{{ s }}</option>
+                  </select>
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label text-light small fw-bold">Mensaje / Especificaciones *</label>
+                  <textarea class="form-control plasmex-input" rows="3" [(ngModel)]="formData.detalles" name="detalles" placeholder="Describe tu proyecto, medidas, cantidad de piezas..." required></textarea>
+                </div>
+
+                <div class="col-12 pt-2">
+                  <button type="submit" class="btn btn-plasmex-hero-primary btn-lg w-100">
+                    <i class="fas fa-paper-plane me-2"></i> {{ botonTexto }}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       TIPO 3: CYBER LASER CARD (ENFOCADO EN PLANOS Y MAQUILA CNC)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'cyber-laser-card' && !mensajeEnviado" class="form-box-wrapper form-cyber-card p-4 p-md-5 rounded position-relative overflow-hidden">
+    <div class="laser-top-line"></div>
+    <div class="container-fluid position-relative z-1">
+      
+      <div class="max-w-800 mx-auto">
+        <div class="d-flex flex-column align-items-center text-center mb-4">
+          <div class="cyber-chip-header mb-2 d-flex align-items-center gap-2">
+            <i class="fas fa-microchip text-danger"></i>
+            <span>{{ badge }}</span>
+          </div>
+          <h2 class="display-6 fw-black text-white mb-2">
+            {{ titulo }} <span class="text-gradient-red">{{ tituloResaltado }}</span>
+          </h2>
+          <p class="text-secondary small">{{ descripcion }}</p>
+        </div>
+
+        <form (ngSubmit)="enviarFormulario()" class="p-4 p-md-5 rounded-3 bg-black bg-opacity-80 border border-danger border-opacity-40">
+          <div class="row g-3">
+            
+            <div class="col-12 col-md-6">
+              <label class="form-label text-light small fw-bold">Nombre o Razón Social</label>
+              <input type="text" class="form-control plasmex-input" [(ngModel)]="formData.nombre" name="nombre" placeholder="Arquitectura & Diseño S.A." required>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label text-light small fw-bold">WhatsApp de Respuesta Rápida</label>
+              <input type="tel" class="form-control plasmex-input" [(ngModel)]="formData.telefono" name="telefono" placeholder="33 3589 3912" required>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label text-light small fw-bold">Tipo de Material</label>
+              <select class="form-select plasmex-input" [(ngModel)]="formData.material" name="material">
+                <option *ngFor="let m of materialesList" [value]="m">{{ m }}</option>
+              </select>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label text-light small fw-bold">Calibre / Espesor de Placa</label>
+              <select class="form-select plasmex-input" [(ngModel)]="formData.espesor" name="espesor">
+                <option *ngFor="let e of espesoresList" [value]="e">{{ e }}</option>
+              </select>
+            </div>
+
+            <!-- ZONA DE ESPECIFICACION DE PLANO -->
+            <div class="col-12">
+              <label class="form-label text-light small fw-bold">Especificaciones del Plano / Archivo</label>
+              <div class="p-3 rounded border border-secondary border-dashed text-center bg-dark bg-opacity-40">
+                <div class="d-flex justify-content-center gap-2 mb-2">
+                  <span class="badge bg-danger">DXF</span>
+                  <span class="badge bg-danger">DWG</span>
+                  <span class="badge bg-secondary">PDF</span>
+                  <span class="badge bg-secondary">AI</span>
+                  <span class="badge bg-secondary">JPG / PNG</span>
+                </div>
+                <input type="text" class="form-control plasmex-input text-center" [(ngModel)]="formData.detalles" name="detalles" placeholder="Escribe el enlace de Drive/Dropbox o las medidas del plano...">
+                <span class="text-secondary micro-text d-block mt-1">También puedes enviar el archivo directamente a nuestro WhatsApp después de dar clic.</span>
+              </div>
+            </div>
+
+            <div class="col-12 pt-2">
+              <button type="submit" class="btn btn-plasmex-hero-primary btn-lg w-100 py-3">
+                <i class="fas fa-bolt me-2"></i> {{ botonTexto }}
+              </button>
+            </div>
+
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       TIPO 4: MULTISTEP WIZARD (ASISTENTE EN 3 PASOS GUIADOS)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'multistep-wizard' && !mensajeEnviado" class="form-box-wrapper form-wizard-box p-4 p-md-5 rounded position-relative">
+    <div class="container-fluid max-w-800 mx-auto">
+      
+      <!-- ENCABEZADO -->
+      <div class="text-center mb-4">
+        <div *ngIf="badge" class="form-badge-red mb-2 d-inline-flex align-items-center gap-2">
+          <span>{{ badge }}</span>
+        </div>
+        <h3 class="text-white fw-black display-6 mb-2">
+          {{ titulo }} <span class="text-gradient-red">{{ tituloResaltado }}</span>
+        </h3>
+        
+        <!-- STEPPER INDICATOR -->
+        <div class="d-flex align-items-center justify-content-center gap-3 my-4 stepper-wrapper">
+          <div class="step-circle" [class.active]="pasoActual === 1" [class.completed]="pasoActual > 1">1</div>
+          <div class="step-line" [class.completed]="pasoActual > 1"></div>
+          <div class="step-circle" [class.active]="pasoActual === 2" [class.completed]="pasoActual > 2">2</div>
+          <div class="step-line" [class.completed]="pasoActual > 2"></div>
+          <div class="step-circle" [class.active]="pasoActual === 3">3</div>
+        </div>
+      </div>
+
+      <!-- CAJA DEL WIZARD -->
+      <div class="p-4 p-md-5 rounded bg-black bg-opacity-70 border border-secondary border-opacity-25 text-start">
+        
+        <!-- PASO 1: SERVICIO -->
+        <div *ngIf="pasoActual === 1">
+          <h5 class="text-white fw-bold mb-3"><i class="fas fa-cube text-danger me-2"></i>Paso 1: ¿Qué tipo de trabajo requieres?</h5>
+          <div class="d-flex flex-column gap-2 mb-4">
+            <button *ngFor="let s of serviciosList"
+                    type="button"
+                    class="btn btn-wizard-option p-3 text-start d-flex align-items-center justify-content-between"
+                    [class.active]="formData.servicio === s"
+                    (click)="formData.servicio = s">
+              <span class="text-light fw-bold">{{ s }}</span>
+              <i class="fas fa-chevron-right text-danger"></i>
+            </button>
+          </div>
+          <div class="text-end">
+            <button type="button" class="btn btn-plasmex-hero-primary px-4" (click)="avanzarPaso()">
+              Continuar a Materiales <i class="fas fa-arrow-right ms-2"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- PASO 2: MATERIAL Y MEDIDAS -->
+        <div *ngIf="pasoActual === 2">
+          <h5 class="text-white fw-bold mb-3"><i class="fas fa-ruler-combined text-danger me-2"></i>Paso 2: Especificaciones de Material</h5>
+          <div class="row g-3 mb-4">
+            <div class="col-12 col-md-6">
+              <label class="form-label text-light small fw-bold">Material Deseado</label>
+              <select class="form-select plasmex-input" [(ngModel)]="formData.material">
+                <option *ngFor="let m of materialesList" [value]="m">{{ m }}</option>
+              </select>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label text-light small fw-bold">Espesor Estimado</label>
+              <select class="form-select plasmex-input" [(ngModel)]="formData.espesor">
+                <option *ngFor="let e of espesoresList" [value]="e">{{ e }}</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label text-light small fw-bold">Medidas o detalles</label>
+              <textarea class="form-control plasmex-input" rows="2" [(ngModel)]="formData.detalles" placeholder="Ej. Medidas 1.20 x 2.40m..."></textarea>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-outline-secondary" (click)="retrocederPaso()">
+              <i class="fas fa-arrow-left me-2"></i> Atrás
+            </button>
+            <button type="button" class="btn btn-plasmex-hero-primary px-4" (click)="avanzarPaso()">
+              Paso Final: Contacto <i class="fas fa-arrow-right ms-2"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- PASO 3: DATOS DE CONTACTO -->
+        <div *ngIf="pasoActual === 3">
+          <h5 class="text-white fw-bold mb-3"><i class="fas fa-user-check text-danger me-2"></i>Paso 3: ¿Dónde enviamos la cotización?</h5>
+          <div class="row g-3 mb-4">
+            <div class="col-12 col-md-6">
+              <label class="form-label text-light small fw-bold">Tu Nombre *</label>
+              <input type="text" class="form-control plasmex-input" [(ngModel)]="formData.nombre" placeholder="Nombre completo" required>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label text-light small fw-bold">Teléfono WhatsApp *</label>
+              <input type="tel" class="form-control plasmex-input" [(ngModel)]="formData.telefono" placeholder="33 1234 5678" required>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-outline-secondary" (click)="retrocederPaso()">
+              <i class="fas fa-arrow-left me-2"></i> Atrás
+            </button>
+            <button type="button" class="btn btn-plasmex-hero-primary btn-lg px-4" (click)="enviarFormulario()">
+              <i class="fab fa-whatsapp me-2"></i> Finalizar y Enviar
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       TIPO 5: MINIMAL NEWSLETTER STRIP (BARRA RAPIDA DE ASESORIA EN 1 CLIC)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'minimal-newsletter-strip' && !mensajeEnviado" class="form-box-wrapper form-strip-box p-4 p-md-5 rounded position-relative">
+    <div class="container-fluid">
+      <div class="row align-items-center justify-content-between g-4">
+        
+        <div class="col-12 col-lg-6 text-start">
+          <div *ngIf="badge" class="form-badge-red mb-2 d-inline-flex align-items-center gap-1">
+            <span>{{ badge }}</span>
+          </div>
+          <h3 class="text-white fw-bold m-0 fs-4">
+            {{ titulo }} <span class="text-gradient-red">{{ tituloResaltado }}</span>
+          </h3>
+          <p class="text-secondary micro-text mb-0 mt-1">{{ descripcion }}</p>
+        </div>
+
+        <div class="col-12 col-lg-6">
+          <form (ngSubmit)="enviarFormulario()" class="d-flex flex-column flex-sm-row gap-2">
+            <input type="text" 
+                   class="form-control plasmex-input flex-grow-1" 
+                   [(ngModel)]="formData.contactoRapido" 
+                   name="contactoRapido" 
+                   placeholder="Ingresa tu WhatsApp o Correo..." 
+                   required>
+            <button type="submit" class="btn btn-plasmex-hero-primary flex-shrink-0 px-4 py-2">
+              <i class="fas fa-paper-plane me-2"></i> {{ botonTexto }}
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       MODAL DE EDICIÓN DE TEXTOS Y DATOS (BUILDER)
+       ========================================================================== -->
+  <div *ngIf="mostrarConfigModal" class="modal d-block modal-editor-backdrop" (click)="cerrarConfig()">
+    <div class="modal-dialog modal-dialog-centered modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-content bg-dark text-light border border-danger border-opacity-50 shadow-lg">
+        
+        <div class="modal-header border-bottom border-secondary border-opacity-25">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-file-invoice text-danger fs-5"></i>
+            <h5 class="modal-title m-0 fw-bold">Configurar Formulario / Cotizador</h5>
+          </div>
+          <button type="button" class="btn-close btn-close-white" (click)="cerrarConfig()"></button>
+        </div>
+
+        <div class="modal-body p-4" style="max-height: 75vh; overflow-y: auto;">
+          <div class="row g-3">
+            
+            <!-- TIPO DE FORMULARIO -->
+            <div class="col-12">
+              <label class="form-label fw-bold small text-light">Diseño del Formulario (5 Opciones)</label>
+              <select class="form-select bg-black text-light border-secondary" [(ngModel)]="tipo">
+                <option *ngFor="let t of formTypesList" [value]="t.id">{{ t.name }} - {{ t.desc }}</option>
+              </select>
+            </div>
+
+            <!-- BADGE SUPERIOR -->
+            <div class="col-12">
+              <label class="form-label fw-bold small text-light">Badge / Etiqueta Superior</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="badge">
+            </div>
+
+            <!-- TITULO PRINCIPAL -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Título (Parte 1)</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="titulo">
+            </div>
+
+            <!-- TITULO RESALTADO -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Título Resaltado (en Rojo)</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="tituloResaltado">
+            </div>
+
+            <!-- DESCRIPCION -->
+            <div class="col-12">
+              <label class="form-label fw-bold small text-light">Descripción</label>
+              <textarea rows="2" class="form-control bg-black text-light border-secondary" [(ngModel)]="descripcion"></textarea>
+            </div>
+
+            <!-- CONTACTO -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Teléfono / WhatsApp</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="whatsapp">
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Correo Electrónico</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="email">
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Dirección de Taller</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="direccion">
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Horario de Atención</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="horario">
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-bold small text-light">Texto del Botón de Envío</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="botonTexto">
+            </div>
+
+          </div>
+        </div>
+
+        <div class="modal-footer border-top border-secondary border-opacity-25">
+          <button type="button" class="btn btn-secondary" (click)="cerrarConfig()">Cancelar</button>
+          <button type="button" class="btn btn-danger px-4 fw-bold" (click)="guardarConfig()">Guardar Cambios</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

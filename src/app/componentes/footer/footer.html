@@ -1,0 +1,275 @@
+<div class="footer-master-container" [class.is-editor-mode]="isEditor">
+
+  <!-- ==========================================================================
+       BARRA DE HERRAMIENTAS INLINE (BUILDER)
+       ========================================================================== -->
+  <div *ngIf="isEditor" class="footer-editor-toolbar p-2 mb-3 rounded d-flex flex-wrap align-items-center justify-content-between gap-2">
+    <div class="d-flex align-items-center gap-2">
+      <div class="footer-toolbar-badge"><i class="fas fa-shoe-prints text-danger"></i></div>
+      <div>
+        <span class="footer-toolbar-title">Pie de Página (Footer 3 Columnas)</span>
+        <span class="badge bg-danger ms-2">{{ tipo | uppercase }}</span>
+      </div>
+    </div>
+
+    <!-- BOTONES DE ESTILO -->
+    <div class="d-flex flex-wrap align-items-center gap-1">
+      <button *ngFor="let s of footerStylesList"
+              type="button"
+              class="btn btn-sm btn-footer-pill"
+              [class.active]="tipo === s.id"
+              (click)="cambiarTipo($any(s.id))"
+              [title]="s.desc">
+        <i [class]="s.icon + ' me-1'" [class.text-danger]="tipo !== s.id"></i>
+        <span>{{ s.name }}</span>
+      </button>
+    </div>
+
+    <!-- ACCIONES -->
+    <div class="d-flex align-items-center gap-2">
+      <button class="btn btn-sm btn-outline-light" (click)="abrirConfig()">
+        <i class="fas fa-edit me-1 text-danger"></i> Editar Datos & Redes
+      </button>
+      <button class="btn btn-sm btn-outline-danger" (click)="eliminar()" title="Eliminar componente">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       FOOTER PRINCIPAL (3 COLUMNAS: DIRECCIÓN | NOSOTROS | INSTAGRAM)
+       ========================================================================== -->
+  <footer class="plasmex-footer-wrapper pt-5 pb-3"
+          [class.style-cyber-laser]="tipo === 'cyber-laser'"
+          [class.style-minimal-dark]="tipo === 'minimal-dark'"
+          [class.style-bold-industrial]="tipo === 'bold-industrial'">
+
+    <div class="container py-2">
+      <div class="row g-4 g-lg-5">
+        
+        <!-- ==================== COLUMNA 1: DIRECCIÓN & CONTACTO ==================== -->
+        <div class="col-12 col-md-6 col-lg-4 text-start">
+          
+          <!-- LOGO & BRAND -->
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <div class="brand-badge-footer">
+              <i class="fas fa-fire-alt text-danger"></i>
+            </div>
+            <div class="d-flex flex-column">
+              <span class="footer-brand-title">PLASMEX <span class="text-danger">CNC</span></span>
+              <span class="footer-brand-sub">CORTE & MAQUILA</span>
+            </div>
+          </div>
+
+          <p class="text-secondary small mb-3">
+            Taller especializado en corte plasma HD y láser de fibra óptica para herrería, arquitectura e industria.
+          </p>
+
+          <!-- LISTA DE CONTACTO Y DIRECCIÓN -->
+          <ul class="list-unstyled d-flex flex-column gap-2 mb-0 contact-list">
+            <li class="d-flex align-items-start gap-2">
+              <i class="fas fa-map-marker-alt text-danger mt-1"></i>
+              <span class="text-light small">{{ direccion }}</span>
+            </li>
+            <li class="d-flex align-items-center gap-2">
+              <i class="fas fa-phone-alt text-danger"></i>
+              <a [href]="'tel:' + telefono" class="footer-link small">{{ telefono }}</a>
+            </li>
+            <li class="d-flex align-items-center gap-2">
+              <i class="fab fa-whatsapp text-success"></i>
+              <a [href]="'https://wa.me/52' + whatsapp.replace(' ', '')" target="_blank" class="footer-link small text-success fw-bold">WhatsApp: {{ whatsapp }}</a>
+            </li>
+            <li class="d-flex align-items-center gap-2">
+              <i class="fas fa-envelope text-danger"></i>
+              <a [href]="'mailto:' + email" class="footer-link small">{{ email }}</a>
+            </li>
+            <li class="d-flex align-items-start gap-2 pt-1 border-top border-dark">
+              <i class="fas fa-clock text-secondary mt-1"></i>
+              <span class="text-secondary micro-text">{{ horario }}</span>
+            </li>
+          </ul>
+
+        </div>
+
+        <!-- ==================== COLUMNA 2: NOSOTROS & ENLACES ==================== -->
+        <div class="col-12 col-md-6 col-lg-4 text-start">
+          
+          <h5 class="footer-col-title text-white fw-bold mb-3 d-flex align-items-center gap-2">
+            <span class="red-bullet"></span>
+            <span>Nosotros</span>
+          </h5>
+
+          <p class="text-secondary small mb-3">
+            {{ nosotrosTexto }}
+          </p>
+
+          <!-- ENLACES DE NAVEGACION RAPIDA -->
+          <h6 class="text-light fw-bold small mb-2 text-uppercase letter-spacing-1">Navegación Rápida</h6>
+          <div class="row g-2">
+            <div *ngFor="let link of enlacesPaginas" class="col-6">
+              <a [routerLink]="isEditor ? null : link.slug" class="footer-nav-link d-flex align-items-center gap-2">
+                <i class="fas fa-chevron-right text-danger micro-text"></i>
+                <span>{{ link.name }}</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ==================== COLUMNA 3: INSTAGRAM & REDES ==================== -->
+        <div class="col-12 col-md-12 col-lg-4 text-start">
+          
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <h5 class="footer-col-title text-white fw-bold m-0 d-flex align-items-center gap-2">
+              <i class="fab fa-instagram text-danger"></i>
+              <span>Instagram</span>
+            </h5>
+            <a [href]="instagramUrl" target="_blank" class="instagram-handle text-danger small fw-bold text-decoration-none">
+              {{ instagramUsuario }} <i class="fas fa-external-link-alt micro-text ms-1"></i>
+            </a>
+          </div>
+
+          <p class="text-secondary small mb-3">
+            Sigue nuestros últimos proyectos, celosías instaladas y cortes en tiempo real:
+          </p>
+
+          <!-- GRID DE FOTOS DE INSTAGRAM (6 FOTOS CON HOVER ZOOM) -->
+          <div class="row g-2 mb-3">
+            <div *ngFor="let foto of instagramFotos" class="col-4">
+              <a [href]="instagramUrl" target="_blank" class="instagram-photo-thumb d-block position-relative rounded overflow-hidden">
+                <img [src]="foto" alt="Instagram Post" class="img-fluid insta-img" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=300&q=80'">
+                <div class="insta-hover-overlay d-flex align-items-center justify-content-center">
+                  <i class="fab fa-instagram text-white fs-5"></i>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- BOTONES DE REDES SOCIALES -->
+          <div class="d-flex align-items-center gap-2 pt-1">
+            <a [href]="instagramUrl" target="_blank" class="social-circle-btn insta-btn" title="Instagram">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://facebook.com/plasmexcnc" target="_blank" class="social-circle-btn" title="Facebook">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a [href]="'https://wa.me/52' + whatsapp.replace(' ', '')" target="_blank" class="social-circle-btn whatsapp-btn" title="WhatsApp">
+              <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="https://tiktok.com/@plasmexcnc" target="_blank" class="social-circle-btn" title="TikTok">
+              <i class="fab fa-tiktok"></i>
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== SUBFOOTER / COPYRIGHT ==================== -->
+    <div class="subfooter-bar mt-5 pt-3 border-top border-dark">
+      <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-2 text-center text-md-start">
+        <span class="text-secondary small">{{ copyright }}</span>
+        <div class="d-flex align-items-center gap-3">
+          <a [routerLink]="isEditor ? null : '/contacto'" class="text-secondary small text-decoration-none hover-white">Aviso de Privacidad</a>
+          <span class="text-secondary small">&bull;</span>
+          <a [routerLink]="isEditor ? null : '/contacto'" class="text-secondary small text-decoration-none hover-white">Términos de Servicio</a>
+        </div>
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- ==========================================================================
+       MODAL DE CONFIGURACION DEL FOOTER (BUILDER)
+       ========================================================================== -->
+  <div *ngIf="mostrarConfigModal" class="modal d-block modal-editor-backdrop" (click)="cerrarConfig()">
+    <div class="modal-dialog modal-dialog-centered modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-content bg-dark text-light border border-danger border-opacity-50 shadow-lg">
+        
+        <div class="modal-header border-bottom border-secondary border-opacity-25">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-shoe-prints text-danger fs-5"></i>
+            <h5 class="modal-title m-0 fw-bold">Configurar Pie de Página (Footer 3 Columnas)</h5>
+          </div>
+          <button type="button" class="btn-close btn-close-white" (click)="cerrarConfig()"></button>
+        </div>
+
+        <div class="modal-body p-4" style="max-height: 75vh; overflow-y: auto;">
+          
+          <!-- COLUMNA 1: DIRECCION Y CONTACTO -->
+          <h6 class="fw-bold text-danger border-bottom border-dark pb-2 mb-3">
+            <i class="fas fa-map-marker-alt me-2"></i>Columna 1: Dirección y Contacto
+          </h6>
+          <div class="row g-3 mb-4">
+            <div class="col-12">
+              <label class="form-label micro-text text-secondary mb-1">Dirección Completa</label>
+              <input class="form-control form-control-sm bg-black text-light border-secondary" [(ngModel)]="direccion">
+            </div>
+            <div class="col-12 col-md-4">
+              <label class="form-label micro-text text-secondary mb-1">Teléfono</label>
+              <input class="form-control form-control-sm bg-black text-light border-secondary" [(ngModel)]="telefono">
+            </div>
+            <div class="col-12 col-md-4">
+              <label class="form-label micro-text text-secondary mb-1">WhatsApp</label>
+              <input class="form-control form-control-sm bg-black text-light border-secondary" [(ngModel)]="whatsapp">
+            </div>
+            <div class="col-12 col-md-4">
+              <label class="form-label micro-text text-secondary mb-1">Correo Electrónico</label>
+              <input class="form-control form-control-sm bg-black text-light border-secondary" [(ngModel)]="email">
+            </div>
+            <div class="col-12">
+              <label class="form-label micro-text text-secondary mb-1">Horario de Atención</label>
+              <input class="form-control form-control-sm bg-black text-light border-secondary" [(ngModel)]="horario">
+            </div>
+          </div>
+
+          <!-- COLUMNA 2: NOSOTROS -->
+          <h6 class="fw-bold text-danger border-bottom border-dark pb-2 mb-3">
+            <i class="fas fa-info-circle me-2"></i>Columna 2: Resumen Nosotros
+          </h6>
+          <div class="row g-3 mb-4">
+            <div class="col-12">
+              <label class="form-label micro-text text-secondary mb-1">Texto Descriptivo de la Empresa</label>
+              <textarea rows="3" class="form-control form-control-sm bg-black text-light border-secondary" [(ngModel)]="nosotrosTexto"></textarea>
+            </div>
+          </div>
+
+          <!-- COLUMNA 3: INSTAGRAM -->
+          <h6 class="fw-bold text-danger border-bottom border-dark pb-2 mb-3">
+            <i class="fab fa-instagram me-2"></i>Columna 3: Instagram & Redes
+          </h6>
+          <div class="row g-3 mb-4">
+            <div class="col-12 col-md-6">
+              <label class="form-label micro-text text-secondary mb-1">Usuario de Instagram</label>
+              <input class="form-control form-control-sm bg-black text-light border-secondary" [(ngModel)]="instagramUsuario">
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label micro-text text-secondary mb-1">Enlace Perfil Instagram</label>
+              <input class="form-control form-control-sm bg-black text-light border-secondary" [(ngModel)]="instagramUrl">
+            </div>
+          </div>
+
+          <!-- COPYRIGHT -->
+          <h6 class="fw-bold text-danger border-bottom border-dark pb-2 mb-3">
+            <i class="fas fa-copyright me-2"></i>Copyright & Legal
+          </h6>
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label micro-text text-secondary mb-1">Texto de Derechos Reservados</label>
+              <input class="form-control form-control-sm bg-black text-light border-secondary" [(ngModel)]="copyright">
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer border-top border-secondary border-opacity-25">
+          <button type="button" class="btn btn-secondary" (click)="cerrarConfig()">Cancelar</button>
+          <button type="button" class="btn btn-danger px-4 fw-bold" (click)="guardarConfig()">Guardar Cambios</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,416 @@
+<div class="hero-master-container" [class.is-editor-mode]="isEditor">
+
+  <!-- ==================== BARRA DE HERRAMIENTAS INLINE (BUILDER) ==================== -->
+  <div *ngIf="isEditor" class="hero-editor-toolbar p-2 mb-3 rounded d-flex flex-wrap align-items-center justify-content-between gap-2">
+    <div class="d-flex align-items-center gap-2">
+      <div class="hero-toolbar-badge"><i class="fas fa-layer-group text-danger"></i></div>
+      <div>
+        <span class="hero-toolbar-title">Sección Hero</span>
+        <span class="badge bg-danger ms-2">{{ tipo | uppercase }}</span>
+      </div>
+    </div>
+
+    <!-- 5 SELECTORES DE TIPO DIRECTOS -->
+    <div class="d-flex flex-wrap align-items-center gap-1">
+      <button *ngFor="let h of heroTypesList"
+              type="button"
+              class="btn btn-sm btn-hero-type"
+              [class.active]="tipo === h.id"
+              (click)="cambiarTipo($any(h.id))"
+              [title]="h.desc">
+        <i [class]="h.icon + ' me-1'" [class.text-danger]="tipo !== h.id"></i>
+        <span>{{ h.name }}</span>
+      </button>
+    </div>
+
+    <!-- BOTONES DE ACCION -->
+    <div class="d-flex align-items-center gap-2">
+      <button class="btn btn-sm btn-outline-light" (click)="abrirConfig()">
+        <i class="fas fa-edit me-1 text-danger"></i> Editar Contenido
+      </button>
+      <button class="btn btn-sm btn-outline-danger" (click)="eliminar()" title="Eliminar componente">
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       HERO 1: INDUSTRIAL SPLIT (SPLIT EN 2 COLUMNAS CON IMAGEN Y METRICAS)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'industrial-split'" class="hero-section hero-industrial-split position-relative overflow-hidden py-5">
+    <div class="ambient-glow glow-top-right"></div>
+    <div class="container position-relative z-1 py-lg-4">
+      <div class="row align-items-center g-4 g-lg-5">
+        
+        <!-- COLUMNA TEXTO -->
+        <div class="col-12 col-lg-7 text-start">
+          <div class="hero-badge mb-3 d-inline-flex align-items-center gap-2">
+            <span class="pulsing-laser-dot"></span>
+            <span>{{ badge }}</span>
+          </div>
+
+          <h1 class="hero-main-title display-4 fw-black text-white mb-3">
+            {{ titulo }} <span class="text-gradient-red">{{ tituloResaltado }}</span>
+          </h1>
+
+          <p class="hero-lead-text text-secondary fs-6 mb-4 pe-lg-4">
+            {{ descripcion }}
+          </p>
+
+          <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
+            <a [routerLink]="isEditor ? null : botonPrimarioLink" class="btn btn-plasmex-hero-primary">
+              <i class="fas fa-calculator me-2"></i> {{ botonPrimarioTexto }}
+            </a>
+            <a [routerLink]="isEditor ? null : botonSecundarioLink" class="btn btn-plasmex-hero-outline">
+              <i class="fas fa-eye me-2 text-danger"></i> {{ botonSecundarioTexto }}
+            </a>
+          </div>
+
+          <!-- METRICAS KPI -->
+          <div *ngIf="metricas && metricas.length > 0" class="hero-stats-row d-flex flex-wrap gap-4 pt-3 border-top border-dark">
+            <div *ngFor="let m of metricas" class="hero-stat-item">
+              <span class="stat-number text-white fw-black">{{ m.numero }}</span>
+              <span class="stat-label text-secondary small d-block">{{ m.etiqueta }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- COLUMNA IMAGEN DESTACADA -->
+        <div class="col-12 col-lg-5">
+          <div class="hero-image-frame position-relative">
+            <div class="frame-chamfer-corner top-left"></div>
+            <div class="frame-chamfer-corner bottom-right"></div>
+            <img [src]="imagenUrl" [alt]="titulo" class="img-fluid hero-cover-img rounded" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=80'">
+            
+            <div class="floating-tech-card p-3 rounded d-flex align-items-center gap-3">
+              <div class="tech-card-icon"><i class="fas fa-shield-alt text-danger"></i></div>
+              <div>
+                <span class="d-block fw-bold text-white small">Corte Láser & Plasma CNC</span>
+                <span class="text-secondary micro-text">Calibres desde Cal. 26 hasta 1"</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       HERO 2: CENTERED CYBER (MINIMALISTA CENTRADO CON BADGES Y NEON)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'centered-cyber'" class="hero-section hero-centered-cyber position-relative overflow-hidden py-5 text-center">
+    <div class="ambient-glow glow-center"></div>
+    <div class="container position-relative z-1 py-lg-4">
+      
+      <div class="hero-badge mb-3 d-inline-flex align-items-center gap-2 mx-auto">
+        <i class="fas fa-bolt text-danger"></i>
+        <span>{{ badge }}</span>
+      </div>
+
+      <h1 class="hero-main-title display-3 fw-black text-white mb-3 max-w-900 mx-auto">
+        {{ titulo }} <span class="text-neon-red">{{ tituloResaltado }}</span>
+      </h1>
+
+      <p class="hero-lead-text text-secondary fs-5 mb-4 max-w-750 mx-auto">
+        {{ descripcion }}
+      </p>
+
+      <div class="d-flex flex-wrap justify-content-center align-items-center gap-3 mb-5">
+        <a [routerLink]="isEditor ? null : botonPrimarioLink" class="btn btn-plasmex-hero-primary btn-lg">
+          <i class="fas fa-paper-plane me-2"></i> {{ botonPrimarioTexto }}
+        </a>
+        <a [routerLink]="isEditor ? null : botonSecundarioLink" class="btn btn-plasmex-hero-outline btn-lg">
+          <i class="fas fa-border-all me-2 text-danger"></i> {{ botonSecundarioTexto }}
+        </a>
+      </div>
+
+      <!-- BADGES FLOTANTES DE MATERIALES -->
+      <div class="d-flex flex-wrap justify-content-center gap-2 pt-2">
+        <span class="material-chip"><i class="fas fa-check-circle text-danger me-1"></i> Acero al Carbón</span>
+        <span class="material-chip"><i class="fas fa-check-circle text-danger me-1"></i> Acero Inoxidable</span>
+        <span class="material-chip"><i class="fas fa-check-circle text-danger me-1"></i> Aluminio & Lámina</span>
+        <span class="material-chip"><i class="fas fa-check-circle text-danger me-1"></i> Placa Industrial</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       HERO 3: LASER SHOWCASE (ENCABEZADO + 3 TARJETAS DE PRODUCTO)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'laser-showcase'" class="hero-section hero-laser-showcase position-relative overflow-hidden py-5">
+    <div class="ambient-glow glow-bottom-left"></div>
+    <div class="container position-relative z-1 py-lg-3">
+      
+      <!-- TOP HEADER -->
+      <div class="text-center max-w-850 mx-auto mb-5">
+        <div class="hero-badge mb-2 d-inline-flex align-items-center gap-2">
+          <i class="fas fa-th-large text-danger"></i>
+          <span>{{ badge }}</span>
+        </div>
+        <h1 class="hero-main-title display-4 fw-black text-white mb-3">
+          {{ titulo }} <span class="text-gradient-red">{{ tituloResaltado }}</span>
+        </h1>
+        <p class="hero-lead-text text-secondary fs-6 mb-3">
+          {{ descripcion }}
+        </p>
+      </div>
+
+      <!-- 3 TARJETAS DE PRODUCTOS/SERVICIOS DESTACADOS -->
+      <div class="row g-3 g-lg-4 mb-4">
+        <div class="col-12 col-md-4">
+          <div class="showcase-card p-4 rounded h-100 d-flex flex-column">
+            <div class="showcase-card-icon mb-3"><i class="fas fa-border-all text-danger fs-3"></i></div>
+            <h4 class="text-white fw-bold mb-2">Celosías Arquitectónicas</h4>
+            <p class="text-secondary small flex-grow-1">Paneles decorativos para fachadas, bardas, barandales y divisiones en metal.</p>
+            <a [routerLink]="isEditor ? null : '/celosias'" class="showcase-link text-danger fw-bold small text-decoration-none">
+              Explorar Modelos <i class="fas fa-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <div class="showcase-card p-4 rounded h-100 d-flex flex-column highlight-card">
+            <div class="showcase-card-icon mb-3"><i class="fas fa-bullhorn text-danger fs-3"></i></div>
+            <h4 class="text-white fw-bold mb-2">Anuncios & Letreros 3D</h4>
+            <p class="text-secondary small flex-grow-1">Logotipos corpóreos, letras 3D y letreros iluminados cortados con precisión milimétrica.</p>
+            <a [routerLink]="isEditor ? null : '/anuncios'" class="showcase-link text-danger fw-bold small text-decoration-none">
+              Ver Anuncios <i class="fas fa-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <div class="showcase-card p-4 rounded h-100 d-flex flex-column">
+            <div class="showcase-card-icon mb-3"><i class="fas fa-gem text-danger fs-3"></i></div>
+            <h4 class="text-white fw-bold mb-2">Decoración & Cuadros</h4>
+            <p class="text-secondary small flex-grow-1">Diseño de arte en metal, paneles iluminados y piezas personalizadas para interiores.</p>
+            <a [routerLink]="isEditor ? null : '/decoracion'" class="showcase-link text-danger fw-bold small text-decoration-none">
+              Ver Colección <i class="fas fa-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA INFERIOR -->
+      <div class="text-center pt-2">
+        <a [routerLink]="isEditor ? null : botonPrimarioLink" class="btn btn-plasmex-hero-primary">
+          <i class="fas fa-calculator me-2"></i> {{ botonPrimarioTexto }}
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       HERO 4: DARK CINEMATIC (FONDO OSCURO CON MALLA ROJA Y CONTACTO DIRECTO)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'dark-cinematic'" class="hero-section hero-dark-cinematic position-relative overflow-hidden py-5">
+    <div class="cinematic-backdrop-overlay"></div>
+    <div class="container position-relative z-1 py-lg-4">
+      <div class="row align-items-center g-4">
+        
+        <div class="col-12 col-lg-8 text-start">
+          <div class="hero-badge mb-3 d-inline-flex align-items-center gap-2">
+            <i class="fas fa-industry text-danger"></i>
+            <span>{{ badge }}</span>
+          </div>
+
+          <h1 class="hero-main-title display-4 fw-black text-white mb-3">
+            {{ titulo }} <br><span class="text-gradient-red">{{ tituloResaltado }}</span>
+          </h1>
+
+          <p class="hero-lead-text text-secondary fs-6 mb-4 pe-lg-4">
+            {{ descripcion }}
+          </p>
+
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            <a [routerLink]="isEditor ? null : botonPrimarioLink" class="btn btn-plasmex-hero-primary btn-lg">
+              <i class="fas fa-bolt me-2"></i> {{ botonPrimarioTexto }}
+            </a>
+            <a href="https://wa.me/523335893912" target="_blank" class="btn btn-outline-success btn-lg">
+              <i class="fab fa-whatsapp me-2"></i> WhatsApp Directo
+            </a>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+          <div class="cinematic-lead-card p-4 rounded bg-dark border border-danger border-opacity-30">
+            <h5 class="text-white fw-bold mb-2"><i class="fas fa-envelope-open-text text-danger me-2"></i>¿Tienes un proyecto?</h5>
+            <p class="text-secondary small mb-3">Envíanos tus planos o medidas y te cotizamos en menos de 24 horas.</p>
+            <a [routerLink]="isEditor ? null : '/contacto'" class="btn btn-danger w-100 py-2 fw-bold">
+              Enviar Archivo DXF / PDF
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       HERO 5: STATS & PRECISION (CHECKLIST TECNICO + BARRA METRICAS INFERIOR)
+       ========================================================================== -->
+  <section *ngIf="tipo === 'stats-precision'" class="hero-section hero-stats-precision position-relative overflow-hidden py-5">
+    <div class="ambient-glow glow-top-left"></div>
+    <div class="container position-relative z-1 py-lg-4">
+      
+      <div class="row align-items-center g-4 mb-4">
+        
+        <div class="col-12 col-lg-7 text-start">
+          <div class="hero-badge mb-3 d-inline-flex align-items-center gap-2">
+            <i class="fas fa-microchip text-danger"></i>
+            <span>{{ badge }}</span>
+          </div>
+
+          <h1 class="hero-main-title display-4 fw-black text-white mb-3">
+            {{ titulo }} <span class="text-gradient-red">{{ tituloResaltado }}</span>
+          </h1>
+
+          <p class="hero-lead-text text-secondary fs-6 mb-4">
+            {{ descripcion }}
+          </p>
+
+          <div class="checklist-grid d-flex flex-column gap-2 mb-4">
+            <div class="d-flex align-items-center gap-2 text-light small">
+              <i class="fas fa-check-circle text-danger"></i>
+              <span>Corte plasma HD y láser de fibra óptica de última generación.</span>
+            </div>
+            <div class="d-flex align-items-center gap-2 text-light small">
+              <i class="fas fa-check-circle text-danger"></i>
+              <span>Maquila por pieza, prototipo o producción en serie.</span>
+            </div>
+            <div class="d-flex align-items-center gap-2 text-light small">
+              <i class="fas fa-check-circle text-danger"></i>
+              <span>Servicio de pintura electrostática (Powder Coat) y acabado final.</span>
+            </div>
+          </div>
+
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            <a [routerLink]="isEditor ? null : botonPrimarioLink" class="btn btn-plasmex-hero-primary">
+              <i class="fas fa-calculator me-2"></i> {{ botonPrimarioTexto }}
+            </a>
+            <a [routerLink]="isEditor ? null : botonSecundarioLink" class="btn btn-plasmex-hero-outline">
+              {{ botonSecundarioTexto }}
+            </a>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-5">
+          <div class="stats-preview-box p-4 rounded bg-dark border border-secondary border-opacity-25 text-center">
+            <i class="fas fa-fire-alt text-danger fs-1 mb-3"></i>
+            <h4 class="text-white fw-bold mb-1">PLASMEX CNC</h4>
+            <p class="text-secondary small mb-4">Precisión milimétrica y acabados industriales en Guadalajara.</p>
+            
+            <div class="row g-2 text-start">
+              <div class="col-6">
+                <div class="p-2 rounded bg-black border border-dark">
+                  <span class="d-block text-danger fw-bold">Mesa de Corte</span>
+                  <span class="text-secondary micro-text">Hasta 1.5m x 3.0m</span>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="p-2 rounded bg-black border border-dark">
+                  <span class="d-block text-danger fw-bold">Entrega Express</span>
+                  <span class="text-secondary micro-text">Proyectos urgentes</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       MODAL DE EDICION DE CONTENIDO (BUILDER)
+       ========================================================================== -->
+  <div *ngIf="mostrarConfigModal" class="modal d-block modal-editor-backdrop" (click)="cerrarConfig()">
+    <div class="modal-dialog modal-dialog-centered modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-content bg-dark text-light border border-danger border-opacity-50 shadow-lg">
+        
+        <div class="modal-header border-bottom border-secondary border-opacity-25">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-edit text-danger fs-5"></i>
+            <h5 class="modal-title m-0 fw-bold">Configurar Sección Hero</h5>
+          </div>
+          <button type="button" class="btn-close btn-close-white" (click)="cerrarConfig()"></button>
+        </div>
+
+        <div class="modal-body p-4">
+          <div class="row g-3">
+            
+            <!-- TIPO DE HERO -->
+            <div class="col-12">
+              <label class="form-label fw-bold small text-light">Tipo / Estilo de Hero (5 Opciones)</label>
+              <select class="form-select bg-black text-light border-secondary" [(ngModel)]="tipo">
+                <option *ngFor="let h of heroTypesList" [value]="h.id">{{ h.name }} - {{ h.desc }}</option>
+              </select>
+            </div>
+
+            <!-- BADGE SUPERIOR -->
+            <div class="col-12">
+              <label class="form-label fw-bold small text-light">Badge Superior (Texto destacado)</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="badge">
+            </div>
+
+            <!-- TITULO PRINCIPAL -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Título (Parte 1)</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="titulo">
+            </div>
+
+            <!-- TITULO RESALTADO EN ROJO -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Título Resaltado (en Rojo)</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="tituloResaltado">
+            </div>
+
+            <!-- DESCRIPCION -->
+            <div class="col-12">
+              <label class="form-label fw-bold small text-light">Descripción</label>
+              <textarea rows="3" class="form-control bg-black text-light border-secondary" [(ngModel)]="descripcion"></textarea>
+            </div>
+
+            <!-- BOTON PRIMARIO -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Texto Botón Primario</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="botonPrimarioTexto">
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Enlace Botón Primario</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="botonPrimarioLink">
+            </div>
+
+            <!-- BOTON SECUNDARIO -->
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Texto Botón Secundario</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="botonSecundarioTexto">
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label fw-bold small text-light">Enlace Botón Secundario</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="botonSecundarioLink">
+            </div>
+
+            <!-- URL IMAGEN -->
+            <div class="col-12">
+              <label class="form-label fw-bold small text-light">URL de la Imagen Destacada</label>
+              <input class="form-control bg-black text-light border-secondary" [(ngModel)]="imagenUrl">
+            </div>
+
+          </div>
+        </div>
+
+        <div class="modal-footer border-top border-secondary border-opacity-25">
+          <button type="button" class="btn btn-secondary" (click)="cerrarConfig()">Cancelar</button>
+          <button type="button" class="btn btn-danger px-4 fw-bold" (click)="guardarConfig()">Guardar Cambios</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

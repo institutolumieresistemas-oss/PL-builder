@@ -1,0 +1,244 @@
+<div class="menu-editor-container" [class.is-builder]="isEditorPreview">
+
+  <!-- ==========================================================================
+       BARRA DE CONTROL DIRECTA EN EL COMPONENTE (SOLO BUILDER)
+       ========================================================================== -->
+  <div *ngIf="isEditorPreview" class="component-editor-bar p-2 mb-2 rounded d-flex flex-wrap align-items-center justify-content-between gap-2">
+    
+    <!-- TITULO Y BADGE -->
+    <div class="d-flex align-items-center gap-2">
+      <div class="editor-bar-icon"><i class="fas fa-bars text-danger"></i></div>
+      <div>
+        <span class="editor-bar-title">Menú Global Fijo</span>
+        <span class="badge bg-danger ms-2">Fijo en todas las páginas</span>
+      </div>
+    </div>
+
+    <!-- 6 BOTONES SELECTORES DE ESTILO DIRECTOS EN EL COMPONENTE -->
+    <div class="d-flex flex-wrap align-items-center gap-1">
+      <button *ngFor="let opt of menuOptions"
+              type="button"
+              class="btn btn-sm btn-style-pill"
+              [class.active]="styleType === opt.id"
+              (click)="seleccionarEstilo(opt.id)"
+              [title]="opt.desc">
+        <i [class]="opt.icon + ' me-1'" [class.text-danger]="styleType !== opt.id"></i>
+        <span>{{ opt.name }}</span>
+      </button>
+    </div>
+
+    <!-- BOTON DE MAS DETALLES / TOGGLE TRANSPARENCIA -->
+    <div class="d-flex align-items-center gap-2">
+      <button class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1" (click)="toggleTransparencia()" [class.active]="sinTransparencia">
+        <i class="fas fa-adjust me-1" [class.text-warning]="sinTransparencia"></i>
+        <span>{{ sinTransparencia ? 'Fondo Sólido' : 'Translúcido' }}</span>
+      </button>
+      <button class="btn btn-sm btn-outline-danger" (click)="abrirModalEstilos()">
+        <i class="fas fa-th-large me-1"></i> Ver Catálogo
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ==========================================================================
+       NAVBAR PRINCIPAL
+       ========================================================================== -->
+  <header class="plasmex-navbar-wrapper"
+          [class.editor-preview]="isEditorPreview"
+          [class.solid-bg]="sinTransparencia"
+          [class.style-capsule]="styleType === 'capsule'"
+          [class.style-glass-dark]="styleType === 'glass-dark'"
+          [class.style-cyber-cnc]="styleType === 'cyber-cnc'"
+          [class.style-split-brand]="styleType === 'split-brand'"
+          [class.style-neon-glow]="styleType === 'neon-glow'"
+          [class.style-compact-topbar]="styleType === 'compact-topbar'">
+
+    <!-- ==================== OPCION 6: DUAL TOPBAR (BARRA SUPERIOR) ==================== -->
+    <div *ngIf="styleType === 'compact-topbar'" class="top-microbar py-1 px-4 d-none d-lg-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center gap-4 text-secondary small">
+        <span><i class="fas fa-microchip text-danger me-1"></i> Especialistas en Corte Plasma & Láser CNC</span>
+        <span><i class="fas fa-map-marker-alt text-danger me-1"></i> Guadalajara, Jalisco</span>
+      </div>
+      <div class="d-flex align-items-center gap-3">
+        <a href="tel:3335893912" class="top-contact-link"><i class="fas fa-phone-alt me-1 text-danger"></i> 33 3589 3912</a>
+        <span class="text-secondary">|</span>
+        <a href="https://wa.me/523335893912" target="_blank" class="top-whatsapp-link"><i class="fab fa-whatsapp me-1 text-success"></i> WhatsApp</a>
+      </div>
+    </div>
+
+    <!-- ==================== CONTENEDOR PRINCIPAL DEL NAVBAR ==================== -->
+    <nav class="plasmex-nav-container">
+
+      <!-- ========== CASO GENERAL: (capsule, glass-dark, cyber-cnc, neon-glow, compact-topbar) ========== -->
+      <div *ngIf="styleType !== 'split-brand'" class="nav-inner d-flex align-items-center justify-content-between w-100">
+        
+        <!-- LOGO / BRAND -->
+        <a [routerLink]="isEditorPreview ? null : '/home'" class="brand-link d-flex align-items-center gap-2">
+          <div class="brand-badge">
+            <i class="fas fa-fire-alt text-danger brand-icon"></i>
+          </div>
+          <div class="brand-text d-flex flex-column">
+            <span class="brand-title">PLASMEX <span class="text-danger">CNC</span></span>
+            <span class="brand-subtitle">CORTE & MAQUILA</span>
+          </div>
+        </a>
+
+        <!-- MENU LINKS (DESKTOP) -->
+        <ul class="nav-links d-none d-xl-flex align-items-center gap-1 mb-0 p-0">
+          <li *ngFor="let item of menuItems" class="nav-item">
+            <a [routerLink]="isEditorPreview ? null : item.slug" 
+               routerLinkActive="active" 
+               class="nav-link-item">
+              <i *ngIf="item.icon" [class]="item.icon + ' me-1 nav-icon-item'"></i>
+              <span>{{ item.name }}</span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- CTA BUTTON & BURGER -->
+        <div class="d-flex align-items-center gap-2">
+          <a [routerLink]="isEditorPreview ? null : '/contacto'" class="btn btn-plasmex-red d-none d-sm-inline-flex align-items-center gap-2">
+            <i class="fas fa-calculator"></i>
+            <span>Cotizar Ahora</span>
+          </a>
+          <button class="burger-btn d-xl-none" (click)="toggleMobileMenu()" aria-label="Abrir menú móvil">
+            <i class="fas" [class.fa-bars]="!mobileMenuOpen()" [class.fa-times]="mobileMenuOpen()"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- ========== OPCION 4: SPLIT BRAND (LOGO CENTRAL CON ALAS DIVIDIDAS) ========== -->
+      <div *ngIf="styleType === 'split-brand'" class="nav-inner-split d-flex align-items-center justify-content-between w-100">
+        
+        <!-- ALA IZQUIERDA -->
+        <ul class="nav-links d-none d-xl-flex align-items-center gap-1 mb-0 p-0 flex-grow-1 justify-content-end pe-3">
+          <li *ngFor="let item of leftMenuItems" class="nav-item">
+            <a [routerLink]="isEditorPreview ? null : item.slug" 
+               routerLinkActive="active" 
+               class="nav-link-item">
+              <span>{{ item.name }}</span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- LOGO CENTRAL DESTACADO -->
+        <a [routerLink]="isEditorPreview ? null : '/home'" class="brand-link brand-split-center d-flex flex-column align-items-center px-3">
+          <div class="brand-badge-center">
+            <i class="fas fa-fire-alt text-danger"></i>
+          </div>
+          <span class="brand-title-split">PLASMEX <span class="text-danger">CNC</span></span>
+        </a>
+
+        <!-- ALA DERECHA -->
+        <ul class="nav-links d-none d-xl-flex align-items-center gap-1 mb-0 p-0 flex-grow-1 justify-content-start ps-3">
+          <li *ngFor="let item of rightMenuItems" class="nav-item">
+            <a [routerLink]="isEditorPreview ? null : item.slug" 
+               routerLinkActive="active" 
+               class="nav-link-item">
+              <span>{{ item.name }}</span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- CTA BUTTON & BURGER -->
+        <div class="d-flex align-items-center gap-2">
+          <a [routerLink]="isEditorPreview ? null : '/contacto'" class="btn btn-plasmex-red d-none d-md-inline-flex align-items-center gap-2">
+            <i class="fas fa-bolt"></i>
+            <span>Cotizar</span>
+          </a>
+          <button class="burger-btn d-xl-none" (click)="toggleMobileMenu()" aria-label="Abrir menú móvil">
+            <i class="fas" [class.fa-bars]="!mobileMenuOpen()" [class.fa-times]="mobileMenuOpen()"></i>
+          </button>
+        </div>
+
+      </div>
+
+    </nav>
+
+    <!-- ==================== MENU MOVIL (OFFCANVAS / DRAWER) ==================== -->
+    <div *ngIf="mobileMenuOpen()" class="mobile-menu-backdrop" (click)="closeMobileMenu()">
+      <div class="mobile-menu-drawer p-4" (click)="$event.stopPropagation()">
+        
+        <div class="d-flex align-items-center justify-content-between mb-4 pb-3 border-bottom border-dark">
+          <div class="d-flex align-items-center gap-2">
+            <div class="brand-badge"><i class="fas fa-fire-alt text-danger"></i></div>
+            <span class="brand-title">PLASMEX <span class="text-danger">CNC</span></span>
+          </div>
+          <button class="btn-close btn-close-white" (click)="closeMobileMenu()"></button>
+        </div>
+
+        <ul class="mobile-nav-list list-unstyled d-flex flex-column gap-2 mb-4">
+          <li *ngFor="let item of menuItems">
+            <a [routerLink]="isEditorPreview ? null : item.slug" 
+               routerLinkActive="active"
+               (click)="closeMobileMenu()"
+               class="mobile-nav-link d-flex align-items-center justify-content-between p-3 rounded">
+              <span class="d-flex align-items-center gap-3">
+                <i *ngIf="item.icon" [class]="item.icon + ' text-danger'"></i>
+                <span class="fw-semibold">{{ item.name }}</span>
+              </span>
+              <i class="fas fa-chevron-right small text-secondary"></i>
+            </a>
+          </li>
+        </ul>
+
+        <div class="d-flex flex-column gap-2 mt-auto">
+          <a [routerLink]="isEditorPreview ? null : '/contacto'" (click)="closeMobileMenu()" class="btn btn-plasmex-red w-100 py-3">
+            <i class="fas fa-calculator me-2"></i> Solicitar Cotización
+          </a>
+          <a href="https://wa.me/523335893912" target="_blank" class="btn btn-outline-success w-100 py-2">
+            <i class="fab fa-whatsapp me-2"></i> Contactar por WhatsApp
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+  </header>
+
+  <!-- ==========================================================================
+       MODAL DE SELECCION VISUAL DE LOS 6 ESTILOS (BUILDER)
+       ========================================================================== -->
+  <div *ngIf="mostrarModalEstilos()" class="modal d-block modal-editor-backdrop" (click)="cerrarModalEstilos()">
+    <div class="modal-dialog modal-dialog-centered modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-content bg-dark text-light border border-danger border-opacity-50 shadow-lg">
+        
+        <div class="modal-header border-bottom border-secondary border-opacity-25 pb-3">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-bars text-danger fs-5"></i>
+            <h5 class="modal-title m-0 fw-bold">Seleccionar Estilo del Menú Fijo (6 Opciones)</h5>
+          </div>
+          <button type="button" class="btn-close btn-close-white" (click)="cerrarModalEstilos()"></button>
+        </div>
+
+        <div class="modal-body p-4">
+          <p class="text-secondary small mb-3">El estilo que selecciones se aplicará de forma fija en todas las páginas de Plasmex CNC:</p>
+          
+          <div class="row g-3">
+            <div *ngFor="let opt of menuOptions" class="col-12 col-md-6">
+              <div class="card p-3 modal-style-card h-100" 
+                   [class.active]="styleType === opt.id"
+                   (click)="seleccionarEstilo(opt.id); cerrarModalEstilos()">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                  <span class="d-flex align-items-center gap-2 fw-bold text-white">
+                    <i [class]="opt.icon + ' text-danger fs-5'"></i>
+                    <span>{{ opt.name }}</span>
+                  </span>
+                  <span *ngIf="styleType === opt.id" class="badge bg-danger">Activo ✓</span>
+                </div>
+                <p class="text-secondary small mb-0">{{ opt.desc }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer border-top border-secondary border-opacity-25">
+          <button type="button" class="btn btn-secondary" (click)="cerrarModalEstilos()">Cerrar</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

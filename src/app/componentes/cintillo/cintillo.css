@@ -1,0 +1,252 @@
+/* ==========================================================================
+   PLASMEX CNC - CINTILLO INTERMEDIO (4 MODERN CTA STRIP VARIANTS)
+   ========================================================================== */
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.cintillo-master-container {
+  width: 100%;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  margin: 1.5rem 0;
+}
+
+.cintillo-master-container.is-editor-mode {
+  border: 1px dashed rgba(220, 38, 38, 0.35);
+  border-radius: 12px;
+  padding: 8px;
+  background: rgba(15, 23, 42, 0.4);
+}
+
+.fw-black { font-weight: 900; }
+.micro-text { font-size: 0.72rem; }
+
+/* ==================== EDITOR TOOLBAR ==================== */
+.cintillo-editor-toolbar {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.cintillo-toolbar-badge {
+  width: 26px;
+  height: 26px;
+  background: rgba(220, 38, 38, 0.15);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+}
+
+.cintillo-toolbar-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.btn-cintillo-pill {
+  background-color: #1e293b;
+  color: #cbd5e1;
+  border: 1px solid #334155;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.55rem;
+  transition: all 0.2s ease;
+}
+
+.btn-cintillo-pill:hover {
+  background-color: #334155;
+  color: #ffffff;
+  border-color: rgba(220, 38, 38, 0.4);
+}
+
+.btn-cintillo-pill.active {
+  background: #dc2626;
+  color: #ffffff;
+  border-color: #ef4444;
+  box-shadow: 0 2px 10px rgba(220, 38, 38, 0.5);
+}
+
+/* ==================== BASE BADGES & BUTTONS ==================== */
+.cintillo-badge-light {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50rem;
+  text-transform: uppercase;
+}
+
+.cintillo-badge-red {
+  background: rgba(220, 38, 38, 0.15);
+  border: 1px solid rgba(220, 38, 38, 0.4);
+  color: #fca5a5;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50rem;
+  text-transform: uppercase;
+}
+
+.pulsing-red-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #ef4444;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #ef4444;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.9); opacity: 0.7; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.7; }
+}
+
+.text-gradient-red {
+  background: linear-gradient(135deg, #ff3333 0%, #dc2626 50%, #991b1b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.text-white-glow {
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+.btn-plasmex-hero-primary {
+  background: linear-gradient(135deg, #e50914 0%, #b91c1c 100%);
+  color: #ffffff !important;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 0.65rem 1.6rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 18px rgba(220, 38, 38, 0.45);
+  text-decoration: none;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-plasmex-hero-primary:hover {
+  background: linear-gradient(135deg, #ff1a26 0%, #dc2626 100%);
+  box-shadow: 0 6px 25px rgba(220, 38, 38, 0.7);
+  transform: translateY(-2px);
+}
+
+.btn-cintillo-dark-gloss {
+  background: #09090b;
+  color: #ffffff !important;
+  font-weight: 800;
+  font-size: 0.95rem;
+  padding: 0.7rem 1.7rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  text-decoration: none;
+  transition: all 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-cintillo-dark-gloss:hover {
+  background: #18181b;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.8);
+  transform: translateY(-2px);
+}
+
+/* ==================== 1. ROJO LASER NEON ==================== */
+.cintillo-laser-red {
+  background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+  box-shadow: 0 10px 35px rgba(220, 38, 38, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.laser-backdrop-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.05),
+    rgba(0, 0, 0, 0.05) 12px,
+    transparent 12px,
+    transparent 24px
+  );
+  pointer-events: none;
+}
+
+/* ==================== 2. DARK CYBER STRIP ==================== */
+.cintillo-dark-cyber {
+  background: #0d0d10;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.top-laser-beam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, #dc2626 50%, transparent 100%);
+}
+
+.bottom-laser-beam {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, #dc2626 50%, transparent 100%);
+}
+
+/* ==================== 3. MINIMAL CAPSULE ==================== */
+.cintillo-capsule-box {
+  background: rgba(18, 18, 22, 0.88);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(220, 38, 38, 0.4);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(220, 38, 38, 0.15);
+}
+
+.capsule-icon-circle {
+  width: 44px;
+  height: 44px;
+  background: rgba(220, 38, 38, 0.15);
+  border: 1px solid rgba(220, 38, 38, 0.35);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+/* ==================== 4. SPLIT ACCENT BOX ==================== */
+.cintillo-split-box {
+  border: 1px solid rgba(220, 38, 38, 0.35);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.split-accent-badge {
+  background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+}
+
+/* ==================== MODAL ==================== */
+.modal-editor-backdrop {
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(6px);
+  z-index: 3000;
+}
