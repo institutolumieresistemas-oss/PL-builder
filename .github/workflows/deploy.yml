@@ -33,12 +33,18 @@ jobs:
           RAW_SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           mkdir -p ~/.ssh
-          if echo "$RAW_SSH_KEY" | grep -q "BEGIN"; then
-            printf '%s\n' "$RAW_SSH_KEY" | tr -d '\r' > ~/.ssh/deploy_key
-          else
-            echo "$RAW_SSH_KEY" | base64 -d > ~/.ssh/deploy_key
-          fi
-          echo "" >> ~/.ssh/deploy_key
+          python3 -c "
+          import os, base64
+          raw = os.environ.get('RAW_SSH_KEY', '').strip()
+          if 'BEGIN' in raw:
+              key = raw
+          else:
+              cleaned = ''.join(raw.split())
+              key = base64.b64decode(cleaned).decode('utf-8')
+          path = os.path.expanduser('~/.ssh/deploy_key')
+          with open(path, 'w') as f:
+              f.write(key.strip() + '\n')
+          "
           chmod 600 ~/.ssh/deploy_key
           cat << 'EOF' > ~/.ssh/config
           Host *
