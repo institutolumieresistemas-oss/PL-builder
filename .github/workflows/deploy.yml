@@ -28,14 +28,14 @@ jobs:
       - name: 🏗️ Compilar para Producción
         run: npm run build:prod
 
-      - name: 🚀 Desplegar por SSH sin Password
-        uses: easingthemes/ssh-deploy@v5.1.0
-        with:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          REMOTE_HOST: ${{ secrets.SSH_HOST }}
-          REMOTE_USER: ${{ secrets.SSH_USER }}
-          REMOTE_PORT: ${{ secrets.SSH_PORT }}
-          ARGS: "-rltgoDzvO --delete"
-          SOURCE: "dist/builder/browser/"
-          TARGET: ${{ secrets.TARGET_DIR || secrets.BUILDER_TARGET_DIR }}
-          EXCLUDE: "/.git/, /node_modules/, /.github/"
+      - name: 🔑 Configurar Llave SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/deploy_key
+          echo "" >> ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p ${{ secrets.SSH_PORT || '65002' }} -H ${{ secrets.SSH_HOST || '31.170.166.250' }} >> ~/.ssh/known_hosts 2>/dev/null || true
+
+      - name: 🚀 Sincronizar Archivos a Hostinger con Rsync
+        run: |
+          rsync -avz --delete -e "ssh -p ${{ secrets.SSH_PORT || '65002' }} -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" dist/builder/browser/ ${{ secrets.SSH_USER || 'u740702945' }}@${{ secrets.SSH_HOST || '31.170.166.250' }}:${{ secrets.TARGET_DIR }}
