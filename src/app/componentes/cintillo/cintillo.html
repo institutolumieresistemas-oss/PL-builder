@@ -46,11 +46,11 @@
         
         <div class="col-12 col-lg-8 text-start">
           <div *ngIf="badge" class="cintillo-badge-light mb-2 d-inline-flex align-items-center gap-2">
-            <i class="fas fa-bolt"></i>
+            <i class="fas fa-bolt parpadeo-laser"></i>
             <span>{{ badge }}</span>
           </div>
           <h3 class="cintillo-title text-white fw-black m-0 display-6">
-            {{ titulo }} <span class="text-white-glow">{{ tituloResaltado }}</span>
+            {{ titulo }} <span class="text-white-glow pen-circle">{{ tituloResaltado }}</span>
           </h3>
           <p *ngIf="subtitulo" class="text-light text-opacity-90 small mb-0 mt-2">
             {{ subtitulo }}
@@ -58,7 +58,7 @@
         </div>
 
         <div class="col-12 col-lg-4 text-lg-end">
-          <a [href]="botonLink" target="_blank" class="btn btn-cintillo-dark-gloss btn-lg shadow-lg">
+          <a [href]="botonLink" target="_blank" class="btn btn-cintillo-dark-gloss btn-lg shadow-lg btn-radar">
             <i *ngIf="botonIcono" [class]="botonIcono + ' me-2'"></i>
             <span>{{ botonTexto }}</span>
           </a>
@@ -80,11 +80,11 @@
         
         <div class="col-12 col-lg-8 text-start">
           <div *ngIf="badge" class="cintillo-badge-red mb-2 d-inline-flex align-items-center gap-2">
-            <span class="pulsing-red-dot"></span>
+            <span class="pulsing-red-dot parpadeo-laser"></span>
             <span>{{ badge }}</span>
           </div>
           <h3 class="cintillo-title text-white fw-black m-0 display-6">
-            {{ titulo }} <span class="text-gradient-red">{{ tituloResaltado }}</span>
+            {{ titulo }} <span class="text-gradient-red laser-circle">{{ tituloResaltado }}</span>
           </h3>
           <p *ngIf="subtitulo" class="text-secondary small mb-0 mt-2">
             {{ subtitulo }}
@@ -92,7 +92,7 @@
         </div>
 
         <div class="col-12 col-lg-4 text-lg-end">
-          <a [href]="botonLink" target="_blank" class="btn btn-plasmex-hero-primary btn-lg shadow-lg">
+          <a [href]="botonLink" target="_blank" class="btn btn-plasmex-hero-primary btn-lg shadow-lg btn-radar">
             <i *ngIf="botonIcono" [class]="botonIcono + ' me-2'"></i>
             <span>{{ botonTexto }}</span>
           </a>
@@ -110,18 +110,18 @@
       
       <div class="d-flex align-items-center gap-3 ps-lg-3">
         <div class="capsule-icon-circle d-none d-sm-flex">
-          <i class="fas fa-fire-alt text-danger"></i>
+          <i class="fas fa-fire-alt text-danger parpadeo-laser"></i>
         </div>
         <div>
           <h4 class="text-white fw-bold m-0 fs-5">
-            {{ titulo }} <span class="text-danger">{{ tituloResaltado }}</span>
+            {{ titulo }} <span class="text-danger marker-underline">{{ tituloResaltado }}</span>
           </h4>
           <span *ngIf="subtitulo" class="text-secondary micro-text d-block">{{ subtitulo }}</span>
         </div>
       </div>
 
       <div class="pe-lg-3 flex-shrink-0">
-        <a [href]="botonLink" target="_blank" class="btn btn-plasmex-hero-primary rounded-pill px-4">
+        <a [href]="botonLink" target="_blank" class="btn btn-plasmex-hero-primary rounded-pill px-4 btn-radar">
           <i *ngIf="botonIcono" [class]="botonIcono + ' me-2'"></i>
           <span>{{ botonTexto }}</span>
         </a>
@@ -138,7 +138,7 @@
       
       <!-- INSIGNIA LATERAL DE CALIDAD -->
       <div class="col-12 col-md-3 col-lg-2 split-accent-badge p-4 d-flex flex-column align-items-center justify-content-center text-center">
-        <i class="fas fa-shipping-fast text-white fs-1 mb-2"></i>
+        <i class="fas fa-shipping-fast text-white fs-1 mb-2 parpadeo-laser"></i>
         <span class="text-white fw-black small text-uppercase">Entrega Rápida</span>
         <span class="text-white text-opacity-75 micro-text">Garantizada</span>
       </div>
@@ -149,14 +149,14 @@
           <span>{{ badge }}</span>
         </div>
         <h4 class="text-white fw-bold m-0 mb-1">
-          {{ titulo }} <span class="text-gradient-red">{{ tituloResaltado }}</span>
+          {{ titulo }} <span class="text-gradient-red pen-circle">{{ tituloResaltado }}</span>
         </h4>
         <p *ngIf="subtitulo" class="text-secondary small mb-0">{{ subtitulo }}</p>
       </div>
 
       <!-- BOTON DERECHO -->
       <div class="col-12 col-md-3 col-lg-3 p-4 bg-black border-start border-secondary border-opacity-25 d-flex align-items-center justify-content-center">
-        <a [href]="botonLink" target="_blank" class="btn btn-plasmex-hero-primary w-100 py-3 text-center">
+        <a [href]="botonLink" target="_blank" class="btn btn-plasmex-hero-primary w-100 py-3 text-center btn-radar">
           <i *ngIf="botonIcono" [class]="botonIcono + ' me-2'"></i>
           <span>{{ botonTexto }}</span>
         </a>

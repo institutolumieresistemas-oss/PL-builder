@@ -76,7 +76,7 @@
               <a [href]="'tel:' + telefono" class="footer-link small">{{ telefono }}</a>
             </li>
             <li class="d-flex align-items-center gap-2">
-              <i class="fab fa-whatsapp text-success"></i>
+              <i class="fab fa-whatsapp text-success parpadeo-laser"></i>
               <a [href]="'https://wa.me/52' + whatsapp.replace(' ', '')" target="_blank" class="footer-link small text-success fw-bold">WhatsApp: {{ whatsapp }}</a>
             </li>
             <li class="d-flex align-items-center gap-2">
@@ -121,7 +121,7 @@
           
           <div class="d-flex align-items-center justify-content-between mb-3">
             <h5 class="footer-col-title text-white fw-bold m-0 d-flex align-items-center gap-2">
-              <i class="fab fa-instagram text-danger"></i>
+              <i class="fab fa-instagram text-danger parpadeo-laser"></i>
               <span>Instagram</span>
             </h5>
             <a [href]="instagramUrl" target="_blank" class="instagram-handle text-danger small fw-bold text-decoration-none">
@@ -136,7 +136,7 @@
           <!-- GRID DE FOTOS DE INSTAGRAM (6 FOTOS CON HOVER ZOOM) -->
           <div class="row g-2 mb-3">
             <div *ngFor="let foto of instagramFotos" class="col-4">
-              <a [href]="instagramUrl" target="_blank" class="instagram-photo-thumb d-block position-relative rounded overflow-hidden">
+              <a [href]="instagramUrl" target="_blank" class="instagram-photo-thumb d-block position-relative rounded overflow-hidden laser-scan-sweep">
                 <img [src]="foto" alt="Instagram Post" class="img-fluid insta-img" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=300&q=80'">
                 <div class="insta-hover-overlay d-flex align-items-center justify-content-center">
                   <i class="fab fa-instagram text-white fs-5"></i>

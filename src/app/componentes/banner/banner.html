@@ -64,12 +64,12 @@
         
         <!-- COLUMNA IMAGEN -->
         <div class="col-12 col-lg-6" [class.order-lg-1]="posicionImagen === 'izquierda'" [class.order-lg-2]="posicionImagen === 'derecha'">
-          <div class="banner-img-frame-cyber position-relative rounded overflow-hidden">
+          <div class="banner-img-frame-cyber position-relative rounded overflow-hidden laser-scan-sweep">
             <div class="chamfer-tag top-left"></div>
             <div class="chamfer-tag bottom-right"></div>
             <img [src]="imagenUrl" [alt]="titulo" class="img-fluid banner-main-img" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=80'">
             
-            <div class="floating-cyber-badge p-3 rounded d-flex align-items-center gap-3">
+            <div class="floating-cyber-badge p-3 rounded d-flex align-items-center gap-3 gentle-float">
               <div class="badge-icon-red"><i class="fas fa-check-double text-danger"></i></div>
               <div>
                 <span class="d-block text-white fw-bold small">Corte Láser de Fibra Óptica</span>
@@ -82,12 +82,12 @@
         <!-- COLUMNA TEXTO -->
         <div class="col-12 col-lg-6 text-start" [class.order-lg-2]="posicionImagen === 'izquierda'" [class.order-lg-1]="posicionImagen === 'derecha'">
           <div *ngIf="badge" class="banner-badge-red mb-3 d-inline-flex align-items-center gap-2">
-            <span class="pulsing-laser-dot"></span>
+            <span class="pulsing-laser-dot parpadeo-laser"></span>
             <span>{{ badge }}</span>
           </div>
 
           <h2 class="display-5 fw-black text-white mb-3">
-            {{ titulo }} <span class="text-gradient-red">{{ tituloResaltado }}</span>
+            {{ titulo }} <span class="text-gradient-red pen-circle">{{ tituloResaltado }}</span>
           </h2>
 
           <p class="text-secondary fs-6 mb-4">
@@ -103,7 +103,7 @@
           </div>
 
           <div class="d-flex flex-wrap align-items-center gap-3">
-            <a [routerLink]="isEditor ? null : botonLink" class="btn btn-plasmex-hero-primary">
+            <a [routerLink]="isEditor ? null : botonLink" class="btn btn-plasmex-hero-primary btn-radar">
               <i class="fas fa-calculator me-2"></i> {{ botonTexto }}
             </a>
             <a *ngIf="botonSecundarioTexto" [routerLink]="isEditor ? null : botonSecundarioLink" class="btn btn-plasmex-hero-outline">
@@ -126,7 +126,7 @@
         
         <!-- COLUMNA IMAGEN -->
         <div class="col-12 col-lg-6" [class.order-lg-1]="posicionImagen === 'izquierda'" [class.order-lg-2]="posicionImagen === 'derecha'">
-          <div class="banner-img-frame-glass rounded-4 overflow-hidden position-relative">
+          <div class="banner-img-frame-glass rounded-4 overflow-hidden position-relative laser-scan-sweep">
             <img [src]="imagenUrl" [alt]="titulo" class="img-fluid banner-main-img" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=80'">
           </div>
         </div>
@@ -134,12 +134,12 @@
         <!-- COLUMNA TEXTO -->
         <div class="col-12 col-lg-6 text-start" [class.order-lg-2]="posicionImagen === 'izquierda'" [class.order-lg-1]="posicionImagen === 'derecha'">
           <div *ngIf="badge" class="banner-badge-glass mb-3 d-inline-flex align-items-center gap-2">
-            <i class="fas fa-sparkles text-danger"></i>
+            <i class="fas fa-sparkles text-danger parpadeo-laser"></i>
             <span>{{ badge }}</span>
           </div>
 
           <h2 class="display-5 fw-black text-white mb-3">
-            {{ titulo }} <span class="text-neon-red">{{ tituloResaltado }}</span>
+            {{ titulo }} <span class="text-neon-red laser-circle">{{ tituloResaltado }}</span>
           </h2>
 
           <p class="text-secondary fs-6 mb-4">
@@ -157,7 +157,7 @@
           </div>
 
           <div class="d-flex flex-wrap align-items-center gap-3">
-            <a [routerLink]="isEditor ? null : botonLink" class="btn btn-plasmex-hero-primary btn-lg">
+            <a [routerLink]="isEditor ? null : botonLink" class="btn btn-plasmex-hero-primary btn-lg btn-radar">
               <i class="fas fa-bolt me-2"></i> {{ botonTexto }}
             </a>
           </div>
@@ -176,7 +176,7 @@
         
         <!-- COLUMNA IMAGEN -->
         <div class="col-12 col-lg-6" [class.order-lg-1]="posicionImagen === 'izquierda'" [class.order-lg-2]="posicionImagen === 'derecha'">
-          <div class="banner-img-frame-editorial rounded overflow-hidden">
+          <div class="banner-img-frame-editorial rounded overflow-hidden laser-scan-sweep">
             <img [src]="imagenUrl" [alt]="titulo" class="img-fluid banner-main-img" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=80'">
           </div>
         </div>
@@ -185,12 +185,12 @@
         <div class="col-12 col-lg-6 text-start" [class.order-lg-2]="posicionImagen === 'izquierda'" [class.order-lg-1]="posicionImagen === 'derecha'">
           
           <div class="editorial-index-tag mb-2 d-flex align-items-center gap-2">
-            <span class="text-danger fw-black fs-4">01.</span>
+            <span class="text-danger fw-black fs-4 parpadeo-laser">01.</span>
             <span class="text-secondary small fw-bold text-uppercase">{{ badge }}</span>
           </div>
 
           <h2 class="display-6 fw-black text-white mb-3">
-            {{ titulo }} <br><span class="text-gradient-red">{{ tituloResaltado }}</span>
+            {{ titulo }} <br><span class="text-gradient-red marker-underline">{{ tituloResaltado }}</span>
           </h2>
 
           <p class="text-secondary small mb-4">
@@ -206,7 +206,7 @@
           </ul>
 
           <div class="d-flex flex-wrap align-items-center gap-3">
-            <a [routerLink]="isEditor ? null : botonLink" class="btn btn-plasmex-hero-primary">
+            <a [routerLink]="isEditor ? null : botonLink" class="btn btn-plasmex-hero-primary btn-radar">
               {{ botonTexto }}
             </a>
             <a *ngIf="botonSecundarioTexto" [routerLink]="isEditor ? null : botonSecundarioLink" class="btn btn-plasmex-hero-outline">

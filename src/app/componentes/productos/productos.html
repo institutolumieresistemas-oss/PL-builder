@@ -41,11 +41,11 @@
        ========================================================================== -->
   <div class="productos-header-block text-center max-w-850 mx-auto mb-4 px-3">
     <div class="productos-badge mb-2 d-inline-flex align-items-center gap-2">
-      <i class="fas fa-fire-alt text-danger"></i>
+      <i class="fas fa-fire-alt text-danger parpadeo-laser"></i>
       <span>{{ badge }}</span>
     </div>
     <h2 class="display-5 fw-black text-white mb-2">
-      {{ titulo }} <span class="text-gradient-red">{{ tituloResaltado }}</span>
+      {{ titulo }} <span class="text-gradient-red pen-circle">{{ tituloResaltado }}</span>
     </h2>
     <p *ngIf="descripcion" class="text-secondary small max-w-700 mx-auto mb-0">
       {{ descripcion }}
@@ -61,7 +61,7 @@
         <div class="photo-name-card h-100 rounded overflow-hidden d-flex flex-column">
           
           <!-- FOTO DEL PRODUCTO -->
-          <div class="photo-container position-relative overflow-hidden">
+          <div class="photo-container position-relative overflow-hidden laser-scan-sweep">
             <img [src]="p.imagenUrl" [alt]="p.nombre" class="photo-img" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80'">
             <span *ngIf="p.categoria" class="photo-chip-badge">{{ p.categoria }}</span>
           </div>
@@ -85,7 +85,7 @@
   <section *ngIf="tipo === 'photo-overlay'" class="layout-photo-overlay px-2 px-md-3">
     <div class="row g-3 g-lg-4">
       <div *ngFor="let p of productos" class="col-12 col-sm-6 col-lg-4">
-        <div class="photo-overlay-card position-relative rounded overflow-hidden">
+        <div class="photo-overlay-card position-relative rounded overflow-hidden laser-scan-sweep">
           
           <img [src]="p.imagenUrl" [alt]="p.nombre" class="overlay-img" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80'">
           
@@ -109,7 +109,7 @@
       <div *ngFor="let p of productos" class="col-12 col-sm-6 col-lg-4">
         <div class="polaroid-card p-2 rounded bg-dark border border-secondary border-opacity-25 h-100 d-flex flex-column">
           
-          <div class="polaroid-photo-box rounded overflow-hidden mb-2">
+          <div class="polaroid-photo-box rounded overflow-hidden mb-2 laser-scan-sweep">
             <img [src]="p.imagenUrl" [alt]="p.nombre" class="polaroid-img" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80'">
           </div>
 
@@ -130,7 +130,7 @@
   <section *ngIf="tipo === 'masonry-gallery'" class="layout-masonry-gallery px-2 px-md-3">
     <div class="row g-3">
       <div *ngFor="let p of productos; let i = index" [class]="(i % 4 === 0 || i % 4 === 3) ? 'col-12 col-md-7' : 'col-12 col-md-5'">
-        <div class="masonry-item position-relative rounded overflow-hidden">
+        <div class="masonry-item position-relative rounded overflow-hidden laser-scan-sweep">
           <img [src]="p.imagenUrl" [alt]="p.nombre" class="masonry-img" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80'">
           
           <!-- NOMBRE Y CATEGORIA -->
@@ -155,7 +155,7 @@
     <div *ngIf="productos.length > 0" class="carousel-box p-3 rounded bg-dark border border-danger border-opacity-30 position-relative">
       
       <!-- FOTO PRINCIPAL -->
-      <div class="carousel-photo-frame rounded overflow-hidden position-relative mb-3">
+      <div class="carousel-photo-frame rounded overflow-hidden position-relative mb-3 laser-scan-sweep">
         <img [src]="productos[carruselIndex].imagenUrl" [alt]="productos[carruselIndex].nombre" class="carousel-main-img" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80'">
         
         <!-- NOMBRE SUPERPUESTO EN EL SLIDER -->
@@ -164,7 +164,7 @@
             <span *ngIf="productos[carruselIndex].categoria" class="badge bg-danger mb-1">{{ productos[carruselIndex].categoria }}</span>
             <h3 class="text-white fw-black m-0 display-6">{{ productos[carruselIndex].nombre }}</h3>
           </div>
-          <a [routerLink]="isEditor ? null : (productos[carruselIndex].link || '/contacto')" class="btn btn-plasmex-hero-primary d-none d-sm-inline-flex">
+          <a [routerLink]="isEditor ? null : (productos[carruselIndex].link || '/contacto')" class="btn btn-plasmex-hero-primary d-none d-sm-inline-flex btn-radar">
             <i class="fas fa-calculator me-2"></i> Cotizar este Modelo
           </a>
         </div>
@@ -214,7 +214,7 @@
     <div class="row g-3 g-lg-4">
       <div *ngFor="let p of productosFiltrados" class="col-12 col-sm-6 col-lg-4">
         <div class="photo-name-card h-100 rounded overflow-hidden d-flex flex-column">
-          <div class="photo-container position-relative overflow-hidden">
+          <div class="photo-container position-relative overflow-hidden laser-scan-sweep">
             <img [src]="p.imagenUrl" [alt]="p.nombre" class="photo-img" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80'">
           </div>
           <div class="photo-caption p-3 text-center bg-black">

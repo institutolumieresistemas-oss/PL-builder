@@ -41,11 +41,11 @@
        ========================================================================== -->
   <div class="text-center max-w-800 mx-auto mb-4 mb-md-5">
     <div *ngIf="badge" class="mat-badge-red mb-2 d-inline-flex align-items-center gap-2">
-      <i class="fas fa-microchip text-danger"></i>
+      <i class="fas fa-microchip text-danger parpadeo-laser"></i>
       <span>{{ badge }}</span>
     </div>
     <h2 class="display-6 fw-black text-white mb-2">
-      {{ titulo }} <span class="text-gradient-red">{{ tituloResaltado }}</span>
+      {{ titulo }} <span class="text-gradient-red pen-circle">{{ tituloResaltado }}</span>
     </h2>
     <p class="text-secondary small mb-0">{{ descripcion }}</p>
   </div>
@@ -71,13 +71,14 @@
                   <span class="text-danger micro-text fw-bold text-uppercase">{{ m.tipoCorte }}</span>
                 </div>
               </div>
-              <span *ngIf="m.badgeStock" class="badge bg-black border border-danger border-opacity-50 text-danger micro-text">
+              <span *ngIf="m.badgeStock" class="badge bg-black border border-danger border-opacity-50 text-danger micro-text d-inline-flex align-items-center gap-1">
+                <span class="status-dot-pulse"></span>
                 {{ m.badgeStock }}
               </span>
             </div>
 
             <!-- FOTO / TEXTURA (OPCIONAL) -->
-            <div *ngIf="m.imagenUrl" class="mat-thumb-wrapper rounded mb-3 overflow-hidden">
+            <div *ngIf="m.imagenUrl" class="mat-thumb-wrapper rounded mb-3 overflow-hidden laser-scan-sweep">
               <img [src]="m.imagenUrl" [alt]="m.nombre" class="img-fluid mat-thumb-img" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=500&q=80'">
             </div>
 
@@ -143,7 +144,10 @@
                 </div>
                 <div>
                   <span class="text-white fw-bold d-block">{{ m.nombre }}</span>
-                  <span *ngIf="m.badgeStock" class="badge bg-black border border-danger border-opacity-40 text-danger micro-text">{{ m.badgeStock }}</span>
+                  <span *ngIf="m.badgeStock" class="badge bg-black border border-danger border-opacity-40 text-danger micro-text d-inline-flex align-items-center gap-1">
+                    <span class="status-dot-pulse"></span>
+                    {{ m.badgeStock }}
+                  </span>
                 </div>
               </div>
             </td>
@@ -153,7 +157,7 @@
             <td class="py-3 px-3"><span class="badge bg-danger bg-opacity-25 text-danger border border-danger border-opacity-50">{{ m.tolerancia }}</span></td>
             <td class="py-3 px-3 text-secondary micro-text">{{ m.acabados }}</td>
             <td class="py-3 px-4 text-center">
-              <a [routerLink]="isEditor ? null : '/contacto'" class="btn btn-sm btn-plasmex-hero-primary px-3">
+              <a [routerLink]="isEditor ? null : '/contacto'" class="btn btn-sm btn-plasmex-hero-primary px-3 btn-radar">
                 Cotizar
               </a>
             </td>
@@ -182,7 +186,8 @@
               <span class="badge bg-dark border border-secondary border-opacity-50 text-danger micro-text">
                 <i class="fas fa-bolt me-1"></i>{{ m.tipoCorte }}
               </span>
-              <span *ngIf="m.badgeStock" class="badge bg-dark border border-secondary border-opacity-50 text-light micro-text">
+              <span *ngIf="m.badgeStock" class="badge bg-dark border border-secondary border-opacity-50 text-light micro-text d-inline-flex align-items-center gap-1">
+                <span class="status-dot-pulse"></span>
                 {{ m.badgeStock }}
               </span>
             </div>
@@ -202,7 +207,7 @@
               </div>
             </div>
 
-            <a [routerLink]="isEditor ? null : '/contacto'" class="btn btn-sm btn-plasmex-hero-primary w-100 py-2">
+            <a [routerLink]="isEditor ? null : '/contacto'" class="btn btn-sm btn-plasmex-hero-primary w-100 py-2 btn-radar">
               <i class="fas fa-calculator me-1"></i> Cotizar {{ m.nombre }}
             </a>
 
@@ -236,7 +241,7 @@
         
         <!-- FOTO -->
         <div class="col-12 col-lg-5">
-          <div class="mat-tab-img-frame rounded overflow-hidden shadow-lg position-relative">
+          <div class="mat-tab-img-frame rounded overflow-hidden shadow-lg position-relative laser-scan-sweep">
             <img [src]="materiales[tabActivaIndex].imagenUrl" [alt]="materiales[tabActivaIndex].nombre" class="img-fluid mat-tab-img" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80'">
             <div class="mat-tab-overlay-badge p-2">
               <span class="badge bg-danger">{{ materiales[tabActivaIndex].badgeStock }}</span>
@@ -277,7 +282,7 @@
             <p class="text-secondary small mb-0">{{ materiales[tabActivaIndex].acabados }}</p>
           </div>
 
-          <a [routerLink]="isEditor ? null : '/contacto'" class="btn btn-plasmex-hero-primary btn-lg">
+          <a [routerLink]="isEditor ? null : '/contacto'" class="btn btn-plasmex-hero-primary btn-lg btn-radar">
             <i class="fas fa-calculator me-2"></i> Cotizar Maquila de {{ materiales[tabActivaIndex].nombre }}
           </a>
         </div>
