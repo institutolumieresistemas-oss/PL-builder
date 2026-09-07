@@ -400,21 +400,35 @@
                       <input class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="item.proyecto">
                     </div>
 
-                    <div class="col-12 col-md-2">
-                      <label class="micro-text text-secondary mb-1">Avatar / Foto URL</label>
-                      <input class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="item.avatarUrl">
-                    </div>
-
-                    <div class="col-12 col-md-1 text-end">
+                    <div class="col-12 col-md-2 text-end">
                       <label class="micro-text text-secondary mb-1 d-block">&nbsp;</label>
-                      <button class="btn btn-sm btn-outline-danger" (click)="eliminarTestimonio(i)" title="Eliminar">
-                        <i class="fas fa-trash-alt"></i>
+                      <button class="btn btn-sm btn-outline-danger" (click)="eliminarTestimonio(i)" title="Eliminar reseña">
+                        <i class="fas fa-trash-alt me-1"></i> Eliminar
                       </button>
                     </div>
 
-                    <div class="col-12">
+                    <!-- AVATAR DESDE PC O URL -->
+                    <div class="col-12 col-md-6">
+                      <label class="micro-text text-secondary mb-1 d-block">
+                        <i class="fas fa-user-circle text-danger me-1"></i> Avatar / Foto de Perfil
+                      </label>
+                      <div class="d-flex align-items-center gap-2 mb-1">
+                        <img [src]="item.avatarUrl" [alt]="item.nombre" class="rounded-circle border border-secondary" style="width: 38px; height: 38px; object-fit: cover; flex-shrink: 0;" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80'">
+                        <input type="file" 
+                               accept="image/*" 
+                               class="form-control form-control-sm bg-dark text-light border-secondary" 
+                               (change)="seleccionarAvatar($event, i)" 
+                               title="Seleccionar foto desde PC">
+                      </div>
+                      <input class="form-control form-control-sm bg-black text-light border-secondary" 
+                             [(ngModel)]="item.avatarUrl" 
+                             placeholder="o URL https://...">
+                    </div>
+
+                    <!-- COMENTARIO -->
+                    <div class="col-12 col-md-6">
                       <label class="micro-text text-secondary mb-1">Opinión / Comentario</label>
-                      <textarea rows="2" class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="item.comentario"></textarea>
+                      <textarea rows="3" class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="item.comentario"></textarea>
                     </div>
 
                   </div>

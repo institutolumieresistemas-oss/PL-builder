@@ -201,6 +201,21 @@ export class TestimoniosComponent implements OnInit {
     }
   }
 
+  seleccionarAvatar(event: any, index: number) {
+    const file = event.target?.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      if (e.target?.result) {
+        this.testimonios[index].avatarUrl = e.target.result;
+        this.emitirCambios();
+      }
+    };
+    reader.readAsDataURL(file);
+    event.target.value = '';
+  }
+
   guardarConfig() {
     this.emitirCambios();
     this.cerrarConfig();

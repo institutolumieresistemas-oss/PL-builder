@@ -108,6 +108,21 @@ export class BannerComponent implements OnInit {
     this.puntosClave.splice(index, 1);
   }
 
+  seleccionarImagen(event: any) {
+    const file = event.target?.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      if (e.target?.result) {
+        this.imagenUrl = e.target.result;
+        this.emitirCambios();
+      }
+    };
+    reader.readAsDataURL(file);
+    event.target.value = '';
+  }
+
   guardarConfig() {
     this.emitirCambios();
     this.cerrarConfig();

@@ -436,8 +436,29 @@
                     </div>
 
                     <div class="col-12">
-                      <label class="micro-text text-secondary mb-1">URL Foto / Textura</label>
-                      <input class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="m.imagenUrl">
+                      <label class="micro-text text-secondary mb-1 d-block">
+                        <i class="fas fa-image text-danger me-1"></i> Foto / Textura del Material
+                      </label>
+                      <div *ngIf="m.imagenUrl" class="mb-2">
+                        <img [src]="m.imagenUrl" alt="Preview Material" class="img-thumbnail bg-dark border-secondary" style="max-height: 90px; object-fit: cover; border-radius: 4px;">
+                      </div>
+                      <div class="row g-2">
+                        <div class="col-12 col-md-6">
+                          <label class="micro-text text-secondary mb-1 d-block">
+                            <i class="fas fa-desktop text-danger me-1"></i> Seleccionar de tu computadora:
+                          </label>
+                          <input type="file" 
+                                 accept="image/*" 
+                                 class="form-control form-control-sm bg-dark text-light border-secondary" 
+                                 (change)="seleccionarImagenMaterial($event, idx)">
+                        </div>
+                        <div class="col-12 col-md-6">
+                          <label class="micro-text text-secondary mb-1 d-block">
+                            <i class="fas fa-link me-1 text-secondary"></i> O ingresar URL:
+                          </label>
+                          <input class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="m.imagenUrl" placeholder="https://...">
+                        </div>
+                      </div>
                     </div>
 
                   </div>

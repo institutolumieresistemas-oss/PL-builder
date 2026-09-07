@@ -168,6 +168,21 @@ export class ProductosComponent implements OnInit {
     this.productos.splice(index, 1);
   }
 
+  seleccionarImagenProducto(event: any, index: number) {
+    const file = event.target?.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      if (e.target?.result) {
+        this.productos[index].imagenUrl = e.target.result;
+        this.emitirCambios();
+      }
+    };
+    reader.readAsDataURL(file);
+    event.target.value = '';
+  }
+
   guardarConfig() {
     this.emitirCambios();
     this.cerrarConfig();

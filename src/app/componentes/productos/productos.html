@@ -274,13 +274,15 @@
           </div>
 
           <div class="d-flex flex-column gap-3">
-            <div *ngFor="let prod of productos; let idx = index" class="p-3 rounded bg-black border border-secondary border-opacity-25 d-flex align-items-center gap-3">
+            <div *ngFor="let prod of productos; let idx = index" class="p-3 rounded bg-black border border-secondary border-opacity-25 d-flex flex-column flex-md-row align-items-start align-items-md-center gap-3">
               
               <!-- PREVIEW DE LA FOTO -->
-              <img [src]="prod.imagenUrl" [alt]="prod.nombre" class="editor-thumb-preview rounded" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80'">
+              <div class="position-relative flex-shrink-0">
+                <img [src]="prod.imagenUrl" [alt]="prod.nombre" class="editor-thumb-preview rounded" onerror="this.src='https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80'">
+              </div>
 
-              <!-- CAMPOS: NOMBRE, CATEGORIA, URL IMAGEN -->
-              <div class="flex-grow-1 row g-2">
+              <!-- CAMPOS: NOMBRE, CATEGORIA, FOTO PC Y URL -->
+              <div class="flex-grow-1 w-100 row g-2">
                 <div class="col-12 col-md-4">
                   <label class="form-label micro-text text-secondary mb-1">Nombre del Producto</label>
                   <input class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="prod.nombre" placeholder="Ej. Celosía Modelo Árabe">
@@ -290,13 +292,21 @@
                   <input class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="prod.categoria" placeholder="Ej. Celosías">
                 </div>
                 <div class="col-12 col-md-5">
-                  <label class="form-label micro-text text-secondary mb-1">URL de la Foto</label>
-                  <input class="form-control form-control-sm bg-dark text-light border-secondary" [(ngModel)]="prod.imagenUrl" placeholder="https://...">
+                  <label class="form-label micro-text text-secondary mb-1">
+                    <i class="fas fa-desktop text-danger me-1"></i> Seleccionar Foto de PC:
+                  </label>
+                  <input type="file" 
+                         accept="image/*" 
+                         class="form-control form-control-sm bg-dark text-light border-secondary mb-1" 
+                         (change)="seleccionarImagenProducto($event, idx)">
+                  <input class="form-control form-control-sm bg-black text-light border-secondary" 
+                         [(ngModel)]="prod.imagenUrl" 
+                         placeholder="o URL https://...">
                 </div>
               </div>
 
               <!-- BOTON ELIMINAR -->
-              <button class="btn btn-sm btn-outline-danger flex-shrink-0" (click)="eliminarProducto(idx)">
+              <button class="btn btn-sm btn-outline-danger flex-shrink-0 align-self-end align-self-md-center" (click)="eliminarProducto(idx)" title="Eliminar producto">
                 <i class="fas fa-trash-alt"></i>
               </button>
 

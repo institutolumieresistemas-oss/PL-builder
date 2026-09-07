@@ -109,6 +109,48 @@ export class FooterComponent implements OnInit {
     this.mostrarConfigModal = false;
   }
 
+  seleccionarFoto(event: any, index: number) {
+    const file = event.target?.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      if (e.target?.result) {
+        this.instagramFotos[index] = e.target.result;
+        this.emitirCambios();
+      }
+    };
+    reader.readAsDataURL(file);
+    event.target.value = '';
+  }
+
+  agregarFotoDesdePc(event: any) {
+    const file = event.target?.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      if (e.target?.result) {
+        if (!this.instagramFotos) this.instagramFotos = [];
+        this.instagramFotos.push(e.target.result);
+        this.emitirCambios();
+      }
+    };
+    reader.readAsDataURL(file);
+    event.target.value = '';
+  }
+
+  agregarFoto() {
+    if (!this.instagramFotos) this.instagramFotos = [];
+    this.instagramFotos.push('https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=400&q=80');
+  }
+
+  eliminarFoto(index: number) {
+    if (this.instagramFotos) {
+      this.instagramFotos.splice(index, 1);
+    }
+  }
+
   guardarConfig() {
     this.emitirCambios();
     this.cerrarConfig();
