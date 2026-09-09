@@ -230,3 +230,69 @@ h1, h2, h3, h4, h5, h6 {
   0%, 100% { transform: scale(0.9); opacity: 0.7; }
   50% { transform: scale(1.35); opacity: 1; box-shadow: 0 0 12px #4ade80; }
 }
+
+/* 9. EFECTO FLOTANTE DE PALABRAS / LETRAS (FLOATING WORD) */
+@keyframes text-float-anim {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.floating-word {
+  display: inline-block;
+  animation: text-float-anim 3.2s ease-in-out infinite;
+}
+
+/* 10. FLOTACIÓN CON PULSO DE RESPLANDOR (FLOATING GLOW WORD) */
+@keyframes float-glow-anim {
+  0%, 100% {
+    transform: translateY(0);
+    filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.4));
+  }
+  50% {
+    transform: translateY(-7px);
+    filter: drop-shadow(0 0 16px rgba(239, 68, 68, 0.95)) drop-shadow(0 0 28px rgba(220, 38, 38, 0.6));
+  }
+}
+
+.floating-glow-word {
+  display: inline-block;
+  animation: float-glow-anim 3.5s ease-in-out infinite;
+}
+
+/* 11. BARRIDO DE LUZ SHIMMER SOBRE TEXTO (LASER SHIMMER WORD) */
+@keyframes laser-shimmer-word-anim {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.laser-shimmer-word {
+  display: inline-block;
+  background: linear-gradient(90deg, #dc2626 0%, #ffffff 50%, #dc2626 100%) !important;
+  background-size: 200% auto !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  animation: laser-shimmer-word-anim 3.5s linear infinite;
+}
+
+/* 12. PULSO DE RESPLANDOR NEÓN (LASER GLOW PULSE) */
+@keyframes laser-glow-pulse-anim {
+  0%, 100% {
+    filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(239, 68, 68, 0.95)) drop-shadow(0 0 26px rgba(220, 38, 38, 0.6));
+  }
+}
+
+.laser-glow-pulse {
+  display: inline-block;
+  animation: laser-glow-pulse-anim 2.5s ease-in-out infinite;
+}
