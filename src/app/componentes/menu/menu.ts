@@ -53,18 +53,19 @@ export class MenuComponent {
     { name: 'Nosotros', slug: '/nosotros', icon: 'fas fa-shield-alt' },
     { name: 'Celosías', slug: '/celosias', icon: 'fas fa-border-all' },
     { name: 'Decoración', slug: '/decoracion', icon: 'fas fa-gem' },
-    { name: 'Anuncios', slug: '/anuncios', icon: 'fas fa-bullhorn' },
     { name: 'Materiales', slug: '/materiales', icon: 'fas fa-layer-group' },
     { name: 'Galería', slug: '/galeria', icon: 'fas fa-images' },
     { name: 'Contacto', slug: '/contacto', icon: 'fas fa-envelope' },
   ];
 
   get leftMenuItems(): MenuItem[] {
-    return this.menuItems.slice(0, 4);
+    const half = Math.ceil(this.menuItems.length / 2);
+    return this.menuItems.slice(0, half);
   }
 
   get rightMenuItems(): MenuItem[] {
-    return this.menuItems.slice(4);
+    const half = Math.ceil(this.menuItems.length / 2);
+    return this.menuItems.slice(half);
   }
 
   seleccionarEstilo(styleId: MenuStyleType) {
