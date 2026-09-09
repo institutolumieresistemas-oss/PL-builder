@@ -50,7 +50,7 @@
             <span>{{ badge }}</span>
           </div>
           <h3 class="cintillo-title text-white fw-black m-0 display-6">
-            {{ titulo }} <span class="text-white-glow floating-word">{{ tituloResaltado }}</span>
+            {{ titulo }} <span class="text-white-glow laser-underline">{{ tituloResaltado }}</span>
           </h3>
           <p *ngIf="subtitulo" class="text-light text-opacity-90 small mb-0 mt-2">
             {{ subtitulo }}
@@ -114,7 +114,7 @@
         </div>
         <div>
           <h4 class="text-white fw-bold m-0 fs-5">
-            {{ titulo }} <span class="text-danger marker-underline">{{ tituloResaltado }}</span>
+            {{ titulo }} <span class="text-gradient-red laser-underline">{{ tituloResaltado }}</span>
           </h4>
           <span *ngIf="subtitulo" class="text-secondary micro-text d-block">{{ subtitulo }}</span>
         </div>
@@ -149,7 +149,7 @@
           <span>{{ badge }}</span>
         </div>
         <h4 class="text-white fw-bold m-0 mb-1">
-          {{ titulo }} <span class="text-gradient-red floating-glow-word">{{ tituloResaltado }}</span>
+          {{ titulo }} <span class="text-gradient-red laser-underline">{{ tituloResaltado }}</span>
         </h4>
         <p *ngIf="subtitulo" class="text-secondary small mb-0">{{ subtitulo }}</p>
       </div>

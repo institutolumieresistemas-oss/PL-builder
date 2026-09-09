@@ -296,3 +296,105 @@ h1, h2, h3, h4, h5, h6 {
   display: inline-block;
   animation: laser-glow-pulse-anim 2.5s ease-in-out infinite;
 }
+
+/* 13. EFECTO CORTE LÁSER INCANDESCENTE (LASER MELT & SPARK) */
+@keyframes laser-melt-spark-anim {
+  0%, 100% {
+    color: #ef4444;
+    text-shadow: 0 0 6px rgba(239, 68, 68, 0.4);
+    filter: brightness(1);
+  }
+  20% {
+    color: #fff7ed;
+    text-shadow: 0 0 5px #ffffff, 0 0 14px #f97316, 0 0 28px #ef4444, 0 0 42px #dc2626;
+    filter: brightness(1.3);
+  }
+  35% {
+    color: #fed7aa;
+    text-shadow: 0 0 10px #f97316, 0 0 22px #ef4444, 0 0 35px #b91c1c;
+    filter: brightness(1.15);
+  }
+  50% {
+    color: #f87171;
+    text-shadow: 0 0 12px rgba(239, 68, 68, 0.7);
+    filter: brightness(1.05);
+  }
+  75% {
+    color: #ef4444;
+    text-shadow: 0 0 6px rgba(239, 68, 68, 0.5);
+    filter: brightness(1);
+  }
+}
+
+.laser-incandescent {
+  display: inline-block;
+  position: relative;
+  animation: laser-melt-spark-anim 3.8s ease-in-out infinite;
+  font-weight: 800;
+}
+
+/* 14. EFECTO LETRA CORPÓREA 3D / EXTRUSIÓN METÁLICA (3D METAL EMBOSS) */
+@keyframes corporea-3d-anim {
+  0%, 100% {
+    transform: perspective(400px) rotateX(0deg) rotateY(0deg) translateY(0);
+    text-shadow:
+      1px 1px 0 #7f1d1d,
+      2px 2px 0 #7f1d1d,
+      3px 3px 0 #450a0a,
+      4px 4px 0 #1c0505,
+      5px 5px 10px rgba(0, 0, 0, 0.8),
+      0 0 15px rgba(220, 38, 38, 0.4);
+  }
+  50% {
+    transform: perspective(400px) rotateX(6deg) rotateY(-4deg) translateY(-5px);
+    text-shadow:
+      1px 1px 0 #991b1b,
+      2px 2px 0 #7f1d1d,
+      3px 3px 0 #7f1d1d,
+      4px 4px 0 #450a0a,
+      5px 5px 0 #1c0505,
+      6px 8px 16px rgba(0, 0, 0, 0.9),
+      0 0 25px rgba(239, 68, 68, 0.7);
+  }
+}
+
+.corporea-3d {
+  display: inline-block;
+  color: #ef4444;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  animation: corporea-3d-anim 4s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+
+/* 15. EFECTO MICRO-DESFASE HOLOGRÁFICO / PRECISION CNC GLITCH */
+@keyframes cyber-cnc-glitch-anim {
+  0%, 82%, 100% {
+    transform: translate(0, 0);
+    text-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+  }
+  83% {
+    transform: translate(-2px, 1px);
+    text-shadow: 2px 0 #ffffff, -2px 0 #dc2626, 0 0 15px rgba(255, 255, 255, 0.8);
+  }
+  85% {
+    transform: translate(2px, -1px);
+    text-shadow: -2px 0 #ef4444, 2px 0 #ffffff, 0 0 20px #ef4444;
+  }
+  87% {
+    transform: translate(-1px, 0);
+    text-shadow: 1px 0 #dc2626, -1px 0 #991b1b;
+  }
+  89% {
+    transform: translate(0, 0);
+    text-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+  }
+}
+
+.cyber-cnc-glitch {
+  display: inline-block;
+  color: #ef4444;
+  font-weight: 800;
+  position: relative;
+  animation: cyber-cnc-glitch-anim 4.5s infinite ease-in-out;
+}
