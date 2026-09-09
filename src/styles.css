@@ -744,4 +744,139 @@ h1, h2, h3, h4, h5, h6 {
     filter: brightness(1);
   }
 }
+
+/* ==========================================================================
+   18. INTERACCIÓN DE CLIC: PUNTO DE SOLDADURA (CLICK WELDING ARC & SPARKS)
+   ========================================================================== */
+.welding-click-spark {
+  position: fixed;
+  pointer-events: none;
+  z-index: 999999;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+}
+
+/* 1. Flash del arco voltaico (luz blanca y cian de plasma) */
+.welding-spark-flash {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow:
+    0 0 10px 4px #ffffff,
+    0 0 24px 10px #38bdf8,
+    0 0 45px 18px #0284c7,
+    0 0 70px 25px rgba(56, 189, 248, 0.85);
+  animation: welding-click-flash-anim 0.35s ease-out forwards;
+}
+
+@keyframes welding-click-flash-anim {
+  0% {
+    transform: translate(-50%, -50%) scale(0.3);
+    opacity: 1;
+    filter: brightness(2.5);
+  }
+  30% {
+    transform: translate(-50%, -50%) scale(1.6);
+    opacity: 1;
+    filter: brightness(2);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.2);
+    opacity: 0;
+    filter: brightness(1);
+  }
+}
+
+/* 2. Punto de soldadura / charco fundido al rojo vivo (Weld Puddle) */
+.welding-spark-puddle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow:
+    0 0 6px 2px #f97316,
+    0 0 14px 4px #dc2626;
+  animation: welding-click-puddle-anim 0.65s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes welding-click-puddle-anim {
+  0% {
+    background: #ffffff;
+    box-shadow: 0 0 12px 4px #ffffff, 0 0 20px 8px #f97316;
+    transform: translate(-50%, -50%) scale(1.3);
+    opacity: 1;
+  }
+  25% {
+    background: #ffedd5;
+    box-shadow: 0 0 10px 3px #f97316, 0 0 16px 6px #ef4444;
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 1;
+  }
+  55% {
+    background: #ef4444;
+    box-shadow: 0 0 6px 2px #dc2626, 0 0 10px 3px rgba(220, 38, 38, 0.6);
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0.85;
+  }
+  85% {
+    background: #991b1b;
+    box-shadow: 0 0 4px 1px rgba(185, 28, 28, 0.4);
+    transform: translate(-50%, -50%) scale(0.7);
+    opacity: 0.4;
+  }
+  100% {
+    background: #450a0a;
+    box-shadow: none;
+    transform: translate(-50%, -50%) scale(0.4);
+    opacity: 0;
+  }
+}
+
+/* 3. Chispas volantes disparadas en todas direcciones */
+.welding-spark-particle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--size, 3px);
+  height: var(--size, 3px);
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow:
+    0 0 4px 1px #fde047,
+    0 0 8px 2px #f97316,
+    0 0 14px 3px #ef4444;
+  animation: welding-spark-fly var(--dur, 0.5s) cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+}
+
+@keyframes welding-spark-fly {
+  0% {
+    transform: translate(-50%, -50%) rotate(var(--angle, 0deg)) translateY(0) scale(1);
+    opacity: 1;
+  }
+  40% {
+    opacity: 1;
+    background: #fef08a;
+  }
+  75% {
+    background: #f97316;
+    box-shadow: 0 0 4px 1px #ef4444;
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(var(--angle, 0deg)) translateY(calc(-1 * var(--dist, 40px))) scale(0.2);
+    background: #dc2626;
+    opacity: 0;
+  }
+}
+
 
