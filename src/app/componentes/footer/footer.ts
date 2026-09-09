@@ -71,7 +71,6 @@ export class FooterComponent implements OnInit {
     { name: 'Nosotros', slug: '/nosotros' },
     { name: 'Celosías', slug: '/celosias' },
     { name: 'Decoración', slug: '/decoracion' },
-    { name: 'Anuncios', slug: '/anuncios' },
     { name: 'Materiales', slug: '/materiales' },
     { name: 'Galería', slug: '/galeria' },
     { name: 'Contacto', slug: '/contacto' }
