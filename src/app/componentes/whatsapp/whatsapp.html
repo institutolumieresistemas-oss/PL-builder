@@ -7,7 +7,7 @@
     <div class="d-flex align-items-center gap-2">
       <div class="whatsapp-toolbar-badge"><i class="fab fa-whatsapp text-success"></i></div>
       <div>
-        <span class="whatsapp-toolbar-title">Botón WhatsApp Flotante</span>
+        <span class="whatsapp-toolbar-title">WhatsApp Flotante</span>
         <span class="badge ms-2" [ngClass]="{
           'bg-success': estilo === 'verde',
           'bg-danger': estilo === 'rojo',
@@ -34,60 +34,162 @@
       </button>
     </div>
 
-    <!-- BOTONES DE ACCIÓN -->
+    <!-- ACCIONES RÁPIDAS -->
     <div class="d-flex align-items-center gap-2">
-      <button class="btn btn-sm btn-outline-success" (click)="abrirConfig()">
-        <i class="fas fa-cog me-1"></i> Configurar Celular & Mensaje
+      <button type="button" class="btn btn-sm btn-outline-success" (click)="abrirWhatsApp($event)" title="Probar apertura del enlace en WhatsApp">
+        <i class="fab fa-whatsapp me-1"></i> Probar Chat
       </button>
-      <button class="btn btn-sm btn-outline-danger" (click)="eliminar()" title="Eliminar componente">
+      <button type="button" class="btn btn-sm btn-outline-danger" (click)="eliminar()" title="Eliminar componente">
         <i class="fas fa-trash-alt"></i>
       </button>
     </div>
   </div>
 
   <!-- ==========================================================================
-       TARJETA DE RESUMEN EN EL CANVAS DEL BUILDER
+       PANEL DE CONFIGURACIÓN DIRECTA EN EL CANVAS (CAMPOS VISIBLES PARA EL USUARIO)
        ========================================================================== -->
-  <div *ngIf="isEditor" class="whatsapp-canvas-card p-3 rounded mb-3">
-    <div class="row align-items-center g-3">
-      <div class="col-12 col-md-auto text-center text-md-start">
-        <div class="preview-mini-icon" [ngClass]="'mini-' + estilo">
+  <div *ngIf="isEditor" class="whatsapp-config-card p-3 p-md-4 rounded mb-3">
+    
+    <div class="d-flex align-items-center justify-content-between border-bottom border-secondary border-opacity-25 pb-3 mb-3">
+      <div class="d-flex align-items-center gap-3">
+        <div class="config-icon-circle" [ngClass]="'circle-' + estilo">
           <i class="fab fa-whatsapp"></i>
         </div>
-      </div>
-      <div class="col-12 col-md">
-        <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
-          <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-50">
-            <i class="fas fa-phone-alt me-1"></i> {{ celular || 'Sin número' }}
-          </span>
-          <span class="badge bg-dark border border-secondary text-secondary">
-            <i class="fas fa-map-pin me-1"></i> {{ posicion === 'derecha' ? 'Inferior Derecha' : 'Inferior Izquierda' }}
-          </span>
-          <span *ngIf="mostrarTooltip && tooltip" class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25">
-            <i class="fas fa-comment-dots me-1"></i> Tooltip activo
+        <div>
+          <h5 class="text-white fw-bold mb-0">
+            Configurar Botón WhatsApp
+          </h5>
+          <span class="text-secondary micro-text">
+            Edita directamente el número de teléfono y el mensaje inicial del chat.
           </span>
         </div>
-        <p class="mb-1 text-light small">
-          <strong class="text-secondary">Mensaje configurado:</strong>
-          <span class="text-light ms-1 fst-italic">"{{ mensaje || '¡Hola! Me gustaría cotizar un proyecto en Plasmex CNC.' }}"</span>
-        </p>
-        <div class="small text-secondary text-truncate" style="max-width: 500px;">
-          <i class="fas fa-link me-1 text-muted"></i> Enlace: <code class="text-success-light">{{ getWhatsAppUrl() }}</code>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <span *ngIf="guardadoExitoso" class="badge bg-success bg-opacity-25 text-success border border-success px-3 py-2 animate-fade">
+          <i class="fas fa-check-circle me-1"></i> ¡Guardado!
+        </span>
+        <button type="button" class="btn btn-sm btn-success fw-bold px-3 shadow-sm" (click)="guardarConfig()">
+          <i class="fas fa-save me-1"></i> Guardar Cambios
+        </button>
+      </div>
+    </div>
+
+    <div class="row g-3">
+      
+      <!-- CAMPO 1: NÚMERO DE CELULAR -->
+      <div class="col-12 col-md-6">
+        <label class="form-label fw-bold text-light small d-flex align-items-center justify-content-between">
+          <span><i class="fas fa-mobile-alt text-success me-1"></i> Número de Celular / WhatsApp *</span>
+          <span class="micro-text text-secondary">10 dígitos o con código de país</span>
+        </label>
+        <div class="input-group">
+          <span class="input-group-text bg-dark text-success border-secondary">
+            <i class="fab fa-whatsapp fs-5"></i>
+          </span>
+          <input type="text"
+                 class="form-control bg-black text-light border-secondary form-control-lg fs-6"
+                 [(ngModel)]="celular"
+                 (ngModelChange)="onCampoCambiado()"
+                 placeholder="Ej: 33 3589 3912">
+        </div>
+        <div class="d-flex align-items-center justify-content-between mt-1">
+          <span class="micro-text text-secondary">
+            <i class="fas fa-info-circle me-1"></i> Destino limpio wa.me: <strong class="text-success">{{ getCleanPhone() }}</strong>
+          </span>
         </div>
       </div>
-      <div class="col-12 col-md-auto d-flex flex-wrap gap-2 justify-content-center justify-content-md-end">
-        <button type="button" class="btn btn-sm btn-outline-success" (click)="abrirWhatsApp($event)" title="Probar apertura del enlace en WhatsApp Web/App">
-          <i class="fab fa-whatsapp me-1"></i> Probar Chat
-        </button>
-        <button type="button" class="btn btn-sm btn-save-whatsapp" (click)="abrirConfig()">
-          <i class="fas fa-edit me-1"></i> Editar
-        </button>
+
+      <!-- CAMPO 2: POSICIÓN Y ESTILO -->
+      <div class="col-12 col-md-3">
+        <label class="form-label fw-bold text-light small">
+          <i class="fas fa-arrows-alt text-danger me-1"></i> Posición en Pantalla
+        </label>
+        <select class="form-select bg-black text-light border-secondary"
+                [(ngModel)]="posicion"
+                (ngModelChange)="onCampoCambiado()">
+          <option value="derecha">Inferior Derecha (Predeterminada)</option>
+          <option value="izquierda">Inferior Izquierda</option>
+        </select>
       </div>
+
+      <div class="col-12 col-md-3">
+        <label class="form-label fw-bold text-light small">
+          <i class="fas fa-palette text-danger me-1"></i> Estilo Visual / Color
+        </label>
+        <select class="form-select bg-black text-light border-secondary"
+                [(ngModel)]="estilo"
+                (ngModelChange)="onCampoCambiado()">
+          <option value="verde">Verde Oficial WhatsApp</option>
+          <option value="rojo">Rojo Láser Neón Plasmex</option>
+          <option value="dark">Dark Cyber Carbon</option>
+        </select>
+      </div>
+
+      <!-- CAMPO 3: MENSAJE PREDETERMINADO -->
+      <div class="col-12">
+        <label class="form-label fw-bold text-light small d-flex align-items-center justify-content-between">
+          <span><i class="fas fa-comment-dots text-success me-1"></i> Mensaje Predeterminado al Iniciar Chat *</span>
+          <span class="micro-text text-secondary">Texto que aparecerá escrito en el chat del cliente</span>
+        </label>
+        <textarea rows="3"
+                  class="form-control bg-black text-light border-secondary fs-6"
+                  [(ngModel)]="mensaje"
+                  (ngModelChange)="onCampoCambiado()"
+                  placeholder="Ej: ¡Hola Plasmex CNC! Me interesa cotizar un proyecto en corte láser/plasma..."></textarea>
+      </div>
+
+      <!-- CAMPO 4: BURBUJA TOOLTIP / TEXTO FLOTANTE -->
+      <div class="col-12 col-md-8">
+        <label class="form-label fw-bold text-light small">
+          <i class="fas fa-bullhorn text-info me-1"></i> Mensaje de la Burbuja Flotante / Tooltip
+        </label>
+        <input type="text"
+               class="form-control bg-black text-light border-secondary"
+               [(ngModel)]="tooltip"
+               (ngModelChange)="onCampoCambiado()"
+               placeholder="Ej: ¿Deseas cotizar? ¡Escríbenos!">
+      </div>
+
+      <div class="col-12 col-md-4 d-flex align-items-center pt-md-4">
+        <div class="form-check form-switch mt-2">
+          <input class="form-check-input bg-dark border-secondary"
+                 type="checkbox"
+                 id="switchMostrarTooltipDirecto"
+                 [(ngModel)]="mostrarTooltip"
+                 (ngModelChange)="onCampoCambiado()">
+          <label class="form-check-label text-light small fw-bold" for="switchMostrarTooltipDirecto">
+            Mostrar burbuja flotante
+          </label>
+        </div>
+      </div>
+
+      <!-- VISTA PREVIA DEL ENLACE WA.ME -->
+      <div class="col-12 mt-3 pt-3 border-top border-secondary border-opacity-25">
+        <div class="row align-items-center g-3">
+          <div class="col-12 col-lg-8">
+            <span class="micro-text text-secondary text-uppercase fw-bold d-block mb-1">
+              <i class="fas fa-link text-success me-1"></i> Enlace wa.me generado:
+            </span>
+            <code class="text-success-light bg-black p-2 rounded border border-secondary border-opacity-50 text-break d-block small">
+              {{ getWhatsAppUrl() }}
+            </code>
+          </div>
+          <div class="col-12 col-lg-4 d-flex gap-2 justify-content-lg-end">
+            <button type="button" class="btn btn-outline-success flex-grow-1 flex-lg-grow-0" (click)="abrirWhatsApp($event)">
+              <i class="fas fa-external-link-alt me-1"></i> Probar Chat
+            </button>
+            <button type="button" class="btn btn-success fw-bold px-3 flex-grow-1 flex-lg-grow-0" (click)="guardarConfig()">
+              <i class="fas fa-save me-1"></i> Guardar Cambios
+            </button>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
   <!-- ==========================================================================
-       WIDGET FLOTANTE EN PANTALLA (PREVIEW INTERACTIVO)
+       WIDGET FLOTANTE EN PANTALLA (PREVIEW INTERACTIVO EN VIVO)
        ========================================================================== -->
   <div class="whatsapp-float-container"
        [class.pos-derecha]="posicion === 'derecha'"
@@ -134,145 +236,6 @@
       <span class="online-status-dot" title="En línea para cotizaciones"></span>
     </a>
 
-  </div>
-
-  <!-- ==========================================================================
-       MODAL DE CONFIGURACIÓN DEL BUILDER (CELULAR, MENSAJE, ESTILO, ETC.)
-       ========================================================================== -->
-  <div *ngIf="mostrarConfigModal" class="modal-backdrop fade show" (click)="cerrarConfig()"></div>
-  <div *ngIf="mostrarConfigModal" class="modal fade show d-block" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg modal-dialog-centered" (click)="$event.stopPropagation()">
-      <div class="modal-content bg-dark text-light border border-secondary shadow-lg">
-
-        <div class="modal-header border-bottom border-secondary border-opacity-25">
-          <h5 class="modal-title text-white d-flex align-items-center gap-2">
-            <i class="fab fa-whatsapp text-success fs-4"></i>
-            <span>Configurar Botón WhatsApp Flotante</span>
-          </h5>
-          <button type="button" class="btn-close btn-close-white" (click)="cerrarConfig()"></button>
-        </div>
-
-        <div class="modal-body p-4">
-          <div class="row g-3">
-
-            <!-- NUMERO DE CELULAR -->
-            <div class="col-12 col-md-6">
-              <label class="form-label fw-bold small text-light">
-                <i class="fas fa-mobile-alt me-1 text-success"></i> Celular / Teléfono WhatsApp *
-              </label>
-              <input type="text"
-                     class="form-control bg-black text-light border-secondary"
-                     [(ngModel)]="celular"
-                     placeholder="Ej: 33 3589 3912">
-              <span class="text-secondary micro-text d-block mt-1">
-                Puedes escribirlo con o sin espacios. Si tiene 10 dígitos (México), se le agregará automáticamente el código 52.
-              </span>
-            </div>
-
-            <!-- POSICIÓN EN PANTALLA -->
-            <div class="col-12 col-md-6">
-              <label class="form-label fw-bold small text-light">
-                <i class="fas fa-arrows-alt me-1 text-danger"></i> Posición en Pantalla
-              </label>
-              <select class="form-select bg-black text-light border-secondary" [(ngModel)]="posicion">
-                <option value="derecha">Inferior Derecha (Recomendado)</option>
-                <option value="izquierda">Inferior Izquierda</option>
-              </select>
-              <span class="text-secondary micro-text d-block mt-1">
-                Ubicación fija donde flotará el botón en la vista web.
-              </span>
-            </div>
-
-            <!-- MENSAJE PREDETERMINADO -->
-            <div class="col-12">
-              <label class="form-label fw-bold small text-light">
-                <i class="fas fa-comment-dots me-1 text-success"></i> Mensaje Predeterminado al Iniciar Chat *
-              </label>
-              <textarea rows="3"
-                        class="form-control bg-black text-light border-secondary"
-                        [(ngModel)]="mensaje"
-                        placeholder="Ej: ¡Hola Plasmex CNC! Me interesa solicitar una cotización para un proyecto en corte láser/plasma..."></textarea>
-              <span class="text-secondary micro-text d-block mt-1">
-                El mensaje que aparecerá preescrito en la ventana de chat del usuario al dar clic en el botón.
-              </span>
-            </div>
-
-            <!-- ESTILO VISUAL -->
-            <div class="col-12 col-md-6">
-              <label class="form-label fw-bold small text-light">
-                <i class="fas fa-palette me-1 text-danger"></i> Estilo Visual / Color
-              </label>
-              <select class="form-select bg-black text-light border-secondary" [(ngModel)]="estilo">
-                <option value="verde">Verde Oficial WhatsApp (Máximo Reconocimiento)</option>
-                <option value="rojo">Rojo Láser Neón (Estilo de Marca Plasmex CNC)</option>
-                <option value="dark">Dark Cyber Carbon (Industrial Minimalista)</option>
-              </select>
-            </div>
-
-            <!-- ANIMACIÓN -->
-            <div class="col-12 col-md-6">
-              <label class="form-label fw-bold small text-light">
-                <i class="fas fa-wave-square me-1 text-warning"></i> Efecto de Animación
-              </label>
-              <select class="form-select bg-black text-light border-secondary" [(ngModel)]="animacion">
-                <option value="pulso">Pulso Radar / Ondas Expansivas (Recomendado)</option>
-                <option value="rebote">Rebote Suave</option>
-                <option value="ninguna">Sin Animación (Estático)</option>
-              </select>
-            </div>
-
-            <!-- TEXTO DE BURBUJA / TOOLTIP -->
-            <div class="col-12 col-md-8">
-              <label class="form-label fw-bold small text-light">
-                <i class="fas fa-bullhorn me-1 text-info"></i> Texto de la Burbuja / Tooltip
-              </label>
-              <input type="text"
-                     class="form-control bg-black text-light border-secondary"
-                     [(ngModel)]="tooltip"
-                     placeholder="Ej: ¿Tienes dudas o necesitas cotizar? ¡Escríbenos!">
-            </div>
-
-            <!-- MOSTRAR BURBUJA SWITCH -->
-            <div class="col-12 col-md-4 d-flex align-items-center pt-md-4">
-              <div class="form-check form-switch mt-2">
-                <input class="form-check-input bg-dark border-secondary"
-                       type="checkbox"
-                       id="checkMostrarTooltip"
-                       [(ngModel)]="mostrarTooltip">
-                <label class="form-check-label text-light small fw-bold" for="checkMostrarTooltip">
-                  Mostrar Burbuja Flotante
-                </label>
-              </div>
-            </div>
-
-            <!-- VISTA PREVIA DEL ENLACE -->
-            <div class="col-12">
-              <div class="p-3 rounded bg-black border border-secondary border-opacity-50">
-                <div class="d-flex align-items-center justify-content-between mb-1">
-                  <span class="micro-text text-secondary text-uppercase fw-bold">
-                    <i class="fas fa-check-circle text-success me-1"></i> Vista Previa del Enlace Generado
-                  </span>
-                  <span class="badge bg-secondary micro-text">wa.me</span>
-                </div>
-                <code class="text-success small text-break d-block mb-2">{{ getWhatsAppUrl() }}</code>
-                <button type="button" class="btn btn-sm btn-outline-secondary" (click)="abrirWhatsApp($event)">
-                  <i class="fas fa-external-link-alt me-1"></i> Probar enlace en nueva pestaña
-                </button>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="modal-footer border-top border-secondary border-opacity-25">
-          <button type="button" class="btn btn-secondary" (click)="cerrarConfig()">Cancelar</button>
-          <button type="button" class="btn btn-success px-4 fw-bold" (click)="guardarConfig()">
-            <i class="fas fa-save me-1"></i> Guardar Configuración
-          </button>
-        </div>
-
-      </div>
-    </div>
   </div>
 
 </div>

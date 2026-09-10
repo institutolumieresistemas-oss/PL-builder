@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -23,7 +23,7 @@ export interface WhatsAppProps {
   templateUrl: './whatsapp.html',
   styleUrls: ['./whatsapp.css']
 })
-export class WhatsappComponent implements OnInit {
+export class WhatsappComponent implements OnInit, OnChanges {
   @Input() celular: string = '33 3589 3912';
   @Input() mensaje: string = '¡Hola Plasmex CNC! Me interesa cotizar un proyecto en corte láser/plasma.';
   @Input() posicion: WhatsAppPosicion = 'derecha';
@@ -38,6 +38,7 @@ export class WhatsappComponent implements OnInit {
 
   mostrarConfigModal: boolean = false;
   tooltipCerrado: boolean = false;
+  guardadoExitoso: boolean = false;
 
   estilosList: { id: WhatsAppEstilo; name: string; icon: string; desc: string }[] = [
     { id: 'verde', name: 'Verde Oficial', icon: 'fab fa-whatsapp', desc: 'Verde clásico oficial de WhatsApp con resplandor suave.' },
@@ -52,10 +53,33 @@ export class WhatsappComponent implements OnInit {
 
   ngOnInit() {}
 
-  /** Formatea y limpia el número telefónico para la API de WhatsApp */
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['celular'] && changes['celular'].currentValue !== undefined) {
+      this.celular = changes['celular'].currentValue;
+    }
+    if (changes['mensaje'] && changes['mensaje'].currentValue !== undefined) {
+      this.mensaje = changes['mensaje'].currentValue;
+    }
+    if (changes['posicion'] && changes['posicion'].currentValue !== undefined) {
+      this.posicion = changes['posicion'].currentValue;
+    }
+    if (changes['tooltip'] && changes['tooltip'].currentValue !== undefined) {
+      this.tooltip = changes['tooltip'].currentValue;
+    }
+    if (changes['mostrarTooltip'] && changes['mostrarTooltip'].currentValue !== undefined) {
+      this.mostrarTooltip = changes['mostrarTooltip'].currentValue;
+    }
+    if (changes['estilo'] && changes['estilo'].currentValue !== undefined) {
+      this.estilo = changes['estilo'].currentValue;
+    }
+    if (changes['animacion'] && changes['animacion'].currentValue !== undefined) {
+      this.animacion = changes['animacion'].currentValue;
+    }
+  }
+
+  /** Formatea y limpia el número telefónico para la API de WhatsApp wa.me */
   getCleanPhone(): string {
     const raw = (this.celular || '').replace(/\D+/g, '');
-    // Si tiene 10 dígitos (número estándar mexicano), agregar prefijo de país 52
     if (raw.length === 10) {
       return `52${raw}`;
     }
@@ -82,6 +106,10 @@ export class WhatsappComponent implements OnInit {
     }
   }
 
+  onCampoCambiado() {
+    this.emitirCambios();
+  }
+
   cambiarEstilo(nuevoEstilo: WhatsAppEstilo) {
     this.estilo = nuevoEstilo;
     this.emitirCambios();
@@ -103,6 +131,10 @@ export class WhatsappComponent implements OnInit {
   guardarConfig() {
     this.emitirCambios();
     this.cerrarConfig();
+    this.guardadoExitoso = true;
+    setTimeout(() => {
+      this.guardadoExitoso = false;
+    }, 3000);
   }
 
   eliminar() {

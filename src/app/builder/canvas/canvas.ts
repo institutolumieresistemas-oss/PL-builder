@@ -93,6 +93,9 @@ export class Canvas implements OnInit {
     };
     this.builder.updateElements(updated);
     this.elements = updated;
+    if (updated[index]?.type === 'whatsapp') {
+      this.builder.saveGlobalWhatsApp(props);
+    }
   }
 
   drop(event: CdkDragDrop<PageElement[]>) {

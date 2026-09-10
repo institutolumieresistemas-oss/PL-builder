@@ -64,6 +64,26 @@ export class Builder {
     });
   }
 
+  saveGlobalWhatsApp(props: any) {
+    this.pagesService.traer({ id: '215b86d9-b308-43f5-b649-d8d234580607' }).subscribe((res: any) => {
+      const elements = res?.content?.elements || [];
+      let waEl = elements.find((el: any) => el.type === 'whatsapp');
+      if (waEl) {
+        waEl.props = { ...waEl.props, ...props };
+      } else {
+        elements.push({
+          id: crypto.randomUUID(),
+          type: 'whatsapp',
+          col: 12,
+          props
+        });
+      }
+      this.pagesService.contenido({ id: '215b86d9-b308-43f5-b649-d8d234580607', content: { elements } }).subscribe(() => {
+        console.log("💾 WhatsApp guardado en Home (Página de inicio)");
+      });
+    });
+  }
+
   loadPage(pageId: string) {
 
     this.pagesService.traer({ id: pageId })

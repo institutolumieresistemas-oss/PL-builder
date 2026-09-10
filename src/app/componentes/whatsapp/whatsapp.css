@@ -74,7 +74,50 @@
   box-shadow: 0 0 10px rgba(37, 211, 102, 0.3);
 }
 
-/* ==================== CANVAS SUMMARY CARD ==================== */
+/* ==================== CANVAS CONFIGURATION CARD ==================== */
+.whatsapp-config-card {
+  background: linear-gradient(180deg, #0f172a 0%, #090e17 100%);
+  border: 1px solid rgba(37, 211, 102, 0.35);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 15px rgba(37, 211, 102, 0.1);
+}
+
+.config-icon-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.config-icon-circle.circle-verde {
+  background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.45);
+}
+
+.config-icon-circle.circle-rojo {
+  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.45);
+}
+
+.config-icon-circle.circle-dark {
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  border: 1.5px solid #25d366;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+}
+
+.animate-fade {
+  animation: fadeInOut 0.3s ease;
+}
+
+@keyframes fadeInOut {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
 .whatsapp-canvas-card {
   background: #0b1120;
   border: 1px solid #1e293b;
