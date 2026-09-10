@@ -94,11 +94,15 @@ export class WhatsappComponent implements OnInit, OnChanges {
     return `https://wa.me/${phone}${encodedMsg ? '?text=' + encodedMsg : ''}`;
   }
 
-  /** Abre el chat de WhatsApp en una pestaña nueva */
+  /** Abre el chat de WhatsApp en una pestaña nueva, o abre la configuración si está en el editor */
   abrirWhatsApp(event?: Event) {
     if (event) {
       event.preventDefault();
       event.stopPropagation();
+    }
+    if (this.isEditor) {
+      this.abrirConfig();
+      return;
     }
     const url = this.getWhatsAppUrl();
     if (typeof window !== 'undefined') {
@@ -120,7 +124,11 @@ export class WhatsappComponent implements OnInit, OnChanges {
     this.emitirCambios();
   }
 
-  abrirConfig() {
+  abrirConfig(event?: Event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
     this.mostrarConfigModal = true;
   }
 
@@ -137,7 +145,11 @@ export class WhatsappComponent implements OnInit, OnChanges {
     }, 3000);
   }
 
-  eliminar() {
+  eliminar(event?: Event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
     this.eliminarElemento.emit();
   }
 

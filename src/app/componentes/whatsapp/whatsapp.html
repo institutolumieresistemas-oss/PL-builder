@@ -245,6 +245,24 @@
        [class.anim-pulso]="animacion === 'pulso'"
        [class.anim-rebote]="animacion === 'rebote'">
 
+    <!-- ======================================================================
+         BARRA DE ACCIONES DIRECTAS EN EL WIDGET FLOTANTE: CONFIGURAR Y ELIMINAR
+         ====================================================================== -->
+    <div *ngIf="isEditor" class="whatsapp-floating-actions-bar">
+      <button type="button"
+              class="btn-wa-float-action btn-wa-float-config"
+              (click)="abrirConfig($event)"
+              title="Configurar celular y mensaje de WhatsApp">
+        <i class="fas fa-cog me-1"></i> Configurar
+      </button>
+      <button type="button"
+              class="btn-wa-float-action btn-wa-float-delete"
+              (click)="eliminar($event)"
+              title="Eliminar botón flotante de WhatsApp">
+        <i class="fas fa-trash-alt me-1"></i> Eliminar
+      </button>
+    </div>
+
     <!-- BURBUJA DE TEXTO / TOOLTIP FLOTANTE -->
     <div *ngIf="mostrarTooltip && !tooltipCerrado && tooltip"
          class="whatsapp-speech-bubble"
@@ -263,12 +281,12 @@
     </div>
 
     <!-- BOTÓN CIRCULAR PRINCIPAL DE WHATSAPP -->
-    <a [href]="getWhatsAppUrl()"
-       target="_blank"
+    <a [href]="isEditor ? 'javascript:void(0)' : getWhatsAppUrl()"
+       [target]="isEditor ? '_self' : '_blank'"
        rel="noopener noreferrer"
        class="whatsapp-float-btn"
        (click)="abrirWhatsApp($event)"
-       [title]="'Contactar por WhatsApp: ' + celular">
+       [title]="isEditor ? 'Clic para Configurar Celular y Mensaje' : 'Contactar por WhatsApp: ' + celular">
       
       <!-- ONDAS DE PULSO -->
       <span *ngIf="animacion === 'pulso'" class="pulse-wave wave-1"></span>
