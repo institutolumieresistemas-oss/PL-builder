@@ -17,6 +17,8 @@ export interface FormularioProps {
   direccion: string;
   horario: string;
   botonTexto: string;
+  whatsappMensaje?: string;
+  whatsappBotonEstilo?: 'verde' | 'rojo' | 'dark';
 }
 
 @Component({
@@ -39,7 +41,9 @@ export class FormularioComponent implements OnInit {
   @Input() email: string = 'ventas@plasmexcnc.com';
   @Input() direccion: string = 'Av. Industrial #2450, Col. El Álamo, Guadalajara, Jal.';
   @Input() horario: string = 'Lunes a Viernes de 8:00 AM a 6:30 PM';
-  @Input() botonTexto: string = 'Enviar Cotización';
+  @Input() botonTexto: string = 'Enviar Cotización por WhatsApp';
+  @Input() whatsappMensaje: string = '¡Hola Plasmex CNC! Deseo solicitar una cotización formal con los siguientes datos:';
+  @Input() whatsappBotonEstilo: 'verde' | 'rojo' | 'dark' = 'verde';
 
   @Input() isEditor: boolean = false;
   @Output() actualizarProps = new EventEmitter<FormularioProps>();
@@ -47,6 +51,7 @@ export class FormularioComponent implements OnInit {
 
   mostrarConfigModal = false;
   mensajeEnviado = false;
+  seccionModalActiva: 'general' | 'whatsapp' = 'general';
 
   // Estado del formulario interactivo
   formData = {
@@ -114,17 +119,45 @@ export class FormularioComponent implements OnInit {
     }
   }
 
+  /** Formatea el número telefónico para wa.me */
+  getCleanPhone(): string {
+    const raw = (this.whatsapp || '33 3589 3912').replace(/\D+/g, '');
+    if (raw.length === 10) {
+      return `52${raw}`;
+    }
+    return raw;
+  }
+
+  /** Genera preview del enlace de WhatsApp */
+  getPreviewWhatsAppUrl(): string {
+    const phone = this.getCleanPhone();
+    const header = encodeURIComponent(this.whatsappMensaje || '¡Hola Plasmex CNC! Deseo cotizar:');
+    return `https://wa.me/${phone}?text=${header}`;
+  }
+
   enviarFormulario() {
     this.mensajeEnviado = true;
     
-    // Generar enlace dinámico de WhatsApp si el usuario desea
-    const textoMensaje = `*Cotización Plasmex CNC*%0A*Nombre:* ${this.formData.nombre || 'Cliente'}%0A*Servicio:* ${this.formData.servicio}%0A*Material:* ${this.formData.material}%0A*Teléfono:* ${this.formData.telefono}%0A*Detalles:* ${this.formData.detalles || 'Solicito cotización de proyecto'}`;
-    const cleanWa = this.whatsapp.replace(/\s+/g, '');
-    const waUrl = `https://wa.me/52${cleanWa}?text=${textoMensaje}`;
+    // Generar enlace dinámico de WhatsApp con los datos del formulario
+    const header = this.whatsappMensaje || '*Cotización Plasmex CNC*';
+    const lineas = [
+      header,
+      `*Nombre:* ${this.formData.nombre || 'Cliente'}`,
+      `*Servicio:* ${this.formData.servicio || 'Maquila CNC'}`,
+      `*Material:* ${this.formData.material || 'Acero'}`,
+      `*Espesor:* ${this.formData.espesor || 'Estándar'}`,
+      `*Teléfono:* ${this.formData.telefono || 'Sin teléfono'}`,
+      `*Detalles:* ${this.formData.detalles || this.formData.contactoRapido || 'Solicito cotización de proyecto'}`
+    ];
+    const textoMensaje = encodeURIComponent(lineas.join('\n'));
+    const phone = this.getCleanPhone();
+    const waUrl = `https://wa.me/${phone}?text=${textoMensaje}`;
     
-    setTimeout(() => {
-      window.open(waUrl, '_blank');
-    }, 600);
+    if (typeof window !== 'undefined') {
+      setTimeout(() => {
+        window.open(waUrl, '_blank');
+      }, 600);
+    }
   }
 
   resetForm() {
@@ -132,8 +165,13 @@ export class FormularioComponent implements OnInit {
     this.pasoActual = 1;
   }
 
-  abrirConfig() {
+  abrirConfig(seccion: 'general' | 'whatsapp' = 'general') {
+    this.seccionModalActiva = seccion;
     this.mostrarConfigModal = true;
+  }
+
+  abrirConfigWhatsApp() {
+    this.abrirConfig('whatsapp');
   }
 
   cerrarConfig() {
@@ -161,7 +199,9 @@ export class FormularioComponent implements OnInit {
       email: this.email,
       direccion: this.direccion,
       horario: this.horario,
-      botonTexto: this.botonTexto
+      botonTexto: this.botonTexto,
+      whatsappMensaje: this.whatsappMensaje,
+      whatsappBotonEstilo: this.whatsappBotonEstilo
     });
   }
 }

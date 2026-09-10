@@ -107,6 +107,8 @@
                         [direccion]="el.props.direccion"
                         [horario]="el.props.horario"
                         [botonTexto]="el.props.botonTexto"
+                        [whatsappMensaje]="el.props.whatsappMensaje"
+                        [whatsappBotonEstilo]="el.props.whatsappBotonEstilo || 'verde'"
                         [isEditor]="true"
                         (actualizarProps)="actualizarProps(i, $event)"
                         (eliminarElemento)="eliminarElemento(i)">

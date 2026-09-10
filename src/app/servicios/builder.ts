@@ -303,7 +303,9 @@ export class Builder {
           email: 'ventas@plasmexcnc.com',
           direccion: 'Av. Industrial #2450, Col. El Álamo, Guadalajara, Jal.',
           horario: 'Lunes a Viernes de 8:00 AM a 6:30 PM',
-          botonTexto: 'Enviar Cotización'
+          botonTexto: 'Enviar Cotización por WhatsApp',
+          whatsappMensaje: '¡Hola Plasmex CNC! Deseo solicitar una cotización formal con los siguientes datos:',
+          whatsappBotonEstilo: 'verde'
         };
       case 'banner':
         return {

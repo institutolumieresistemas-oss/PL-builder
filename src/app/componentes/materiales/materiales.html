@@ -441,9 +441,14 @@
                     </div>
 
                     <div class="col-12">
-                      <label class="micro-text text-secondary mb-1 d-block">
-                        <i class="fas fa-image text-danger me-1"></i> Foto / Textura del Material
-                      </label>
+                      <div class="d-flex flex-wrap align-items-center justify-content-between gap-1 mb-1">
+                        <label class="micro-text text-secondary mb-0">
+                          <i class="fas fa-image text-danger me-1"></i> Foto / Textura del Material
+                        </label>
+                        <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-30 micro-text py-1 px-2">
+                          <i class="fas fa-ruler-combined me-1"></i> Medida recomendada: <strong>800 × 600 px</strong> (4:3)
+                        </span>
+                      </div>
                       <div *ngIf="m.imagenUrl" class="mb-2">
                         <img [src]="m.imagenUrl" alt="Preview Material" class="img-thumbnail bg-dark border-secondary" style="max-height: 90px; object-fit: cover; border-radius: 4px;">
                       </div>
@@ -456,6 +461,9 @@
                                  accept="image/*" 
                                  class="form-control form-control-sm bg-dark text-light border-secondary" 
                                  (change)="seleccionarImagenMaterial($event, idx)">
+                          <span class="micro-text text-secondary d-block mt-1">
+                            Sugerido: 800×600 px (JPG, PNG, WebP)
+                          </span>
                         </div>
                         <div class="col-12 col-md-6">
                           <label class="micro-text text-secondary mb-1 d-block">

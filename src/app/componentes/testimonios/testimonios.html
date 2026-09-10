@@ -411,9 +411,14 @@
 
                     <!-- AVATAR DESDE PC O URL -->
                     <div class="col-12 col-md-6">
-                      <label class="micro-text text-secondary mb-1 d-block">
-                        <i class="fas fa-user-circle text-danger me-1"></i> Avatar / Foto de Perfil
-                      </label>
+                      <div class="d-flex justify-content-between align-items-center mb-1">
+                        <label class="micro-text text-secondary mb-0">
+                          <i class="fas fa-user-circle text-danger me-1"></i> Avatar / Foto de Perfil
+                        </label>
+                        <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-30 micro-text">
+                          Recomendado: 200 × 200 px (1:1)
+                        </span>
+                      </div>
                       <div class="d-flex align-items-center gap-2 mb-1">
                         <img [src]="item.avatarUrl" [alt]="item.nombre" class="rounded-circle border border-secondary" style="width: 38px; height: 38px; object-fit: cover; flex-shrink: 0;" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80'">
                         <input type="file" 

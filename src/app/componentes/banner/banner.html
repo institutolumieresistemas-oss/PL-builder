@@ -256,9 +256,14 @@
 
             <!-- SELECCION DE IMAGEN (PC O URL) -->
             <div class="col-12">
-              <label class="form-label fw-bold small text-light mb-1">
-                <i class="fas fa-image text-danger me-1"></i> Imagen del Banner
-              </label>
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">
+                <label class="form-label fw-bold small text-light m-0">
+                  <i class="fas fa-image text-danger me-1"></i> Imagen del Banner
+                </label>
+                <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-40 micro-text py-1 px-2">
+                  <i class="fas fa-ruler-combined me-1"></i> Medida recomendada: <strong>1200 × 800 px</strong> (3:2 / 4:3)
+                </span>
+              </div>
 
               <!-- Previsualización -->
               <div *ngIf="imagenUrl" class="mb-2 position-relative d-inline-block">
@@ -274,6 +279,9 @@
                        accept="image/*" 
                        class="form-control form-control-sm bg-dark text-light border-secondary" 
                        (change)="seleccionarImagen($event)">
+                <span class="micro-text text-secondary d-block mt-1">
+                  <i class="fas fa-info-circle text-info me-1"></i> Medida recomendada para evitar recortes: <strong>1200 × 800 px</strong> o mínimo <strong>800 × 600 px</strong> (JPG, PNG, WebP).
+                </span>
               </div>
 
               <!-- O escribir URL -->
