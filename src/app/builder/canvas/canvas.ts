@@ -13,6 +13,7 @@ import { BannerComponent } from '../../componentes/banner/banner';
 import { FormularioComponent } from '../../componentes/formulario/formulario';
 import { TestimoniosComponent } from '../../componentes/testimonios/testimonios';
 import { MaterialesComponent } from '../../componentes/materiales/materiales';
+import { WhatsappComponent } from '../../componentes/whatsapp/whatsapp';
 
 import { PagesService } from '../../servicios/page';
 import {
@@ -36,7 +37,8 @@ import {
     BannerComponent,
     FormularioComponent,
     TestimoniosComponent,
-    MaterialesComponent
+    MaterialesComponent,
+    WhatsappComponent
   ],
   templateUrl: './canvas.html',
   styleUrls: ['./canvas.css']

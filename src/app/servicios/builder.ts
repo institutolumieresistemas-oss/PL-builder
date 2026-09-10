@@ -431,6 +431,16 @@ export class Builder {
             }
           ]
         };
+      case 'whatsapp':
+        return {
+          celular: '33 3589 3912',
+          mensaje: '¡Hola Plasmex CNC! Me interesa cotizar un proyecto en corte láser/plasma.',
+          posicion: 'derecha',
+          tooltip: '¿Deseas cotizar? ¡Escríbenos!',
+          mostrarTooltip: true,
+          estilo: 'verde',
+          animacion: 'pulso'
+        };
       case 'ejemplo':
         return {
           titulo: 'Mi Componente Ejemplo',

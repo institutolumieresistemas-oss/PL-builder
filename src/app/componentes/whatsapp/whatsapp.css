@@ -1,0 +1,404 @@
+/* ==========================================================================
+   PLASMEX CNC - COMPONENTE BOTÓN WHATSAPP FLOTANTE (BUILDER DASHBOARD)
+   ========================================================================== */
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.whatsapp-master-container {
+  width: 100%;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  position: relative;
+}
+
+.whatsapp-master-container.is-editor-mode {
+  border: 1px dashed rgba(37, 211, 102, 0.4);
+  border-radius: 12px;
+  padding: 10px;
+  background: rgba(15, 23, 42, 0.45);
+  margin: 1rem 0;
+}
+
+.micro-text {
+  font-size: 0.72rem;
+}
+
+/* ==================== EDITOR TOOLBAR ==================== */
+.whatsapp-editor-toolbar {
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+.whatsapp-toolbar-badge {
+  width: 28px;
+  height: 28px;
+  background: rgba(37, 211, 102, 0.15);
+  border: 1px solid rgba(37, 211, 102, 0.35);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+}
+
+.whatsapp-toolbar-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.btn-whatsapp-pill {
+  background-color: #1e293b;
+  color: #cbd5e1;
+  border: 1px solid #334155;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.22rem 0.6rem;
+  transition: all 0.2s ease;
+}
+
+.btn-whatsapp-pill:hover {
+  background-color: #273549;
+  color: #fff;
+  border-color: #475569;
+}
+
+.btn-whatsapp-pill.active {
+  background: linear-gradient(135deg, rgba(37, 211, 102, 0.25) 0%, rgba(15, 23, 42, 0.95) 100%);
+  border-color: #25d366;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(37, 211, 102, 0.3);
+}
+
+/* ==================== CANVAS SUMMARY CARD ==================== */
+.whatsapp-canvas-card {
+  background: #0b1120;
+  border: 1px solid #1e293b;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.preview-mini-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  color: white;
+  margin: 0 auto;
+}
+
+.preview-mini-icon.mini-verde {
+  background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+}
+
+.preview-mini-icon.mini-rojo {
+  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+}
+
+.preview-mini-icon.mini-dark {
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  border: 2px solid #25d366;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
+
+.btn-save-whatsapp {
+  background: #25d366;
+  color: white;
+  font-weight: 600;
+  border: none;
+}
+
+.btn-save-whatsapp:hover {
+  background: #1eb956;
+  color: white;
+}
+
+.text-success-light {
+  color: #86efac;
+}
+
+/* ==================== WIDGET FLOTANTE (FIXED) ==================== */
+.whatsapp-float-container {
+  position: fixed;
+  bottom: 26px;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  pointer-events: auto;
+}
+
+.whatsapp-float-container.pos-derecha {
+  right: 26px;
+  align-items: flex-end;
+}
+
+.whatsapp-float-container.pos-izquierda {
+  left: 26px;
+  align-items: flex-start;
+}
+
+/* BURBUJA DE TEXTO / TOOLTIP */
+.whatsapp-speech-bubble {
+  max-width: 270px;
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid #334155;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(37, 211, 102, 0.15);
+  cursor: pointer;
+  position: relative;
+  animation: floatBubbleIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.whatsapp-speech-bubble:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.6), 0 0 20px rgba(37, 211, 102, 0.25);
+  border-color: #25d366;
+}
+
+.bubble-brand {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #25d366;
+  text-transform: uppercase;
+}
+
+.bubble-close-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+
+.bubble-close-btn:hover {
+  color: #f8fafc;
+}
+
+.bubble-text {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #e2e8f0;
+  line-height: 1.35;
+}
+
+.bubble-action-hint {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #22c55e;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+}
+
+/* Cola de la burbuja */
+.whatsapp-speech-bubble .bubble-tail {
+  position: absolute;
+  bottom: -7px;
+  width: 14px;
+  height: 14px;
+  background: #0f172a;
+  border-right: 1px solid #334155;
+  border-bottom: 1px solid #334155;
+  transform: rotate(45deg);
+}
+
+.pos-derecha .whatsapp-speech-bubble .bubble-tail {
+  right: 22px;
+}
+
+.pos-izquierda .whatsapp-speech-bubble .bubble-tail {
+  left: 22px;
+}
+
+/* BOTÓN CIRCULAR FLOTANTE */
+.whatsapp-float-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  text-decoration: none;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+  user-select: none;
+}
+
+.whatsapp-float-btn:hover {
+  transform: scale(1.12);
+  color: #ffffff;
+}
+
+.whatsapp-float-btn:active {
+  transform: scale(0.96);
+}
+
+.whatsapp-main-icon {
+  font-size: 32px;
+  position: relative;
+  z-index: 2;
+  transition: transform 0.2s ease;
+}
+
+.whatsapp-float-btn:hover .whatsapp-main-icon {
+  transform: rotate(-8deg) scale(1.05);
+}
+
+/* ESTILO 1: VERDE OFICIAL */
+.estilo-verde .whatsapp-float-btn {
+  background: linear-gradient(145deg, #2fe671 0%, #25d366 40%, #128c7e 100%);
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45), 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.estilo-verde .pulse-wave {
+  background: rgba(37, 211, 102, 0.6);
+}
+
+/* ESTILO 2: ROJO LÁSER NEÓN (PLASMEX CNC) */
+.estilo-rojo .whatsapp-float-btn {
+  background: linear-gradient(145deg, #ff2a2a 0%, #dc2626 40%, #991b1b 100%);
+  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.5), 0 0 18px rgba(239, 68, 68, 0.4);
+}
+
+.estilo-rojo .pulse-wave {
+  background: rgba(239, 68, 68, 0.6);
+}
+
+.estilo-rojo .whatsapp-speech-bubble {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(220, 38, 38, 0.2);
+}
+
+.estilo-rojo .bubble-brand,
+.estilo-rojo .bubble-action-hint {
+  color: #ef4444;
+}
+
+/* ESTILO 3: DARK CYBER */
+.estilo-dark .whatsapp-float-btn {
+  background: linear-gradient(145deg, #1e293b 0%, #0f172a 100%);
+  border: 2px solid #25d366;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 15px rgba(37, 211, 102, 0.35);
+}
+
+.estilo-dark .pulse-wave {
+  background: rgba(37, 211, 102, 0.4);
+}
+
+/* PUNTO EN LÍNEA VERDE */
+.online-status-dot {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 14px;
+  height: 14px;
+  background-color: #22c55e;
+  border: 2.5px solid #0f172a;
+  border-radius: 50%;
+  z-index: 3;
+}
+
+/* ANIMACIONES */
+.pulse-wave {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.anim-pulso .wave-1 {
+  animation: waPulseWave 2.4s infinite cubic-bezier(0.25, 0, 0.2, 1);
+}
+
+.anim-pulso .wave-2 {
+  animation: waPulseWave 2.4s infinite cubic-bezier(0.25, 0, 0.2, 1);
+  animation-delay: 1.2s;
+}
+
+.anim-rebote .whatsapp-float-btn {
+  animation: waBounce 2.5s infinite ease-in-out;
+}
+
+@keyframes waPulseWave {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  60% {
+    transform: scale(1.65);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+
+@keyframes waBounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes floatBubbleIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 576px) {
+  .whatsapp-float-container {
+    bottom: 18px;
+  }
+  .whatsapp-float-container.pos-derecha {
+    right: 18px;
+  }
+  .whatsapp-float-container.pos-izquierda {
+    left: 18px;
+  }
+  .whatsapp-float-btn {
+    width: 54px;
+    height: 54px;
+  }
+  .whatsapp-main-icon {
+    font-size: 28px;
+  }
+  .whatsapp-speech-bubble {
+    max-width: 220px;
+    padding: 10px 12px;
+  }
+}

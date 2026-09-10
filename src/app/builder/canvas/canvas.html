@@ -153,6 +153,19 @@
                     (actualizarProps)="actualizarProps(i, $event)"
                     (eliminarElemento)="eliminarElemento(i)">
         </app-footer>
+
+        <app-whatsapp *ngIf="el.type === 'whatsapp'"
+                      [celular]="el.props.celular"
+                      [mensaje]="el.props.mensaje"
+                      [posicion]="el.props.posicion || 'derecha'"
+                      [tooltip]="el.props.tooltip"
+                      [mostrarTooltip]="el.props.mostrarTooltip"
+                      [estilo]="el.props.estilo || 'verde'"
+                      [animacion]="el.props.animacion || 'pulso'"
+                      [isEditor]="true"
+                      (actualizarProps)="actualizarProps(i, $event)"
+                      (eliminarElemento)="eliminarElemento(i)">
+        </app-whatsapp>
     </div>
   </div>
 </div>
